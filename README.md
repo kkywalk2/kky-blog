@@ -5,6 +5,9 @@
 - vue3 + typescript
 - Java 1.8 + sprint boot 2.5.2
 
+### ER Diagram
+![ER Diagram](https://user-images.githubusercontent.com/18114747/124394425-65299e00-dd3a-11eb-8519-73559a1059bb.jpg)
+
 ### 체크리스트
 목표는 8/1
 
