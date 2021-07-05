@@ -7,12 +7,12 @@ import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -28,11 +28,11 @@ public class AccountEntity {
         private String accountName;
         @Size(min = 8, max = 30)
         private String password;
-        @Email(message = "이메일 형식이 아닙니다")
+        @Email(message = "�씠硫붿씪 �삎�떇�씠 �븘�떃�땲�떎")
         private String email;
-        @CreatedDate
+        @CreationTimestamp
         private LocalDateTime createAt;
-        @LastModifiedDate
+        @UpdateTimestamp
         private LocalDateTime UpdatedAt;
 
         public AccountEntity(String accountName, String password, String email){

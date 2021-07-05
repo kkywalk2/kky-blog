@@ -7,4 +7,5 @@ import com.example.blog.entity.AccountEntity;
 
 @Repository
 public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
+	AccountEntity findByAccountName(String accountName);
 }
