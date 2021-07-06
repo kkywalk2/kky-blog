@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
@@ -15,6 +16,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -34,6 +36,12 @@ public class AccountEntity {
         private LocalDateTime createAt;
         @UpdateTimestamp
         private LocalDateTime UpdatedAt;
+        
+        @OneToMany(mappedBy="accountUid")
+        private Set<PostEntity> posts;
+        
+        @OneToMany(mappedBy="accountUid")
+        private Set<CommentEntity> comments;
 
         public AccountEntity(String accountName, String password, String email){
                 this.accountName = accountName;

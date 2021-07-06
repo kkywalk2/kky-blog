@@ -2,7 +2,7 @@
 =============
 
 ### Stack
-- vue3 + typescript
+- vue3 + buefy
 - Java 1.8 + sprint boot 2.5.2
 
 ### ER Diagram
@@ -11,7 +11,7 @@
 ### 체크리스트
 목표는 8/1
 
-- [ ] Boilerplate코드 작성
+- [x] Account기준으로 Skeleton코드 작성 7/6
 - [ ] DB설계(사용자, 글, 댓글), 최소 egloos수준으로 기능이 되도록
 - [ ] 회원가입 및 로그인(인증관련 기능포함)
 - [ ] 글쓰기및 읽기
