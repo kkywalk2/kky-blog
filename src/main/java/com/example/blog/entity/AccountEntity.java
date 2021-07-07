@@ -25,12 +25,12 @@ import java.util.Set;
 public class AccountEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long uid;
+        private Long id;
         @Size(min = 8, max = 30)
         private String accountName;
         @Size(min = 8, max = 30)
         private String password;
-        @Email(message = "�씠硫붿씪 �삎�떇�씠 �븘�떃�땲�떎")
+        @Email(message = "Email형식이 아닙니다.")
         private String email;
         @CreationTimestamp
         private LocalDateTime createAt;

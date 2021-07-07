@@ -19,20 +19,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CommentEntity {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long uid;
-	private Long accountUid;
-	private Long postUid;
-	private String content;
+    private Long id;
+    private Long accountid;
+    private Long postid;
+    private String content;
     @CreationTimestamp
     private LocalDateTime createAt;
     @UpdateTimestamp
     private LocalDateTime UpdatedAt;
-    
-    public CommentEntity(Long accountUid,Long postUid,String content) {
-    	this.accountUid = accountUid;
-    	this.postUid = postUid;
-    	this.content = content;
+
+    public CommentEntity(Long accountid, Long postid, String content) {
+        this.accountid = accountid;
+        this.postid = postid;
+        this.content = content;
     }
 }

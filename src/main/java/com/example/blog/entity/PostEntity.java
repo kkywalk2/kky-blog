@@ -24,23 +24,23 @@ import lombok.Setter;
 public class PostEntity {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long uid;
-	private Long accountUid;
+    private Long id;
+	private Long accountid;
     @Size(max = 3000)
     private String content;
     private Long views;
-    private String type;
+    private String category;
     @CreationTimestamp
     private LocalDateTime createAt;
     @UpdateTimestamp
     private LocalDateTime UpdatedAt;
     
-    @OneToMany(mappedBy="postUid")
+    @OneToMany(mappedBy="postid")
     private Set<CommentEntity> comments;
 
-    public PostEntity(Long accountUid, String content, String type){
-    		this.accountUid = accountUid;
+    public PostEntity(Long accountid, String content, String category){
+    		this.accountid = accountid;
             this.content = content;
-            this.type = type;
+            this.category = category;
     }
 }

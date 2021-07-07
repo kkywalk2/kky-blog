@@ -2,7 +2,6 @@ package com.example.blog.security;
 
 import java.util.ArrayList;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,8 +13,11 @@ import com.example.blog.entity.AccountEntity;
 @Service
 public class AccountDetailService implements UserDetailsService {
 
-    @Autowired
-    AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+
+    AccountDetailService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String accountName) throws UsernameNotFoundException {
