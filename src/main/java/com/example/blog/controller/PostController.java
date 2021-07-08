@@ -1,11 +1,15 @@
 package com.example.blog.controller;
 
 import com.example.blog.dto.*;
+import com.example.blog.service.AccountService;
 import com.example.blog.service.PostService;
+import com.example.blog.entity.AccountEntity;
 import com.example.blog.entity.PostEntity;
 
 import javax.validation.Valid;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,14 +18,22 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
     private final PostService postService;
 
-	PostController(PostService postService){
+    PostController(PostService postService) {
         this.postService = postService;
     }
 
     @PostMapping
     @ResponseBody
-    public PostCreateRes signUp(@Valid @RequestBody PostCreateReq req){
-        //return postService.createPost(null, req.getContent(), req.getCategory()) ? new PostCreateRes("OK","") : new PostCreateRes("OK","");
-        return new PostCreateRes("OK","");
+    public PostCreateRes createPost(@Valid @RequestBody PostCreateReq req, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        postService.createPost(userDetails, req.getContent(), req.getCategory());
+        return new PostCreateRes("OK", "");
+    }
+
+    @GetMapping
+    @ResponseBody
+    public PostGetRes getPosts(Authentication authentication) {
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        return new PostGetRes("OK","",postService.getPosts(userDetails));
     }
 }

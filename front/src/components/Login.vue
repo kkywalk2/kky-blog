@@ -33,7 +33,7 @@ export default {
     },
     goToPages () {
       this.$router.push({
-        name: 'HelloWorld'
+        name: 'Blog'
       })
     }
   }

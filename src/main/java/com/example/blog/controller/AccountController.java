@@ -1,6 +1,7 @@
 package com.example.blog.controller;
 
 import com.example.blog.dto.*;
+import com.example.blog.entity.AccountEntity;
 import com.example.blog.service.AccountService;
 import com.example.blog.security.JwtUtil;
 
@@ -30,6 +31,10 @@ public class AccountController {
     @PostMapping("/signin")
     @ResponseBody
     public AccountSignInRes signIn(@Valid @RequestBody AccountSignInReq req){
-        return new AccountSignInRes("OK","", jwtUtil.createToken(req.getAccountName()));
+        AccountEntity account = accountService.getAccountByNameAndPassword(req.getAccountName(), req.getPassword());
+        if(account != null) {
+            return new AccountSignInRes("OK","", jwtUtil.createToken(req.getAccountName()));
+        }
+        return new AccountSignInRes("Unkown Error","", "");
     }
 }

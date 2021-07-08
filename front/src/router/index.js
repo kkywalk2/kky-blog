@@ -1,7 +1,7 @@
 // src/router/index.js
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import BlogMain from '@/components/BlogMain'
 import Login from '@/components/Login' // 로그인 컴포넌트를 import 한다
 
 Vue.use(Router)
@@ -14,9 +14,9 @@ export default new Router({
       component: Login
 	},
     {
-      path: '/helloWorld', // 추가하는 path
-      name: 'HelloWorld',
-      component: HelloWorld // 추가하는 컴포넌트
+      path: '/blog', // 추가하는 path
+      name: 'Blog',
+      component: BlogMain // 추가하는 컴포넌트
     }
   ]
 })

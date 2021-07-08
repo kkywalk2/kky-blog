@@ -1,6 +1,7 @@
 package com.example.blog.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +17,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,16 +38,29 @@ public class AccountEntity {
         private LocalDateTime createAt;
         @UpdateTimestamp
         private LocalDateTime UpdatedAt;
-        
-        @OneToMany(mappedBy="accountUid")
-        private Set<PostEntity> posts;
-        
-        @OneToMany(mappedBy="accountUid")
-        private Set<CommentEntity> comments;
 
-        public AccountEntity(String accountName, String password, String email){
+        @OneToMany(mappedBy = "accountid", fetch = FetchType.LAZY)
+        private List<PostEntity> posts = new ArrayList<PostEntity>();
+
+        @OneToMany(mappedBy = "accountid", fetch = FetchType.LAZY)
+        private List<CommentEntity> comments = new ArrayList<CommentEntity>();
+
+        public AccountEntity(String accountName, String password, String email) {
                 this.accountName = accountName;
                 this.password = password;
                 this.email = email;
         }
+
+        public void addPost(PostEntity post) {
+                if (posts == null) {
+                        posts = new ArrayList<PostEntity>();
+                }
+                posts.add(post);
+        }
+
+        /*public ArrayList<PostEntity> getPosts() {
+                ArrayList<PostEntity> list = new ArrayList<PostEntity>();
+                list.addAll(posts);
+                return list;
+        }*/
 }
