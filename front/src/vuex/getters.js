@@ -1,6 +1,6 @@
 // src/vuex/getters.js
 export default {
-  getToken: state => state.token,
+  getToken: () => localStorage.getItem("token"),
   getErrorState: state => state.errorState,
   getIsAuth: state => state.isAuth
 }

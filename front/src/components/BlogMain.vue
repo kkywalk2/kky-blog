@@ -26,12 +26,22 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
   name: 'BlogMain',
   data: function () {
     return {
-      versionInfo: "Version: 0.1",
+      versionInfo: this.getToken,
     };
+  },
+  computed:{
+    ...mapGetters({
+     getToken: 'getToken'
+   }) 
+  },
+  created: function () {
+    console.log(this.getToken)
   },
 }
 </script>

@@ -1,13 +1,14 @@
 package com.example.blog.controller;
 
 import com.example.blog.dto.*;
-import com.example.blog.entity.AccountEntity;
 import com.example.blog.service.AccountService;
 import com.example.blog.security.JwtUtil;
 
 import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
+
+import com.google.common.base.Preconditions;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -31,10 +32,7 @@ public class AccountController {
     @PostMapping("/signin")
     @ResponseBody
     public AccountSignInRes signIn(@Valid @RequestBody AccountSignInReq req){
-        AccountEntity account = accountService.getAccountByNameAndPassword(req.getAccountName(), req.getPassword());
-        if(account != null) {
-            return new AccountSignInRes("OK","", jwtUtil.createToken(req.getAccountName()));
-        }
-        return new AccountSignInRes("Unkown Error","", "");
+        Preconditions.checkState(accountService.accountValidation(req.getAccountName(), req.getPassword()), "Account info mismatch");
+        return new AccountSignInRes("OK","", jwtUtil.createToken(req.getAccountName()));
     }
 }

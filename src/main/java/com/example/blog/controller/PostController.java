@@ -1,10 +1,7 @@
 package com.example.blog.controller;
 
 import com.example.blog.dto.*;
-import com.example.blog.service.AccountService;
 import com.example.blog.service.PostService;
-import com.example.blog.entity.AccountEntity;
-import com.example.blog.entity.PostEntity;
 
 import javax.validation.Valid;
 
@@ -33,7 +30,7 @@ public class PostController {
     @GetMapping
     @ResponseBody
     public PostGetRes getPosts(Authentication authentication) {
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-        return new PostGetRes("OK","",postService.getPosts(userDetails));
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return new PostGetRes("OK", "", postService.getPosts(userDetails));
     }
 }

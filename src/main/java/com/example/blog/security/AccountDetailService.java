@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Preconditions;
+
 import com.example.blog.repository.AccountRepository;
 import com.example.blog.entity.AccountEntity;
 
@@ -22,8 +24,7 @@ public class AccountDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String accountName) throws UsernameNotFoundException {
         AccountEntity account = accountRepository.findByAccountName(accountName);
-
-        if(account == null) throw new UsernameNotFoundException("user name not found!");
+        Preconditions.checkState(account != null, "user name not found!");
         return new org.springframework.security.core.userdetails.User(account.getAccountName(),account.getPassword(),new ArrayList<>());
     }
 }

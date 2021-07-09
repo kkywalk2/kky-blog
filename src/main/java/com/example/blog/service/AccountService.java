@@ -6,29 +6,30 @@ import javax.transaction.Transactional;
 
 import com.example.blog.entity.AccountEntity;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccountService {
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    AccountService(AccountRepository accountRepository){
+    AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder){
         this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
-    public boolean createAccount(String accountName, String password, String email) {
-        AccountEntity account = accountRepository.save(new AccountEntity(accountName, password, email));
-        return accountRepository.existsById(account.getId());
+    public void createAccount(String accountName, String password, String email) {
+        accountRepository.save(new AccountEntity(accountName, passwordEncoder.encode(password), email));
     }
 
     public AccountEntity getAccountByName(String accountName) {
-        AccountEntity account = accountRepository.findByAccountName(accountName);
-        return account;
+        return accountRepository.findByAccountName(accountName);
     }
 
-    public AccountEntity getAccountByNameAndPassword(String accountName, String password) {
-        AccountEntity account = accountRepository.findByAccountNameAndPassword(accountName, password);
-        return account;
+    public boolean accountValidation(String accountName, String password) {
+        AccountEntity account = accountRepository.findByAccountName(accountName);
+        return passwordEncoder.matches(password, account.getPassword());
     }
 }
