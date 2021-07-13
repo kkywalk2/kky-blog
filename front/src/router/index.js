@@ -3,6 +3,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import BlogMain from '@/components/BlogMain'
 import Login from '@/components/Login' // 로그인 컴포넌트를 import 한다
+import BlogEditor from "@/components/BlogEditor";
 
 Vue.use(Router)
 
@@ -17,6 +18,11 @@ export default new Router({
       path: '/blog', // 추가하는 path
       name: 'Blog',
       component: BlogMain // 추가하는 컴포넌트
+    },
+    {
+      path: '/editor', // 추가하는 path
+      name: 'Editor',
+      component: BlogEditor // 추가하는 컴포넌트
     }
   ]
 })
