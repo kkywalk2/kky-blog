@@ -9,25 +9,11 @@
         <p class="level-item">{{ versionInfo }}</p>
       </div>
     </nav>
-    <div class="content">
-      <p>
-        블로그 메인입니다.
-        <br />
-        어쩌구 저쩌구
-      </p>
-      <h3>기능되야함</h3>
-      <ul>
-        <li>Footer와 Nav?</li>
-        <li>블로그 글방식은? MD?</li>
-        <li>블라블라블라</li>
-        <li> 니얼굴드록바 </li>
-      </ul>
-      <ul>
-        <li v-for="item in postData" :key="item.id">
-          <postCard :content="item.content" post-title="ASD"></postCard>
-        </li>
-      </ul>
-    </div>
+    <ul>
+      <li v-for="item in postData" :key="item.id">
+        <postCard :content="item.content" :post-title="item.title"></postCard>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -36,6 +22,8 @@ import {mapGetters} from 'vuex'
 
 import PostCard from "@/components/PostCard";
 
+import {getPosts} from "@/service";
+
 export default {
   name: 'BlogMain',
   components: {
@@ -43,22 +31,28 @@ export default {
   },
   data: function () {
     return {
-      versionInfo: this.getToken,
-      postData: [
-        { content: 'Learn Vue' },
-        { content: 'Create a Vue project with the CLI' },
-        { content: 'Have fun' },
-        { content: 'Create a to-do list' }
-      ]
+      versionInfo: '',
+      postData: []
     };
   },
-  computed:{
+  computed: {
     ...mapGetters({
-     getToken: 'getToken'
-   }) 
+      getToken: 'getToken'
+    })
   },
-  created: function () {
+  created: async function () {
     console.log(this.getToken)
+    this.postData = (await getPosts(this.getToken)).data
+    console.log(this.postData)
   },
 }
 </script>
+
+<style>
+li{
+  list-style:none;
+  padding-left:0;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+</style>

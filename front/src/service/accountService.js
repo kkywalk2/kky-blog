@@ -1,8 +1,7 @@
-// src/sercice/loginAPI.js
 import axios from 'axios'
 
 const getAuthToken = (accountName, password) => {
-  var authInfo = {
+  let authInfo = {
     accountName: accountName,
     password: password
   };

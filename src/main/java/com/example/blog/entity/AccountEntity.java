@@ -42,10 +42,10 @@ public class AccountEntity {
         @UpdateTimestamp
         private LocalDateTime UpdatedAt;
 
-        @OneToMany(mappedBy = "accountid", fetch = FetchType.LAZY)
+        @OneToMany(mappedBy = "accountId", fetch = FetchType.LAZY)
         private List<PostEntity> posts = Lists.newArrayList();
 
-        @OneToMany(mappedBy = "accountid", fetch = FetchType.LAZY)
+        @OneToMany(mappedBy = "accountId", fetch = FetchType.LAZY)
         private List<CommentEntity> comments = Lists.newArrayList();
 
         public AccountEntity(String accountName, String password, String email) {

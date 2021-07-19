@@ -18,39 +18,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception{
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private AccountDetailService jwtUserDetailsService;
     private JwtRequestFilter jwtRequestFilter;
-    
-    SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, AccountDetailService jwtUserDetailsService, JwtRequestFilter jwtRequestFilter){
-    	this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-    	this.jwtUserDetailsService = jwtUserDetailsService;
-    	this.jwtRequestFilter = jwtRequestFilter;
+
+    SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, AccountDetailService jwtUserDetailsService, JwtRequestFilter jwtRequestFilter) {
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
 
-    public void configGlobal(AuthenticationManagerBuilder auth) throws Exception{
+    public void configGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(jwtUserDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
-        http
-                .cors().disable()
-                .csrf().disable()
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors();
+
+        http.csrf().disable()
                 .authorizeRequests().antMatchers(
-                        "/account/signup",
-                        "/account/signin")
+                "/account/signup",
+                "/account/signin")
                 .permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()

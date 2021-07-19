@@ -1,13 +1,38 @@
 // src/service/index.js
-import loginAPI from './loginAPI'
+import accountService from './accountService'
+import postService from './postService'
 
-export default {
-  async login (accountName, password) {
+const login = async (accountName, password) => {
     try {
-      const loginResponse = await loginAPI.login(accountName, password)
-      return loginResponse
+        const loginResponse = await accountService.login(accountName, password)
+        return loginResponse
     } catch (err) {
-      console.error(err)
+        console.error(err)
     }
-  }
 }
+
+const createPosts = async (token, content, category) => {
+    try {
+        const res = await postService.createPost(token, content, category)
+        if(res.status === 200)
+            return res.data
+        else
+            return null
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+const getPosts = async (token) => {
+    try {
+        const res = await postService.getPosts(token)
+        if(res.status === 200)
+            return res.data
+        else
+            return null
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+export {login, createPosts, getPosts}

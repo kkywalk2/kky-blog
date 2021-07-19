@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("post")
 public class PostController {
     private final PostService postService;
@@ -23,7 +22,7 @@ public class PostController {
     @ResponseBody
     public PostCreateRes createPost(@Valid @RequestBody PostCreateReq req, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        postService.createPost(userDetails, req.getContent(), req.getCategory());
+        postService.createPost(userDetails, req.getTitle(), req.getContent(), req.getCategory());
         return new PostCreateRes("OK", "");
     }
 

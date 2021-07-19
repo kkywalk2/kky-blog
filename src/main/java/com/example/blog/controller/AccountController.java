@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import com.google.common.base.Preconditions;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("account")
 public class AccountController {
     private final AccountService accountService;

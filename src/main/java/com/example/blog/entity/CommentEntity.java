@@ -22,17 +22,17 @@ public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long accountid;
-    private Long postid;
+    private Long accountId;
+    private Long postId;
     private String content;
     @CreationTimestamp
     private LocalDateTime createAt;
     @UpdateTimestamp
     private LocalDateTime UpdatedAt;
 
-    public CommentEntity(Long accountid, Long postid, String content) {
-        this.accountid = accountid;
-        this.postid = postid;
+    public CommentEntity(Long accountId, Long postId, String content) {
+        this.accountId = accountId;
+        this.postId = postId;
         this.content = content;
     }
 }

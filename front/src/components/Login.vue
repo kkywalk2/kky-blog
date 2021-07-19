@@ -21,10 +21,10 @@ export default {
     password: ''
   }),
   methods: {
-    ...mapActions(['login']),
+    ...mapActions(['loginAction']),
     async onSubmit () {
       try {
-        let loginResult = await this.login({accountName: this.accountName, password: this.password})
+        let loginResult = await this.loginAction({accountName: this.accountName, password: this.password})
         if(loginResult) this.goToPages()
         else console.log("failed...")
       } catch (err) {

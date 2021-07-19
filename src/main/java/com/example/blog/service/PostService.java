@@ -24,9 +24,9 @@ public class PostService {
     }
 
     @Transactional
-    public void createPost(UserDetails userDetails, String content, String category) {
+    public void createPost(UserDetails userDetails, String title, String content, String category) {
         AccountEntity account = accountRepository.findByAccountName(userDetails.getUsername());
-        postRepository.save(new PostEntity(account.getId(), content, category));
+        postRepository.save(new PostEntity(account.getId(), title, content, category));
     }
 
     public List<PostEntity> getPosts(UserDetails userDetails) {
