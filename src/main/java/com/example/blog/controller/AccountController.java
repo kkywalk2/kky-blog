@@ -34,4 +34,10 @@ public class AccountController {
         Preconditions.checkState(accountService.accountValidation(req.getAccountName(), req.getPassword()), "Account info mismatch");
         return new AccountSignInRes("OK","", jwtUtil.createToken(req.getAccountName()));
     }
+
+    @GetMapping
+    @ResponseBody
+    public Response AuthCheck(){
+        return new Response("OK","");
+    }
 }

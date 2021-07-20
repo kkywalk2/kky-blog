@@ -11,9 +11,9 @@ const login = async (accountName, password) => {
     }
 }
 
-const createPosts = async (token, content, category) => {
+const createPosts = async (token, title, content, category) => {
     try {
-        const res = await postService.createPost(token, content, category)
+        const res = await postService.createPost(token, title, content, category)
         if(res.status === 200)
             return res.data
         else

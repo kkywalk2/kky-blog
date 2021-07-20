@@ -3,14 +3,14 @@
     <div></div>
     <nav class="level">
       <div class="level-left">
-        <p class="title is-3">Blogggg</p>
+        <p class="title is-3">Blogggg 글목록</p>
       </div>
       <div class="level-right">
         <p class="level-item">{{ versionInfo }}</p>
       </div>
     </nav>
     <ul>
-      <li v-for="item in postData" :key="item.id">
+      <li class="list-view" v-for="item in postData" :key="item.id">
         <postCard :content="item.content" :post-title="item.title"></postCard>
       </li>
     </ul>
@@ -51,8 +51,8 @@ export default {
 <style>
 li{
   list-style:none;
-  padding-left:0;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin-bottom: 100px;
+  margin-top: 100px;
+  justify-content: space-between;
 }
 </style>

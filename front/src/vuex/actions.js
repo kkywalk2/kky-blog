@@ -39,12 +39,4 @@ export default {
         processResponse(store, loginResponse)
         return store.getters.getIsAuth  // 로그인 결과를 리턴한다
     }
-
-    /*async getPostsAction(store, { token }) {
-        return await getPosts(token)
-    },
-
-    async createPostsAction(store, { token, content, category }) {
-        return await createPosts(token, content, category)
-    }*/
 }

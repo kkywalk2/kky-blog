@@ -1,5 +1,5 @@
 <template>
-  <div class="container is-widescreen">
+  <div class="container is-widescreen section">
     <div class="notification is-primary">
       <b-field :label="postTitle">
         <viewer :initialValue="content"></viewer>
@@ -30,3 +30,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.is-primary{
+  background-color: bisque;
+}
+</style>
