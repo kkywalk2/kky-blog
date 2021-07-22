@@ -1,11 +1,11 @@
-package com.example.blog.dto;
+package com.example.blog.dto.post;
 
 import javax.validation.constraints.Size;
 
 import lombok.Data;
 
 @Data
-public class PostCreateReq {
+public class CreateRequest {
     @Size(max = 100)
     String title;
     @Size(max = 3000)

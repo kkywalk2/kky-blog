@@ -1,6 +1,9 @@
 package com.example.blog.controller;
 
-import com.example.blog.dto.*;
+import com.example.blog.dto.ResponseCode;
+import com.example.blog.dto.post.CreateRequest;
+import com.example.blog.dto.post.CreateResponse;
+import com.example.blog.dto.post.GetResponse;
 import com.example.blog.service.PostService;
 
 import javax.validation.Valid;
@@ -20,16 +23,16 @@ public class PostController {
 
     @PostMapping
     @ResponseBody
-    public PostCreateRes createPost(@Valid @RequestBody PostCreateReq req, Authentication authentication) {
+    public CreateResponse createPost(@Valid @RequestBody CreateRequest req, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         postService.createPost(userDetails, req.getTitle(), req.getContent(), req.getCategory());
-        return new PostCreateRes("OK", "");
+        return new CreateResponse(ResponseCode.OK, "");
     }
 
     @GetMapping
     @ResponseBody
-    public PostGetRes getPosts(Authentication authentication) {
+    public GetResponse getPosts(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return new PostGetRes("OK", "", postService.getPosts(userDetails));
+        return new GetResponse(ResponseCode.OK, "", postService.getPosts(userDetails));
     }
 }

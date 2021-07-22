@@ -1,6 +1,10 @@
 package com.example.blog.controller;
 
 import com.example.blog.dto.*;
+import com.example.blog.dto.account.SignInRequest;
+import com.example.blog.dto.account.SignInResponse;
+import com.example.blog.dto.account.SignUpRequest;
+import com.example.blog.dto.account.SignUpResponse;
 import com.example.blog.service.AccountService;
 import com.example.blog.security.JwtUtil;
 
@@ -23,21 +27,21 @@ public class AccountController {
 	
     @PostMapping("/signup")
     @ResponseBody
-    public AccountSignUpRes signUp(@Valid @RequestBody AccountSignUpReq req){
+    public SignUpResponse signUp(@Valid @RequestBody SignUpRequest req){
     	accountService.createAccount(req.getAccountName(),req.getPassword(), req.getEmail());
-        return new AccountSignUpRes("OK","");
+        return new SignUpResponse(ResponseCode.OK,"");
     }
     
     @PostMapping("/signin")
     @ResponseBody
-    public AccountSignInRes signIn(@Valid @RequestBody AccountSignInReq req){
+    public SignInResponse signIn(@Valid @RequestBody SignInRequest req){
         Preconditions.checkState(accountService.accountValidation(req.getAccountName(), req.getPassword()), "Account info mismatch");
-        return new AccountSignInRes("OK","", jwtUtil.createToken(req.getAccountName()));
+        return new SignInResponse(ResponseCode.OK,"", jwtUtil.createToken(req.getAccountName()));
     }
 
     @GetMapping
     @ResponseBody
     public Response AuthCheck(){
-        return new Response("OK","");
+        return new Response(ResponseCode.OK,"");
     }
 }

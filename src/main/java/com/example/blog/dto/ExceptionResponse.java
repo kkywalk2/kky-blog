@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class ExceptionResponse extends Response{
-	public ExceptionResponse(String status, String message) {
-		super(status, message);
+	public ExceptionResponse(ResponseCode code, String message) {
+		super(code, message);
 	}
 }
