@@ -6,7 +6,7 @@ const getAuthToken = (accountName, password) => {
     password: password
   };
 
-  return axios.post('http://localhost:9000/account/signin',authInfo)
+  return axios.post(`${process.env.VUE_APP_SERVER_ADDRESS}/account/signin`,authInfo)
 }
 
 export default {

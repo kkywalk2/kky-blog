@@ -6,6 +6,8 @@ import store from './vuex/store' // vuex 저장소 추가
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 
+import dotenv from 'dotenv'; dotenv.config()
+
 Vue.use(Buefy)
 Vue.config.productionTip = false
 

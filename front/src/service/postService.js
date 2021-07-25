@@ -12,7 +12,7 @@ const createPost = (token, title, content, category) => {
         category: category
     };
 
-    return axios.post('http://localhost:9000/post', postInfo, {headers})
+    return axios.post(`${process.env.VUE_APP_SERVER_ADDRESS}/post`, postInfo, {headers})
 }
 
 const getPosts = (token) => {
@@ -21,7 +21,7 @@ const getPosts = (token) => {
         'Authorization': `${token}`
     }
 
-    return axios.get('http://localhost:9000/post', {headers})
+    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post`, {headers})
 }
 
 export default {createPost, getPosts}

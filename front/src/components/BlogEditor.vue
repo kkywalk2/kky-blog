@@ -14,7 +14,7 @@ import 'codemirror/lib/codemirror.css'
 import '@toast-ui/editor/dist/toastui-editor.css'
 import {Editor, Viewer} from '@toast-ui/vue-editor'
 
-import {createPosts} from "@/service";
+import {createPosts, uploadImage} from "@/service";
 import {mapGetters} from "vuex";
 
 export default {
@@ -42,8 +42,15 @@ export default {
     })
   },
   methods: {
-    onAddImage(blob) {
-      console.log(blob)
+    async onAddImage(blob, callback) {
+      let data = await uploadImage(blob)
+      if (data != null) {
+        callback(`${process.env.VUE_APP_SERVER_ADDRESS}/image/${data.fileName}`, "image");
+        return false;
+      } else {
+        alert("이미지를 업로드 하는것에 실패하였습니다!")
+        return false;
+      }
     },
     onCreatePost() {
       createPosts(this.getToken, this.title, this.$refs.editor.invoke('getMarkdown'), 'all')
