@@ -22,9 +22,20 @@ public class AccountDetailService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String accountName) throws UsernameNotFoundException {
+    public AccountDetail loadUserByUsername(String accountName) throws UsernameNotFoundException {
         AccountEntity account = accountRepository.findByAccountName(accountName);
         Preconditions.checkState(account != null, "user name not found!");
-        return new org.springframework.security.core.userdetails.User(account.getAccountName(),account.getPassword(),new ArrayList<>());
+
+        //AccountDetail 초기화
+        AccountDetail accountDetail = new AccountDetail();
+        accountDetail.setUsername(account.getAccountName());
+        accountDetail.setPassword(account.getPassword());
+        accountDetail.setId(account.getId());
+        accountDetail.setEnabled(true);
+        accountDetail.setAccountNonExpired(true);
+        accountDetail.setAccountNonLocked(true);
+        accountDetail.setCredentialsNonExpired(true);
+
+        return accountDetail;
     }
 }

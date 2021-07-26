@@ -1,15 +1,9 @@
 package com.example.blog.entity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 import com.google.common.collect.Lists;
@@ -28,7 +22,7 @@ public class PostEntity {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	private Long accountId;
+    private Long accountId;
     @Size(max = 100)
     private String title;
     @Size(max = 3000)
@@ -40,11 +34,11 @@ public class PostEntity {
     private LocalDateTime createAt;
     @UpdateTimestamp
     private LocalDateTime UpdatedAt;
-    
+
     @OneToMany(mappedBy="postId", fetch = FetchType.LAZY)
     private List<CommentEntity> comments = Lists.newArrayList();
 
-    public PostEntity(Long accountId, String title, String content, String category){
+    public PostEntity(long accountId, String title, String content, String category){
     		this.accountId = accountId;
     		this.title = title;
             this.content = content;

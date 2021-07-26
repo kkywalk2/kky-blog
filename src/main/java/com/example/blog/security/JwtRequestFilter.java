@@ -56,14 +56,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = this.accountDetailService.loadUserByUsername(username);
+            AccountDetail accountDetail = this.accountDetailService.loadUserByUsername(username);
 
-            if(jwtUtil.validateToken(jwtToken,userDetails)){
+            if(jwtUtil.validateToken(jwtToken,accountDetail)){
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails,
+                                accountDetail,
                                 null,
-                                userDetails.getAuthorities()
+                                accountDetail.getAuthorities()
                         );
                 usernamePasswordAuthenticationToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)

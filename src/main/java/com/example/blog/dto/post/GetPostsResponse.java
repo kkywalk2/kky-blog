@@ -9,9 +9,9 @@ import com.example.blog.entity.PostEntity;
 import lombok.Getter;
 
 @Getter
-public class GetResponse extends Response {
+public class GetPostsResponse extends Response {
     private List<PostEntity> data;
-    public GetResponse(ResponseCode code, String message, List<PostEntity> data) {
+    public GetPostsResponse(ResponseCode code, String message, List<PostEntity> data) {
 		super(code, message);
         this.data = data;
 	}

@@ -3,7 +3,9 @@ package com.example.blog.controller;
 import com.example.blog.dto.ResponseCode;
 import com.example.blog.dto.post.CreateRequest;
 import com.example.blog.dto.post.CreateResponse;
-import com.example.blog.dto.post.GetResponse;
+import com.example.blog.dto.post.GetPostResponse;
+import com.example.blog.dto.post.GetPostsResponse;
+import com.example.blog.security.AccountDetail;
 import com.example.blog.service.PostService;
 
 import javax.validation.Valid;
@@ -24,15 +26,22 @@ public class PostController {
     @PostMapping
     @ResponseBody
     public CreateResponse createPost(@Valid @RequestBody CreateRequest req, Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        postService.createPost(userDetails, req.getTitle(), req.getContent(), req.getCategory());
+        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+        postService.createPost(accountDetail.getId(), req.getTitle(), req.getContent(), req.getCategory());
         return new CreateResponse(ResponseCode.OK, "");
     }
 
     @GetMapping
     @ResponseBody
-    public GetResponse getPosts(Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return new GetResponse(ResponseCode.OK, "", postService.getPosts(userDetails));
+    public GetPostsResponse getPosts(Authentication authentication) {
+        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(accountDetail.getId()));
+    }
+
+    @GetMapping(value = "/{id}")
+    @ResponseBody
+    public GetPostResponse getPost(@PathVariable("id") Long id, Authentication authentication) {
+        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+        return new GetPostResponse(ResponseCode.OK, "", postService.getPost(accountDetail.getId(), id));
     }
 }
