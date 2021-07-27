@@ -1,5 +1,7 @@
 package com.example.blog.service;
 
+import com.example.blog.dto.post.GetPostsData;
+import com.example.blog.dto.post.PostCategories;
 import com.example.blog.repository.AccountRepository;
 import com.example.blog.repository.PostRepository;
 
@@ -31,14 +33,21 @@ public class PostService {
         postRepository.save(new PostEntity(accountId, title, content, category));
     }
 
-    public List<PostEntity> getPosts(Long accountId) {
-        AccountEntity accountEntity = accountRepository.findById(accountId).orElseThrow(NullPointerException::new);
-        return accountEntity.getPosts();
+    public List<GetPostsData> getPosts(Long accountId) {
+        return postRepository.findAllByAccountID(accountId);
+    }
+
+    public List<GetPostsData> getPosts(Long accountId, String category) {
+        return postRepository.findAllByAccountIDAndCategory(accountId, category);
     }
 
     public PostEntity getPost(Long accountId, Long postId) {
         PostEntity post = postRepository.findById(postId).orElseThrow(NullPointerException::new);
-        Preconditions.checkState(accountId == post.getAccountId(),"Authorization Failed");
+        Preconditions.checkState(accountId.equals(post.getAccountId()),"Authorization Failed");
         return post;
+    }
+
+    public List<PostCategories> getCategoryCounts(Long accountId) {
+        return postRepository.findCategoryCounts(accountId);
     }
 }

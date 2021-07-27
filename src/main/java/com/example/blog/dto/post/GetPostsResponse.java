@@ -10,8 +10,8 @@ import lombok.Getter;
 
 @Getter
 public class GetPostsResponse extends Response {
-    private List<PostEntity> data;
-    public GetPostsResponse(ResponseCode code, String message, List<PostEntity> data) {
+    private List<GetPostsData> data;
+    public GetPostsResponse(ResponseCode code, String message, List<GetPostsData> data) {
 		super(code, message);
         this.data = data;
 	}

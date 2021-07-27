@@ -1,17 +1,13 @@
 package com.example.blog.controller;
 
 import com.example.blog.dto.ResponseCode;
-import com.example.blog.dto.post.CreateRequest;
-import com.example.blog.dto.post.CreateResponse;
-import com.example.blog.dto.post.GetPostResponse;
-import com.example.blog.dto.post.GetPostsResponse;
+import com.example.blog.dto.post.*;
 import com.example.blog.security.AccountDetail;
 import com.example.blog.service.PostService;
 
 import javax.validation.Valid;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,5 +39,19 @@ public class PostController {
     public GetPostResponse getPost(@PathVariable("id") Long id, Authentication authentication) {
         AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
         return new GetPostResponse(ResponseCode.OK, "", postService.getPost(accountDetail.getId(), id));
+    }
+
+    @GetMapping(value = "/category")
+    @ResponseBody
+    public GetCategoryResponse getPost(Authentication authentication) {
+        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+        return new GetCategoryResponse(ResponseCode.OK, "", postService.getCategoryCounts(accountDetail.getId()));
+    }
+
+    @GetMapping(value = "/category/{category}")
+    @ResponseBody
+    public GetPostsResponse getPost(@PathVariable("category") String category, Authentication authentication) {
+        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(accountDetail.getId(), category));
     }
 }
