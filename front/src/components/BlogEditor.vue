@@ -3,7 +3,10 @@
     <b-field label="Title">
       <b-input placeholder="Enter your Title" v-model="title"/>
     </b-field>
-    <editor :options="options" :initialValue="editorText" ref="editor" align="left"/>
+    <b-field label="Category">
+      <b-input placeholder="Enter Post's Category" v-model="category"/>
+    </b-field>
+    <editor :options="options" :initialValue="editorText" ref="editor"/>
     <viewer v-if="toggle" :initialValue="editorText"/>
     <b-button label="save" v-on:click="onCreatePost"/>
   </section>
@@ -27,6 +30,7 @@ export default {
     return {
       title: '',
       editorText: '',
+      category: '',
       toggle: false,
       options: {
         language: "ko",
@@ -53,7 +57,7 @@ export default {
       }
     },
     onCreatePost() {
-      createPosts(this.getToken, this.title, this.$refs.editor.invoke('getMarkdown'), 'all')
+      createPosts(this.getToken, this.title, this.$refs.editor.invoke('getHtml'), this.category)
     }
   }
 }

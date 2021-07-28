@@ -24,4 +24,31 @@ const getPosts = (token) => {
     return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post`, {headers})
 }
 
-export default {createPost, getPosts}
+const getPost = (token, id) => {
+    let headers = {
+        'Content-type': 'application/json',
+        'Authorization': `${token}`
+    }
+
+    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/${id}`, {headers})
+}
+
+const getCategories = (token) => {
+    let headers = {
+        'Content-type': 'application/json',
+        'Authorization': `${token}`
+    }
+
+    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/category`, {headers})
+}
+
+const getPostByCategory = (token, category) => {
+    let headers = {
+        'Content-type': 'application/json',
+        'Authorization': `${token}`
+    }
+
+    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/category/${category}`, {headers})
+}
+
+export default {createPost, getPosts, getPost, getCategories, getPostByCategory}

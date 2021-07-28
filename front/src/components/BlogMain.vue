@@ -11,7 +11,8 @@
     </nav>
     <ul>
       <li class="list-view" v-for="item in postData" :key="item.id">
-        <postCard :content="item.content" :post-title="item.title"></postCard>
+        <!--<postCard :content="item.content" :post-title="item.title"></postCard>-->
+        <b-navbar-item v-bind:href="`/#/post/${item.id}`">{{item.title}}</b-navbar-item>
       </li>
     </ul>
   </div>
@@ -20,15 +21,15 @@
 <script>
 import {mapGetters} from 'vuex'
 
-import PostCard from "@/components/PostCard";
+//import PostCard from "@/components/PostCard";
 
 import {getPosts} from "@/service";
 
 export default {
   name: 'BlogMain',
-  components: {
+  /*components: {
     'postCard': PostCard
-  },
+  },*/
   data: function () {
     return {
       versionInfo: '',
@@ -41,9 +42,7 @@ export default {
     })
   },
   created: async function () {
-    console.log(this.getToken)
     this.postData = (await getPosts(this.getToken)).data
-    console.log(this.postData)
   },
 }
 </script>

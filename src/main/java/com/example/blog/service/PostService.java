@@ -6,16 +6,12 @@ import com.example.blog.repository.AccountRepository;
 import com.example.blog.repository.PostRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.example.blog.entity.AccountEntity;
 import com.example.blog.entity.PostEntity;
 
 import com.google.common.base.Preconditions;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,7 +38,7 @@ public class PostService {
     }
 
     public PostEntity getPost(Long accountId, Long postId) {
-        PostEntity post = postRepository.findById(postId).orElseThrow(NullPointerException::new);
+        PostEntity post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("Unavailable Post"));
         Preconditions.checkState(accountId.equals(post.getAccountId()),"Authorization Failed");
         return post;
     }
