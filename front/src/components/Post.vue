@@ -5,6 +5,15 @@
         <div v-html="content"></div>
       </b-field>
     </div>
+    <ul>
+      <li class="list-view" v-for="item in comments" :key="item.id">
+        <label>{{item.content}}</label>
+      </li>
+    </ul>
+    <b-field label="Comment">
+      <b-input placeholder="Enter your Comment" v-model="comment"/>
+    </b-field>
+    <b-button label="Add Comment" v-on:click="addComment"/>
   </div>
 </template>
 
@@ -13,7 +22,7 @@ import 'codemirror/lib/codemirror.css'
 import '@toast-ui/editor/dist/toastui-editor.css'
 import {mapGetters} from 'vuex'
 
-import {getPost} from "@/service";
+import {getPost, addComment} from "@/service";
 
 export default {
   name: 'Post',
@@ -33,7 +42,9 @@ export default {
   data: function () {
     return {
       postTitle: '',
-      content: ''
+      content: '',
+      comments: [],
+      comment : ''
     };
   },
   computed: {
@@ -46,7 +57,13 @@ export default {
     console.log(data)
     this.postTitle = data.title
     this.content = data.content
-    //this.$refs.viewer.invoke('setMarkdown',data.content)
+    this.comments = data.comments
+  },
+  methods: {
+    async addComment() {
+      await addComment(this.getToken, this.$route.params.id, this.comment)
+      this.comments = (await getPost(this.getToken, this.$route.params.id)).data.comments
+    }
   }
 }
 </script>

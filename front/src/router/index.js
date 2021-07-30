@@ -21,6 +21,11 @@ export default new Router({
       component: BlogMain // 추가하는 컴포넌트
     },
     {
+      path: '/blog/category/:name', // 추가하는 path
+      name: 'BlogCategory',
+      component: BlogMain // 추가하는 컴포넌트
+    },
+    {
       path: '/editor', // 추가하는 path
       name: 'Editor',
       component: BlogEditor // 추가하는 컴포넌트

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions,mapGetters} from 'vuex'
 
 export default {
   name: 'Login',
@@ -20,6 +20,11 @@ export default {
     accountName: '',
     password: ''
   }),
+  computed: {
+    ...mapGetters({
+      getToken: 'getToken'
+    })
+  },
   methods: {
     ...mapActions(['loginAction']),
     async onSubmit () {

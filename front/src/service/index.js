@@ -9,6 +9,7 @@ const login = async (accountName, password) => {
         return await accountService.login(accountName, password)
     } catch (err) {
         console.error(err)
+        return null
     }
 }
 
@@ -21,6 +22,7 @@ const createPosts = async (token, title, content, category) => {
             return null
     } catch (err) {
         console.error(err)
+        return null
     }
 }
 
@@ -33,6 +35,7 @@ const getPosts = async (token) => {
             return null
     } catch (err) {
         console.error(err)
+        return null
     }
 }
 
@@ -45,6 +48,7 @@ const uploadImage = async (blob) => {
             return null
     } catch (err) {
         console.error(err)
+        return null
     }
 }
 
@@ -57,6 +61,7 @@ const getImage = async (path) => {
             return null
     } catch (err) {
         console.error(err)
+        return null
     }
 }
 
@@ -69,6 +74,7 @@ const getPost = async (token, id) => {
             return null
     } catch (err) {
         console.error(err)
+        return null
     }
 }
 
@@ -81,6 +87,7 @@ const getCategories = async (token) => {
             return null
     } catch (err) {
         console.error(err)
+        return null
     }
 }
 
@@ -93,6 +100,7 @@ const getPostByCategory = async (token, category) => {
             return null
     } catch (err) {
         console.error(err)
+        return null
     }
 }
 
@@ -105,7 +113,20 @@ const addComment = async (token, postId, comment) => {
             return null
     } catch (err) {
         console.error(err)
+        return null
     }
 }
 
-export {login, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, getPostByCategory, addComment}
+const checkAuthentication = async (token) => {
+    try {
+        const res = await accountService.checkAuthentication(token)
+        if(res.status === 200)
+            return true
+        else
+            return false
+    } catch (err) {
+        return false
+    }
+}
+
+export {login, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, getPostByCategory, addComment, checkAuthentication}

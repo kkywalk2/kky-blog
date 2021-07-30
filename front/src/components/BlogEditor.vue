@@ -42,8 +42,17 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getToken: 'getToken'
+      getToken: 'getToken',
+      getIsAuth : 'getIsAuth'
     })
+  },
+  created: async function () {
+    if(!this.getToken) {
+      alert("로그인 해주십시오")
+      await this.$router.push({
+        name: 'Login'
+      })
+    }
   },
   methods: {
     async onAddImage(blob, callback) {

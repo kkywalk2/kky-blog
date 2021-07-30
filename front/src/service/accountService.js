@@ -9,6 +9,15 @@ const getAuthToken = (accountName, password) => {
   return axios.post(`${process.env.VUE_APP_SERVER_ADDRESS}/account/signin`,authInfo)
 }
 
+const checkAuthentication = (token) => {
+  let headers = {
+    'Content-type': 'application/json',
+    'Authorization': `${token}`
+  }
+
+  return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/account`,{headers})
+}
+
 export default {
   async login (accountName, password) {
     try {
@@ -19,5 +28,6 @@ export default {
     } catch (err) {
       console.error(err)
     }
-  }
+  },
+  checkAuthentication
 }
