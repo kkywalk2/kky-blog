@@ -2,7 +2,6 @@ package com.example.blog.service;
 
 import com.example.blog.dto.post.GetPostsData;
 import com.example.blog.dto.post.PostCategories;
-import com.example.blog.repository.AccountRepository;
 import com.example.blog.repository.PostRepository;
 
 import java.util.List;
@@ -17,11 +16,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
     private final PostRepository postRepository;
-    private final AccountRepository accountRepository;
 
-    PostService(PostRepository postRepository, AccountRepository accountRepository) {
+    PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.accountRepository = accountRepository;
     }
 
     @Transactional
