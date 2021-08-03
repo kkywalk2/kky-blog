@@ -8,8 +8,6 @@ import com.example.blog.service.CommentService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @RestController
 @RequestMapping("comment")
 public class CommentController {
@@ -23,7 +21,7 @@ public class CommentController {
     @ResponseBody
     public AddResponse addComment(@RequestBody AddRequest req, Authentication authentication) {
         AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
-        commentService.addComment(accountDetail.getId(), req.getPostId(), req.getContent());
+        commentService.addComment(accountDetail.getId(), accountDetail.getUsername(), req.getPostId(), req.getContent());
         return new AddResponse(ResponseCode.OK, "");
     }
 }

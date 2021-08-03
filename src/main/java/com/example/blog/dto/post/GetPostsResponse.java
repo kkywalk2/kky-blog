@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.blog.dto.Response;
 import com.example.blog.dto.ResponseCode;
-import com.example.blog.entity.PostEntity;
 
 import lombok.Getter;
 

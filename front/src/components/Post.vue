@@ -7,7 +7,7 @@
     </div>
     <ul>
       <li class="list-view" v-for="item in comments" :key="item.id">
-        <label>{{item.content}}</label>
+        <label>{{item.accountName}}:{{item.content}}</label>
       </li>
     </ul>
     <b-field label="Comment">
@@ -20,7 +20,6 @@
 <script>
 import 'codemirror/lib/codemirror.css'
 import '@toast-ui/editor/dist/toastui-editor.css'
-import {mapGetters} from 'vuex'
 
 import {getPost, addComment} from "@/service";
 
@@ -47,13 +46,8 @@ export default {
       comment : ''
     };
   },
-  computed: {
-    ...mapGetters({
-      getToken: 'getToken'
-    })
-  },
   created: async function() {
-    let data = (await getPost(this.getToken, this.$route.params.id)).data
+    let data = (await getPost(this.$route.params.id)).data
     console.log(data)
     this.postTitle = data.title
     this.content = data.content
@@ -61,8 +55,17 @@ export default {
   },
   methods: {
     async addComment() {
-      await addComment(this.getToken, this.$route.params.id, this.comment)
-      this.comments = (await getPost(this.getToken, this.$route.params.id)).data.comments
+      try {
+        if(localStorage.getItem("token")) {
+          await addComment(localStorage.getItem("token"), this.$route.params.id, this.comment)
+          this.comments = (await getPost(this.$route.params.id)).data.comments
+        } else { 
+          alert("로그인 해주세요")
+          this.$router.push({name: 'Login'})
+        }
+      } catch(ex) {
+        alert("뭔가 잘못됨! : " + ex)
+      }
     }
   }
 }

@@ -6,7 +6,26 @@ import commentService from "@/service/commentService";
 
 const login = async (accountName, password) => {
     try {
-        return await accountService.login(accountName, password)
+        const res = await accountService.login(accountName, password)
+        if (res.status === 200) {
+            localStorage.setItem("token", "Bearer " + res.data.token)
+            return res.data
+        }
+        else
+            return null
+    } catch (err) {
+        console.error(err)
+        return null
+    }
+}
+
+const signUp = async (accountName, password, email) => {
+    try {
+        const res = await accountService.signUp(accountName, password, email)
+        if (res.status === 200)
+            return res.data
+        else
+            return null
     } catch (err) {
         console.error(err)
         return null
@@ -65,9 +84,9 @@ const getImage = async (path) => {
     }
 }
 
-const getPost = async (token, id) => {
+const getPost = async (id) => {
     try {
-        const res = await postService.getPost(token, id)
+        const res = await postService.getPost(id)
         if (res.status === 200)
             return res.data
         else
@@ -78,9 +97,9 @@ const getPost = async (token, id) => {
     }
 }
 
-const getCategories = async (token) => {
+const getCategories = async () => {
     try {
-        const res = await postService.getCategories(token)
+        const res = await postService.getCategories()
         if (res.status === 200)
             return res.data
         else
@@ -91,9 +110,9 @@ const getCategories = async (token) => {
     }
 }
 
-const getPostByCategory = async (token, category) => {
+const getPostByCategory = async (category) => {
     try {
-        const res = await postService.getPostByCategory(token, category)
+        const res = await postService.getPostByCategory(category)
         if (res.status === 200)
             return res.data
         else
@@ -117,9 +136,9 @@ const addComment = async (token, postId, comment) => {
     }
 }
 
-const checkAuthentication = async (token) => {
+const checkAuthentication = async () => {
     try {
-        const res = await accountService.checkAuthentication(token)
+        const res = await accountService.checkAuthentication()
         if(res.status === 200)
             return true
         else
@@ -129,4 +148,4 @@ const checkAuthentication = async (token) => {
     }
 }
 
-export {login, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, getPostByCategory, addComment, checkAuthentication}
+export {login, signUp, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, getPostByCategory, addComment, checkAuthentication}

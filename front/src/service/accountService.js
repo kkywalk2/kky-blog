@@ -1,12 +1,22 @@
 import axios from 'axios'
 
-const getAuthToken = (accountName, password) => {
+const login = (accountName, password) => {
   let authInfo = {
     accountName: accountName,
     password: password
   };
 
   return axios.post(`${process.env.VUE_APP_SERVER_ADDRESS}/account/signin`,authInfo)
+}
+
+const signUp = (accountName, password, email) => {
+  let signUpInfo = {
+    accountName: accountName,
+    password: password,
+    email : email
+  };
+
+  return axios.post(`${process.env.VUE_APP_SERVER_ADDRESS}/account/signup`,signUpInfo)
 }
 
 const checkAuthentication = (token) => {
@@ -19,15 +29,7 @@ const checkAuthentication = (token) => {
 }
 
 export default {
-  async login (accountName, password) {
-    try {
-      const getUserInfoPromise = await getAuthToken(accountName, password)
-      const [userInfoResponse] = await Promise.all([getUserInfoPromise])
-      if (userInfoResponse.status !== 200 || userInfoResponse.data.status !== "OK") return 'noAuth'
-      return userInfoResponse
-    } catch (err) {
-      console.error(err)
-    }
-  },
-  checkAuthentication
+  login,
+  checkAuthentication,
+  signUp
 }

@@ -18,7 +18,6 @@ import '@toast-ui/editor/dist/toastui-editor.css'
 import {Editor, Viewer} from '@toast-ui/vue-editor'
 
 import {createPosts, uploadImage} from "@/service";
-import {mapGetters} from "vuex";
 
 export default {
   name: 'Editor',
@@ -40,14 +39,8 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapGetters({
-      getToken: 'getToken',
-      getIsAuth : 'getIsAuth'
-    })
-  },
   created: async function () {
-    if(!this.getToken) {
+    if(!localStorage.getItem("token")) {
       alert("로그인 해주십시오")
       await this.$router.push({
         name: 'Login'
@@ -66,7 +59,13 @@ export default {
       }
     },
     onCreatePost() {
-      createPosts(this.getToken, this.title, this.$refs.editor.invoke('getHtml'), this.category)
+      try {
+        createPosts(localStorage.getItem("token"), this.title, this.$refs.editor.invoke('getHtml'), this.category)
+        alert("업로드 완료!")
+        this.$router.push({name: 'Blog'})
+      } catch (ex) {
+        alert("업로드에 실패하였습니다!" + ex)
+      }
     }
   }
 }

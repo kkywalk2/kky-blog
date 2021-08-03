@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 
 import com.example.blog.entity.PostEntity;
 
-import com.google.common.base.Preconditions;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,21 +25,19 @@ public class PostService {
         postRepository.save(new PostEntity(accountId, title, content, category));
     }
 
-    public List<GetPostsData> getPosts(Long accountId) {
-        return postRepository.findAllByAccountID(accountId);
+    public List<GetPostsData> getPosts() {
+        return postRepository.findAllDatas();
     }
 
-    public List<GetPostsData> getPosts(Long accountId, String category) {
-        return postRepository.findAllByAccountIDAndCategory(accountId, category);
+    public List<GetPostsData> getPosts(String category) {
+        return postRepository.findAllByCategory(category);
     }
 
-    public PostEntity getPost(Long accountId, Long postId) {
-        PostEntity post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("Unavailable Post"));
-        Preconditions.checkState(accountId.equals(post.getAccountId()),"Authorization Failed");
-        return post;
+    public PostEntity getPost(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() -> new NullPointerException("Unavailable Post"));
     }
 
-    public List<PostCategories> getCategoryCounts(Long accountId) {
-        return postRepository.findCategoryCounts(accountId);
+    public List<PostCategories> getCategoryCounts() {
+        return postRepository.findCategoryCounts();
     }
 }

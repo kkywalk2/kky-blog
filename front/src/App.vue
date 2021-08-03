@@ -7,8 +7,9 @@
         </b-navbar-item>
       </template>
       <template slot="start">
-        <b-navbar-item href="/#/blog">Home</b-navbar-item>
+        <b-navbar-item href="/#/">Home</b-navbar-item>
         <b-navbar-item href="/#/editor">Create Post</b-navbar-item>
+        <b-navbar-item href="/#/signup">SignUp</b-navbar-item>
       </template>
     </b-navbar>
     <br />

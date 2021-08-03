@@ -11,7 +11,7 @@
     </nav>
     <ul class="left">
       <li v-for="item in categoryData" :key="item.category">
-        <b-navbar-item v-bind:href="`/#/blog/category/${item.category}`">{{item.category}}({{item.count}})</b-navbar-item>
+        <b-navbar-item v-on:click="refreshPostList(item.category)">{{item.category}}({{item.count}})</b-navbar-item>
       </li>
     </ul>
     <ul>
@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-
 import {getPosts, getCategories, getPostByCategory} from "@/service";
 
 export default {
@@ -36,34 +34,16 @@ export default {
       categoryData:[]
     };
   },
-  computed: {
-    ...mapGetters({
-      getToken: 'getToken',
-      getIsAuth : 'getIsAuth'
-    })
-  },
   created: async function () {
-    if(!this.getToken) {
-      alert("로그인 해주십시오")
-      await this.$router.push({
-        name: 'Login'
-      })
-    } else {
-      await this.refreshPostList()
-    }
+    await this.refreshPostList("")
   },
   methods: {
-    async refreshPostList() {
-      if(!this.$route.params.name)
-        this.postData = (await getPosts(this.getToken)).data
+    async refreshPostList(category) {
+      if(!category)
+        this.postData = (await getPosts()).data
       else
-        this.postData = (await getPostByCategory(this.getToken,this.$route.params.name)).data
-      this.categoryData = (await getCategories(this.getToken)).data
-    }
-  },
-  watch: {
-    '$route' () {
-      this.refreshPostList()
+        this.postData = (await getPostByCategory(category)).data
+      this.categoryData = (await getCategories()).data
     }
   }
 }

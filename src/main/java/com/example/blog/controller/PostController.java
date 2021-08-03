@@ -29,29 +29,25 @@ public class PostController {
 
     @GetMapping
     @ResponseBody
-    public GetPostsResponse getPosts(Authentication authentication) {
-        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
-        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(accountDetail.getId()));
+    public GetPostsResponse getPosts() {
+        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts());
     }
 
     @GetMapping(value = "/{id}")
     @ResponseBody
-    public GetPostResponse getPost(@PathVariable("id") Long id, Authentication authentication) {
-        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
-        return new GetPostResponse(ResponseCode.OK, "", postService.getPost(accountDetail.getId(), id));
+    public GetPostResponse getPost(@PathVariable("id") Long id) {
+        return new GetPostResponse(ResponseCode.OK, "", postService.getPost(id));
     }
 
     @GetMapping(value = "/category")
     @ResponseBody
-    public GetCategoryResponse getPost(Authentication authentication) {
-        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
-        return new GetCategoryResponse(ResponseCode.OK, "", postService.getCategoryCounts(accountDetail.getId()));
+    public GetCategoryResponse getPost() {
+        return new GetCategoryResponse(ResponseCode.OK, "", postService.getCategoryCounts());
     }
 
     @GetMapping(value = "/category/{category}")
     @ResponseBody
-    public GetPostsResponse getPost(@PathVariable("category") String category, Authentication authentication) {
-        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
-        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(accountDetail.getId(), category));
+    public GetPostsResponse getPost(@PathVariable("category") String category) {
+        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(category));
     }
 }

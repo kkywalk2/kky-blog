@@ -2,6 +2,7 @@ package com.example.blog.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
 
         http.csrf().disable()
-                .authorizeRequests().antMatchers(
+                /*.authorizeRequests().antMatchers(
                 "/",
                 "/favicon.ico",
                 "/js/**",
@@ -58,7 +59,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/account/signin",
                 "/image/**")
                 .permitAll()
-                .anyRequest().authenticated().and()
+                .anyRequest().authenticated()*/
+                .authorizeRequests().antMatchers(
+                    HttpMethod.POST, "/post"
+                ).authenticated()
+                .antMatchers("/comment").authenticated()
+                .anyRequest().permitAll()
+                .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .formLogin().disable()

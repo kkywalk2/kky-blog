@@ -15,37 +15,33 @@ const createPost = (token, title, content, category) => {
     return axios.post(`${process.env.VUE_APP_SERVER_ADDRESS}/post`, postInfo, {headers})
 }
 
-const getPosts = (token) => {
+const getPosts = () => {
     let headers = {
-        'Content-type': 'application/json',
-        'Authorization': `${token}`
+        'Content-type': 'application/json'
     }
 
     return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post`, {headers})
 }
 
-const getPost = (token, id) => {
+const getPost = (id) => {
     let headers = {
-        'Content-type': 'application/json',
-        'Authorization': `${token}`
+        'Content-type': 'application/json'
     }
 
     return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/${id}`, {headers})
 }
 
-const getCategories = (token) => {
+const getCategories = () => {
     let headers = {
-        'Content-type': 'application/json',
-        'Authorization': `${token}`
+        'Content-type': 'application/json'
     }
 
     return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/category`, {headers})
 }
 
-const getPostByCategory = (token, category) => {
+const getPostByCategory = (category) => {
     let headers = {
-        'Content-type': 'application/json',
-        'Authorization': `${token}`
+        'Content-type': 'application/json'
     }
 
     return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/category/${category}`, {headers})
