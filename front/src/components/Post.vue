@@ -1,10 +1,7 @@
 <template>
-  <div class="container is-widescreen section">
-    <div class="notification is-primary">
-      <b-field :label="postTitle">
-        <div v-html="content"></div>
-      </b-field>
-    </div>
+  <section>
+      <b-field :label="postTitle"/>
+      <viewer v-if="content!=null" :initialValue="content"/>
     <ul>
       <li class="list-view" v-for="item in comments" :key="item.id">
         <label>{{item.accountName}}:{{item.content}}</label>
@@ -14,21 +11,22 @@
       <b-input placeholder="Enter your Comment" v-model="comment"/>
     </b-field>
     <b-button label="Add Comment" v-on:click="addComment"/>
-  </div>
+  <section>
 </template>
 
 <script>
 import 'codemirror/lib/codemirror.css'
 import '@toast-ui/editor/dist/toastui-editor.css'
+import { Viewer } from '@toast-ui/vue-editor'
 
 import {getPost, addComment} from "@/service";
 
 export default {
   name: 'Post',
-  /*components: {
+  components: {
     'viewer': Viewer
   },
-  props:{
+  /*props:{
     postTitle : {
       type:String,
       default:""
@@ -41,7 +39,7 @@ export default {
   data: function () {
     return {
       postTitle: '',
-      content: '',
+      content: null,
       comments: [],
       comment : ''
     };
@@ -70,9 +68,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.is-primary{
-  background-color: bisque;
-}
-</style>

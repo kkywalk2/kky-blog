@@ -10,6 +10,7 @@ import SignUp from "@/components/SignUp"
 Vue.use(Router)
 
 export default new Router({
+  base : '/blog/',
   routes: [
     {
       path: '/login', // 첫 화면을 로그인 화면으로 설정한다

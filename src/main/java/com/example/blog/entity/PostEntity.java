@@ -25,7 +25,7 @@ public class PostEntity {
     private Long accountId;
     @Size(max = 100)
     private String title;
-    @Size(max = 3000)
+    @Size
     private String content;
     private Long views;
     @Size(min = 1, max = 30)

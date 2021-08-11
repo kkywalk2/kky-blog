@@ -60,7 +60,7 @@ export default {
     },
     onCreatePost() {
       try {
-        createPosts(localStorage.getItem("token"), this.title, this.$refs.editor.invoke('getHtml'), this.category)
+        createPosts(localStorage.getItem("token"), this.title, this.$refs.editor.invoke('getMarkdown'), this.category)
         alert("업로드 완료!")
         this.$router.push({name: 'Blog'})
       } catch (ex) {

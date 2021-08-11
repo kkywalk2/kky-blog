@@ -16,7 +16,7 @@
     </ul>
     <ul>
       <li class="list-view" v-for="item in postData" :key="item.id">
-        <b-navbar-item v-bind:href="`/#/post/${item.id}`">{{item.title}}</b-navbar-item>
+        <b-navbar-item v-bind:href="`/blog/#/post/${item.id}`">{{item.title}}</b-navbar-item>
       </li>
     </ul>
   </div>
