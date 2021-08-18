@@ -1,6 +1,8 @@
 <template>
   <section>
-      <b-field :label="postTitle"/>
+      <b-field :label="postTitle">
+        <b-navbar-item v-bind:href="`/blog/#/editor/${this.$route.params.id}`">수정</b-navbar-item>
+      </b-field>
       <viewer v-if="content!=null" :initialValue="content"/>
     <ul>
       <li class="list-view" v-for="item in comments" :key="item.id">

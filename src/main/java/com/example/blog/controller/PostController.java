@@ -50,4 +50,12 @@ public class PostController {
     public GetPostsResponse getPost(@PathVariable("category") String category) {
         return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(category));
     }
+
+    @PutMapping
+    @ResponseBody
+    public CreateResponse updatePost(@Valid @RequestBody UpdateRequest req, Authentication authentication) {
+        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+        postService.updatePost(accountDetail.getId(), req.getPostId(), req.getTitle(), req.getContent(), req.getCategory());
+        return new CreateResponse(ResponseCode.OK, "");
+    }
 }

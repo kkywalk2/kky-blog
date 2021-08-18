@@ -33,6 +33,11 @@ export default new Router({
       component: BlogEditor // 추가하는 컴포넌트
     },
     {
+      path: '/editor/:id', // 추가하는 path
+      name: 'UpdateEditor',
+      component: BlogEditor // 추가하는 컴포넌트
+    },
+    {
       path: '/post/:id', // 추가하는 path
       name: 'Post',
       component: Post // 추가하는 컴포넌트

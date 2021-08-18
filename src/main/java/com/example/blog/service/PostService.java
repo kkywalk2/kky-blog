@@ -3,6 +3,7 @@ package com.example.blog.service;
 import com.example.blog.dto.post.GetPostsData;
 import com.example.blog.dto.post.PostCategories;
 import com.example.blog.repository.PostRepository;
+import com.google.common.base.Preconditions;
 
 import java.util.List;
 
@@ -39,5 +40,14 @@ public class PostService {
 
     public List<PostCategories> getCategoryCounts() {
         return postRepository.findCategoryCounts();
+    }
+
+    @Transactional
+    public void updatePost(Long accountId, Long postId, String title, String content, String category) {
+        PostEntity postEntity = postRepository.getById(postId);
+        Preconditions.checkState(postEntity.getAccountId() == accountId, "Unauthorized");
+        postEntity.setTitle(title);
+        postEntity.setContent(content);
+        postEntity.setCategory(category);
     }
 }

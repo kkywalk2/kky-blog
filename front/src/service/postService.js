@@ -47,4 +47,20 @@ const getPostByCategory = (category) => {
     return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/category/${category}`, {headers})
 }
 
-export default {createPost, getPosts, getPost, getCategories, getPostByCategory}
+const updatePost = (token, postId, title, content, category) => {
+    let headers = {
+        'Content-type': 'application/json',
+        'Authorization': `${token}`
+    }
+
+    let postInfo = {
+        postId: postId,
+        title: title,
+        content: content,
+        category: category
+    };
+
+    return axios.put(`${process.env.VUE_APP_SERVER_ADDRESS}/post`, postInfo, {headers})
+}
+
+export default {createPost, getPosts, getPost, getCategories, getPostByCategory, updatePost}

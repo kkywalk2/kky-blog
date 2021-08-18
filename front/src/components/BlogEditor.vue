@@ -6,9 +6,9 @@
     <b-field label="Category">
       <b-input placeholder="Enter Post's Category" v-model="category"/>
     </b-field>
-    <editor :options="options" :initialValue="editorText" ref="editor"/>
+    <editor v-if="loadComplete" :options="options" :initialValue="editorText" ref="editor"/>
     <viewer v-if="toggle" :initialValue="editorText"/>
-    <b-button label="save" v-on:click="onCreatePost"/>
+    <b-button label="save" v-on:click="onClickSaveButton"/>
   </section>
 </template>
 
@@ -17,7 +17,7 @@ import 'codemirror/lib/codemirror.css'
 import '@toast-ui/editor/dist/toastui-editor.css'
 import {Editor, Viewer} from '@toast-ui/vue-editor'
 
-import {createPosts, uploadImage} from "@/service";
+import {createPosts, updatePost, uploadImage, getPost} from "@/service";
 
 export default {
   name: 'Editor',
@@ -31,6 +31,7 @@ export default {
       editorText: '',
       category: '',
       toggle: false,
+      loadComplete : false,
       options: {
         language: "ko",
         hooks: {
@@ -46,6 +47,16 @@ export default {
         name: 'Login'
       })
     }
+
+    if(this.$route.params.id) {
+      let data = (await getPost(this.$route.params.id)).data
+      console.log(data)
+      this.title = data.title
+      this.editorText = data.content
+      this.category = data.category
+    }
+
+    this.loadComplete = true
   },
   methods: {
     async onAddImage(blob, callback) {
@@ -58,13 +69,28 @@ export default {
         return false;
       }
     },
-    onCreatePost() {
-      try {
-        createPosts(localStorage.getItem("token"), this.title, this.$refs.editor.invoke('getMarkdown'), this.category)
+    async onClickSaveButton() {
+      if(this.$route.params.id)
+        await this.onUpdatePost(this.$route.params.id)
+      else
+        await this.onCreatePost()
+    },
+    async onCreatePost() {
+      let data = await createPosts(localStorage.getItem("token"), this.title, this.$refs.editor.invoke('getMarkdown'), this.category)
+      if (data == null) {
+        alert("업로드에 실패하였습니다!" + ex)
+      } else {
         alert("업로드 완료!")
         this.$router.push({name: 'Blog'})
-      } catch (ex) {
-        alert("업로드에 실패하였습니다!" + ex)
+      }
+    },
+    async onUpdatePost(id) {
+      let data = await updatePost(localStorage.getItem("token"), id, this.title, this.$refs.editor.invoke('getMarkdown'), this.category)
+      if (data == null) {
+        alert("업데이트에 실패하였습니다!" + ex)
+      } else {
+        alert("업데이트 완료!")
+        this.$router.push({name: 'Blog'})
       }
     }
   }

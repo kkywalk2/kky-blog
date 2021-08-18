@@ -148,4 +148,17 @@ const checkAuthentication = async () => {
     }
 }
 
-export {login, signUp, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, getPostByCategory, addComment, checkAuthentication}
+const updatePost = async (token, postId, title, content, category) => {
+    try {
+        const res = await postService.updatePost(token, postId, title, content, category)
+        if (res.status === 200)
+            return res.data
+        else
+            return null
+    } catch (err) {
+        console.error(err)
+        return null
+    }
+}
+
+export {login, signUp, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, getPostByCategory, addComment, checkAuthentication, updatePost}
