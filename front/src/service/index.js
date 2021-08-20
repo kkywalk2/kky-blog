@@ -161,4 +161,17 @@ const updatePost = async (token, postId, title, content, category) => {
     }
 }
 
-export {login, signUp, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, getPostByCategory, addComment, checkAuthentication, updatePost}
+const deletePost = async (token, postId) => {
+    try {
+        const res = await postService.deletePost(token, postId)
+        if (res.status === 200)
+            return res.data
+        else
+            return null
+    } catch (err) {
+        console.error(err)
+        return null
+    }
+}
+
+export {login, signUp, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, getPostByCategory, addComment, checkAuthentication, updatePost, deletePost}

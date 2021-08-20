@@ -63,4 +63,13 @@ const updatePost = (token, postId, title, content, category) => {
     return axios.put(`${process.env.VUE_APP_SERVER_ADDRESS}/post`, postInfo, {headers})
 }
 
-export default {createPost, getPosts, getPost, getCategories, getPostByCategory, updatePost}
+const deletePost = (token, postId) => {
+    let headers = {
+        'Content-type': 'application/json',
+        'Authorization': `${token}`
+    }
+
+    return axios.delete(`${process.env.VUE_APP_SERVER_ADDRESS}/post/${postId}`, {headers})
+}
+
+export default {createPost, getPosts, getPost, getCategories, getPostByCategory, updatePost, deletePost}

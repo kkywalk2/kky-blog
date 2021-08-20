@@ -58,4 +58,12 @@ public class PostController {
         postService.updatePost(accountDetail.getId(), req.getPostId(), req.getTitle(), req.getContent(), req.getCategory());
         return new CreateResponse(ResponseCode.OK, "");
     }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseBody
+    public DeleteResponse deletePost(@PathVariable("id") Long id, Authentication authentication) {
+        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+        postService.deletePost(accountDetail.getId(), id);
+        return new DeleteResponse(ResponseCode.OK, "");
+    }
 }

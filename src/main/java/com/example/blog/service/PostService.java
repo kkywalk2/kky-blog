@@ -50,4 +50,11 @@ public class PostService {
         postEntity.setContent(content);
         postEntity.setCategory(category);
     }
+
+    @Transactional
+    public void deletePost(Long accountId, Long postId) {
+        PostEntity postEntity = postRepository.getById(postId);
+        Preconditions.checkState(postEntity.getAccountId() == accountId, "Unauthorized");
+        postRepository.delete(postEntity);
+    }
 }
