@@ -78,7 +78,7 @@ export default {
     async onCreatePost() {
       let data = await createPosts(localStorage.getItem("token"), this.title, this.$refs.editor.invoke('getMarkdown'), this.category)
       if (data == null) {
-        alert("업로드에 실패하였습니다!" + ex)
+        alert("업로드에 실패하였습니다!")
       } else {
         alert("업로드 완료!")
         this.$router.push({name: 'Blog'})
@@ -87,7 +87,7 @@ export default {
     async onUpdatePost(id) {
       let data = await updatePost(localStorage.getItem("token"), id, this.title, this.$refs.editor.invoke('getMarkdown'), this.category)
       if (data == null) {
-        alert("업데이트에 실패하였습니다!" + ex)
+        alert("업데이트에 실패하였습니다!")
       } else {
         alert("업데이트 완료!")
         this.$router.push({name: 'Blog'})

@@ -55,6 +55,6 @@ public class PostService {
     public void deletePost(Long accountId, Long postId) {
         PostEntity postEntity = postRepository.getById(postId);
         Preconditions.checkState(postEntity.getAccountId() == accountId, "Unauthorized");
-        postRepository.delete(postEntity);
+        postRepository.deleteById(postId);
     }
 }

@@ -8,7 +8,9 @@ import javax.validation.constraints.Size;
 
 import com.google.common.collect.Lists;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE post_entity SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class PostEntity {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +38,7 @@ public class PostEntity {
     private LocalDateTime createAt;
     @UpdateTimestamp
     private LocalDateTime UpdatedAt;
+    private boolean deleted = Boolean.FALSE;
 
     @OneToMany(mappedBy="postId", fetch = FetchType.LAZY)
     private List<CommentEntity> comments = Lists.newArrayList();
