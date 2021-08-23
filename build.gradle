@@ -16,7 +16,7 @@ node {
     yarnVersion = "1.22.4"
     npmInstallCommand = 'install' 
     distBaseUrl = 'https://nodejs.org/dist' 
-    download = false 
+    download = true 
     workDir = file("${project.buildDir}/front") 
     nodeModulesDir = file("${project.projectDir}/front") 
     workDir = file("${project.projectDir}/.gradle/nodejs")
