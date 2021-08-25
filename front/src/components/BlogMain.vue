@@ -11,13 +11,46 @@
     </nav>
     <ul class="left">
       <li v-for="item in categoryData" :key="item.category">
-        <b-navbar-item v-on:click="refreshPostList(item.category)">{{item.category}}({{item.count}})</b-navbar-item>
+        <b-navbar-item v-on:click="refreshPostList(item.category, page)">{{item.category}}({{item.count}})</b-navbar-item>
       </li>
     </ul>
-    <ul>
-      <li class="list-view" v-for="item in postData" :key="item.id">
+    <ul class="list-view">
+      <li v-for="item in postData" :key="item.id">
         <b-navbar-item v-bind:href="`/blog/#/post/${item.id}`">{{item.title}}</b-navbar-item>
       </li>
+      <b-pagination
+            :total="totalElements"
+            v-model="page"
+            :per-page="10">
+            <template #default="props">
+                <b-pagination-button
+                    :page="props.page"
+                    :id="`page${props.page.number}`"
+                    tag="button"
+                    :click="refreshPostList(category, page)">
+                    {{props.page.number}}
+                </b-pagination-button>
+            </template>
+
+
+            <template #previous="props">
+                <b-pagination-button
+                    :page="props.page"
+                    tag="button"
+                    :click="refreshPostList(category, page)">
+                    Previous
+                </b-pagination-button>
+            </template>
+
+            <template #next="props">
+                <b-pagination-button
+                    :page="props.page"
+                    tag="button"
+                    :click="refreshPostList(category, page)">
+                    Next
+                </b-pagination-button>
+            </template>
+       </b-pagination>
     </ul>
   </div>
 </template>
@@ -31,18 +64,31 @@ export default {
     return {
       versionInfo: '',
       postData: [],
-      categoryData:[]
+      categoryData:[],
+      page:1,
+      totalPages:0,
+      totalElements:0,
+      category:""
     };
   },
   created: async function () {
-    await this.refreshPostList("")
+    await this.refreshPostList("", this.page)
   },
   methods: {
-    async refreshPostList(category) {
-      if(!category)
-        this.postData = (await getPosts()).data
-      else
-        this.postData = (await getPostByCategory(category)).data
+    async refreshPostList(category, page) {
+      this.category = category
+      if(!category) {
+        let data = (await getPosts(page - 1)).data
+        this.postData = data.content
+        this.totalElements = data.totalElements
+        this.totalPages = data.totalPages
+      }
+      else {
+        let data = (await getPostByCategory(category, page - 1)).data
+        this.postData = data.content
+        this.totalElements = data.totalElements
+        this.totalPages = data.totalPages
+      }
       this.categoryData = (await getCategories()).data
     }
   }

@@ -45,9 +45,9 @@ const createPosts = async (token, title, content, category) => {
     }
 }
 
-const getPosts = async (token) => {
+const getPosts = async (page) => {
     try {
-        const res = await postService.getPosts(token)
+        const res = await postService.getPosts(page)
         if (res.status === 200)
             return res.data
         else
@@ -110,9 +110,9 @@ const getCategories = async () => {
     }
 }
 
-const getPostByCategory = async (category) => {
+const getPostByCategory = async (category, page) => {
     try {
-        const res = await postService.getPostByCategory(category)
+        const res = await postService.getPostByCategory(category, page)
         if (res.status === 200)
             return res.data
         else
@@ -139,7 +139,7 @@ const addComment = async (token, postId, comment) => {
 const checkAuthentication = async () => {
     try {
         const res = await accountService.checkAuthentication()
-        if(res.status === 200)
+        if (res.status === 200)
             return true
         else
             return false
@@ -174,4 +174,4 @@ const deletePost = async (token, postId) => {
     }
 }
 
-export {login, signUp, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, getPostByCategory, addComment, checkAuthentication, updatePost, deletePost}
+export { login, signUp, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, getPostByCategory, addComment, checkAuthentication, updatePost, deletePost }

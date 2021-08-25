@@ -11,6 +11,8 @@ import javax.transaction.Transactional;
 
 import com.example.blog.entity.PostEntity;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,12 +28,12 @@ public class PostService {
         postRepository.save(new PostEntity(accountId, title, content, category));
     }
 
-    public List<GetPostsData> getPosts() {
-        return postRepository.findAllDatas();
+    public Page<GetPostsData> getPosts(Pageable pageable) {
+        return postRepository.findAllData(pageable);
     }
 
-    public List<GetPostsData> getPosts(String category) {
-        return postRepository.findAllByCategory(category);
+    public Page<GetPostsData> getPosts(String category , Pageable pageable) {
+        return postRepository.findAllByCategory(category, pageable);
     }
 
     public PostEntity getPost(Long postId) {

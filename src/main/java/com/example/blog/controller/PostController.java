@@ -7,6 +7,7 @@ import com.example.blog.service.PostService;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,10 +28,10 @@ public class PostController {
         return new CreateResponse(ResponseCode.OK, "");
     }
 
-    @GetMapping
+    @GetMapping(value = "/page/{page}")
     @ResponseBody
-    public GetPostsResponse getPosts() {
-        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts());
+    public GetPostsResponse getPosts(@PathVariable("page") int page) {
+        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(PageRequest.of(page, 10)));
     }
 
     @GetMapping(value = "/{id}")
@@ -45,10 +46,10 @@ public class PostController {
         return new GetCategoryResponse(ResponseCode.OK, "", postService.getCategoryCounts());
     }
 
-    @GetMapping(value = "/category/{category}")
+    @GetMapping(value = "/category/{category}/{page}")
     @ResponseBody
-    public GetPostsResponse getPost(@PathVariable("category") String category) {
-        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(category));
+    public GetPostsResponse getPost(@PathVariable("category") String category, @PathVariable("page") int page) {
+        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(category, PageRequest.of(page, 10)));
     }
 
     @PutMapping

@@ -14,7 +14,7 @@
       <b-input placeholder="Enter your Comment" v-model="comment"/>
     </b-field>
     <b-button label="Add Comment" v-on:click="addComment"/>
-  <section>
+  </section>
 </template>
 
 <script>
