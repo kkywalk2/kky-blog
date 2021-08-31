@@ -22,7 +22,7 @@ import 'codemirror/lib/codemirror.css'
 import '@toast-ui/editor/dist/toastui-editor.css'
 import { Viewer } from '@toast-ui/vue-editor'
 
-import {getPost, addComment, deletePost} from "@/service";
+import {getPost, addComment, deletePost, checkAuthentication} from "@/service";
 
 export default {
   name: 'Post',
@@ -57,7 +57,7 @@ export default {
   methods: {
     async addComment() {
       try {
-        if(localStorage.getItem("token")) {
+        if(localStorage.getItem("token") && checkAuthentication(localStorage.getItem("token"))) {
           await addComment(localStorage.getItem("token"), this.$route.params.id, this.comment)
           this.comments = (await getPost(this.$route.params.id)).data.comments
         } else { 
@@ -70,7 +70,7 @@ export default {
     },
     async deletePost() {
       try {
-        if(localStorage.getItem("token")) {
+        if(localStorage.getItem("token") && checkAuthentication(localStorage.getItem("token"))) {
           let data = await deletePost(localStorage.getItem("token"), this.$route.params.id)
           if(data != null) {
             alert("삭제완료")

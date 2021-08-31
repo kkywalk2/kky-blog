@@ -136,9 +136,9 @@ const addComment = async (token, postId, comment) => {
     }
 }
 
-const checkAuthentication = async () => {
+const checkAuthentication = async (token) => {
     try {
-        const res = await accountService.checkAuthentication()
+        const res = await accountService.checkAuthentication(token)
         if (res.status === 200)
             return true
         else

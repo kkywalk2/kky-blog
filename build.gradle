@@ -23,6 +23,11 @@ node {
     yarnWorkDir = file("${project.projectDir}/.gradle/yarn")
 } 
 
+ext.profile = (!project.hasProperty('profile') || !profile) ? 'dev' : profile
+
+bootRun {
+  args = ["--spring.profiles.active=" + profile]
+}
 
 configurations {
     compileOnly {

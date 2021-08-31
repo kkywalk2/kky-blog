@@ -66,6 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     HttpMethod.PUT, "/post"
                 ).authenticated().antMatchers(
                     HttpMethod.DELETE, "/post/**"
+                ).authenticated().antMatchers(
+                    HttpMethod.GET, "/account"
                 ).authenticated()
                 .antMatchers("/comment").authenticated()
                 .anyRequest().permitAll()

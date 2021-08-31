@@ -25,6 +25,8 @@ const checkAuthentication = (token) => {
     'Authorization': `${token}`
   }
 
+  console.log(token)
+
   return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/account`,{headers})
 }
 

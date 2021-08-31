@@ -17,7 +17,7 @@ import 'codemirror/lib/codemirror.css'
 import '@toast-ui/editor/dist/toastui-editor.css'
 import {Editor, Viewer} from '@toast-ui/vue-editor'
 
-import {createPosts, updatePost, uploadImage, getPost} from "@/service";
+import {createPosts, updatePost, uploadImage, getPost, checkAuthentication} from "@/service";
 
 export default {
   name: 'Editor',
@@ -41,7 +41,7 @@ export default {
     }
   },
   created: async function () {
-    if(!localStorage.getItem("token")) {
+    if(!localStorage.getItem("token") || checkAuthentication(localStorage.getItem("token")) === false) {
       alert("로그인 해주십시오")
       await this.$router.push({
         name: 'Login'
