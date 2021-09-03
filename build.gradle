@@ -23,7 +23,7 @@ node {
     yarnWorkDir = file("${project.projectDir}/.gradle/yarn")
 } 
 
-ext.profile = (!project.hasProperty('profile') || !profile) ? 'dev' : profile
+ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
 
 bootRun {
   args = ["--spring.profiles.active=" + profile]
@@ -64,7 +64,7 @@ task deleteVueArtifact(type: Delete) {
 }
 
 task yarnBuild(type: YarnTask, dependsOn: ['deleteVueArtifact', 'yarn_install']) { 
-    args = ["run", "build"] 
+    args = ["run", "build" + profile] 
 }
 
 processResources.dependsOn 'yarnBuild' 

@@ -15,12 +15,12 @@ const createPost = (token, title, content, category) => {
     return axios.post(`${process.env.VUE_APP_SERVER_ADDRESS}/post`, postInfo, { headers })
 }
 
-const getPosts = (page) => {
+const getPosts = (page, perPage) => {
     let headers = {
         'Content-type': 'application/json'
     }
 
-    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/page/${page}`, { headers })
+    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post?page=${page}&per_page=${perPage}`, { headers })
 }
 
 const getPost = (id) => {
@@ -39,12 +39,12 @@ const getCategories = () => {
     return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/category`, { headers })
 }
 
-const getPostByCategory = (category, page) => {
+const getPostByCategory = (category, page, perPage) => {
     let headers = {
         'Content-type': 'application/json'
     }
 
-    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/category/${category}/${page}`, { headers })
+    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/category/${category}?page=${page}&per_page=${perPage}`, { headers })
 }
 
 const updatePost = (token, postId, title, content, category) => {

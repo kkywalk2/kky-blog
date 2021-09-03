@@ -8,6 +8,7 @@ import com.example.blog.service.PostService;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,10 +29,12 @@ public class PostController {
         return new CreateResponse(ResponseCode.OK, "");
     }
 
-    @GetMapping(value = "/page/{page}")
+    @GetMapping
     @ResponseBody
-    public GetPostsResponse getPosts(@PathVariable("page") int page) {
-        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(PageRequest.of(page, 10)));
+    public GetPostsResponse getPosts(@RequestParam(required = true, value = "page", defaultValue = "0") int page,
+            @RequestParam(required = true, value = "per_page", defaultValue = "0") int perPage) {
+        Pageable pageable = perPage == 0 ? Pageable.unpaged() : PageRequest.of(page, perPage);
+        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(pageable));
     }
 
     @GetMapping(value = "/{id}")
@@ -46,17 +49,21 @@ public class PostController {
         return new GetCategoryResponse(ResponseCode.OK, "", postService.getCategoryCounts());
     }
 
-    @GetMapping(value = "/category/{category}/{page}")
+    @GetMapping(value = "/category/{category}")
     @ResponseBody
-    public GetPostsResponse getPost(@PathVariable("category") String category, @PathVariable("page") int page) {
-        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(category, PageRequest.of(page, 10)));
+    public GetPostsResponse getPost(@PathVariable("category") String category,
+            @RequestParam(required = true, value = "page", defaultValue = "0") int page,
+            @RequestParam(required = true, value = "per_page", defaultValue = "0") int perPage) {
+        Pageable pageable = perPage == 0 ? Pageable.unpaged() : PageRequest.of(page, perPage);
+        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(pageable));
     }
 
     @PutMapping
     @ResponseBody
     public CreateResponse updatePost(@Valid @RequestBody UpdateRequest req, Authentication authentication) {
         AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
-        postService.updatePost(accountDetail.getId(), req.getPostId(), req.getTitle(), req.getContent(), req.getCategory());
+        postService.updatePost(accountDetail.getId(), req.getPostId(), req.getTitle(), req.getContent(),
+                req.getCategory());
         return new CreateResponse(ResponseCode.OK, "");
     }
 

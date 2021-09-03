@@ -78,13 +78,13 @@ export default {
     async refreshPostList(category, page) {
       this.category = category
       if(!category) {
-        let data = (await getPosts(page - 1)).data
+        let data = (await getPosts(page - 1, 10)).data
         this.postData = data.content
         this.totalElements = data.totalElements
         this.totalPages = data.totalPages
       }
       else {
-        let data = (await getPostByCategory(category, page - 1)).data
+        let data = (await getPostByCategory(category, page - 1, 10)).data
         this.postData = data.content
         this.totalElements = data.totalElements
         this.totalPages = data.totalPages

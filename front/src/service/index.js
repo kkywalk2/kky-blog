@@ -45,9 +45,9 @@ const createPosts = async (token, title, content, category) => {
     }
 }
 
-const getPosts = async (page) => {
+const getPosts = async (page, perPage) => {
     try {
-        const res = await postService.getPosts(page)
+        const res = await postService.getPosts(page, perPage)
         if (res.status === 200)
             return res.data
         else
@@ -110,9 +110,9 @@ const getCategories = async () => {
     }
 }
 
-const getPostByCategory = async (category, page) => {
+const getPostByCategory = async (category, page, perPage) => {
     try {
-        const res = await postService.getPostByCategory(category, page)
+        const res = await postService.getPostByCategory(category, page, perPage)
         if (res.status === 200)
             return res.data
         else

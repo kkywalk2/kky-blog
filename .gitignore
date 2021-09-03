@@ -38,3 +38,6 @@ out/
 .vscode/
 src/main/resources/application-dev.properties
 front/.env.dev
+
+### for test
+mysql

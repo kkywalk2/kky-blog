@@ -41,7 +41,7 @@ export default {
     }
   },
   created: async function () {
-    if(!localStorage.getItem("token") || checkAuthentication(localStorage.getItem("token")) === false) {
+    if(!localStorage.getItem("token") || !(await checkAuthentication(localStorage.getItem("token")))) {
       alert("로그인 해주십시오")
       await this.$router.push({
         name: 'Login'
