@@ -16,7 +16,7 @@
     </ul>
     <ul class="list-view">
       <li v-for="item in postData" :key="item.id">
-        <b-navbar-item v-bind:href="`/blog/#/post/${item.id}`">{{item.title}}</b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: `/post/${item.id}` }">{{item.title}}</b-navbar-item>
       </li>
       <b-pagination
             :total="totalElements"

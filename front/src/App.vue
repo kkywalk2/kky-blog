@@ -7,9 +7,9 @@
         </b-navbar-item>
       </template>
       <template slot="start">
-        <b-navbar-item href="/blog/#/">Home</b-navbar-item>
-        <b-navbar-item href="/blog/#/editor">Create Post</b-navbar-item>
-        <b-navbar-item href="/blog/#/signup">SignUp</b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: '/' }">Home</b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: '/editor'}">Create Post</b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: '/signup'}">SignUp</b-navbar-item>
       </template>
     </b-navbar>
     <br />
