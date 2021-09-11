@@ -1,5 +1,7 @@
 package com.example.blog.dto.post;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,4 +12,5 @@ public class GetPostsData {
     private String title;
     private String category;
     private Long views;
+    private LocalDateTime createAt;
 }

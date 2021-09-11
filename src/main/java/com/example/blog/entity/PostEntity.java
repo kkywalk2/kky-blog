@@ -22,6 +22,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE post_entity SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
+@Table(indexes = {
+    @Index(name = "title_index", columnList = "title"),
+  })
 public class PostEntity {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

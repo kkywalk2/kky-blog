@@ -16,7 +16,10 @@
     </ul>
     <ul class="list-view">
       <li v-for="item in postData" :key="item.id">
-        <b-navbar-item tag="router-link" :to="{ path: `/post/${item.id}` }">{{item.title}}</b-navbar-item>
+        <div class="list-element">
+          <b-navbar-item tag="router-link" :to="{ path: `/post/${item.id}` }">{{item.title}}</b-navbar-item>
+          <label>{{new Date(item.createAt).toLocaleDateString()}}</label>
+        </div>
       </li>
       <b-pagination
             :total="totalElements"
@@ -115,5 +118,10 @@ export default {
   position:relative;
   top:0px;
   left:250px;
+}
+.list-element{
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 </style>
