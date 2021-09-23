@@ -24,4 +24,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
     @Query("select new com.example.blog.dto.post.GetPostsData(post.id, post.title, post.category, post.views, post.createAt) from PostEntity post where post.category = :category")
     Page<GetPostsData> findAllByCategory(@Param("category") String category, Pageable pageable);
+
+    @Query("select new com.example.blog.dto.post.GetPostsData(post.id, post.title, post.category, post.views, post.createAt) from PostEntity post where post.title = :title")
+    Page<GetPostsData> findByTitle(@Param("title") String title, Pageable pageable);
 }

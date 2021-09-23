@@ -9,7 +9,6 @@
 ![KKYBlog](https://user-images.githubusercontent.com/18114747/126662604-a8329746-70ed-4246-bed2-b48d6efa588e.jpg)
 
 ### 체크리스트
-목표는 2021-08-01
 - [x] Account기준으로 Skeleton코드 작성
 - [x] DB설계(사용자, 글, 댓글), 최소 egloos수준으로 기능이 되도록
 - [x] 회원가입 및 로그인(인증관련 기능포함)
@@ -20,6 +19,6 @@
 - [x] 글을 카테고리 별로 분류 
   
 추가 목표
-- [ ] API의 테스트 코드 구현, 프론트의 테스트 코드는 어떻게?
-- [ ] AWS를 활용하여 지속적인 배포 구현, 방식 알아봐야 함
+- [ ] API의 테스트 코드 구현, Mock과 H2 인메모리 DB를 사용하여 구현중
+- [ ] AWS를 활용하여 지속적인 배포 구현, 현재 Jenkins -> Docker Hub -> AWS ECS로 배포하는 과정을 테스트 중([링크](http://ec2-13-125-161-219.ap-northeast-2.compute.amazonaws.com:9001/blog/#/))
 
