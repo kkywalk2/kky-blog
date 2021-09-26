@@ -3,6 +3,7 @@ package com.example.blog.service;
 import com.example.blog.dto.post.GetPostsData;
 import com.example.blog.dto.post.PostCategories;
 import com.example.blog.repository.PostRepository;
+import com.example.blog.repository.PostRepositorySupport;
 import com.google.common.base.Preconditions;
 
 import java.util.List;
@@ -17,10 +18,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PostService {
+
     private final PostRepository postRepository;
 
-    PostService(PostRepository postRepository) {
+    private final PostRepositorySupport postRepositorySupport;
+
+    PostService(PostRepository postRepository, PostRepositorySupport postRepositorySupport) {
         this.postRepository = postRepository;
+        this.postRepositorySupport = postRepositorySupport;
     }
 
     @Transactional
@@ -29,11 +34,15 @@ public class PostService {
     }
 
     public Page<GetPostsData> getPosts(Pageable pageable) {
-        return postRepository.findAllData(pageable);
+        return postRepositorySupport.findAllData(pageable);
     }
 
-    public Page<GetPostsData> getPosts(String category , Pageable pageable) {
-        return postRepository.findAllByCategory(category, pageable);
+    public Page<GetPostsData> getPosts(String category, Pageable pageable) {
+        return postRepositorySupport.findAllByCategory(category, pageable);
+    }
+
+    public Page<GetPostsData> searchPostsByTitle(String title, Pageable pageable) {
+        return postRepositorySupport.findByTitle(title, pageable);
     }
 
     public PostEntity getPost(Long postId) {
@@ -41,7 +50,7 @@ public class PostService {
     }
 
     public List<PostCategories> getCategoryCounts() {
-        return postRepository.findCategoryCounts();
+        return postRepositorySupport.findCategoryCounts();
     }
 
     @Transactional
