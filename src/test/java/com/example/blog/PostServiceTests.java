@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.example.blog.repository.PostRepository;
-import com.example.blog.repository.PostRepositorySupport;
 import com.example.blog.service.PostService;
 import com.example.blog.dto.post.GetPostsData;
 
@@ -23,7 +22,7 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = { PostService.class, PostRepository.class, PostRepositorySupport.class })
+@SpringBootTest(classes = { PostService.class, PostRepository.class })
 public class PostServiceTests {
 
     @Autowired
@@ -31,9 +30,6 @@ public class PostServiceTests {
 
     @MockBean
     PostRepository postRepository;
-
-    @MockBean
-    PostRepositorySupport postRepositorySupport;
 
     @Test
     public void postServiceTest() {
@@ -44,7 +40,7 @@ public class PostServiceTests {
 
         Page<GetPostsData> pages = new PageImpl<GetPostsData>(result, PageRequest.of(0, 3), 3);
 
-        given(postRepositorySupport.findAllData(PageRequest.of(0, 3))).willReturn(pages);
+        given(postRepository.findAllData(PageRequest.of(0, 3))).willReturn(pages);
 
         Assertions.assertEquals("test1", postService.getPosts(PageRequest.of(0, 3)).getContent().get(0).getTitle());
     }
