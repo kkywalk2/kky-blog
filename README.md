@@ -20,5 +20,7 @@
   
 추가 목표
 - [ ] API의 테스트 코드 구현, Mock과 H2 인메모리 DB를 사용하여 구현중
-- [ ] AWS를 활용하여 지속적인 배포 구현, 현재 Jenkins -> Docker Hub -> AWS ECS로 배포하는 과정을 테스트 중([링크](http://ec2-13-125-161-219.ap-northeast-2.compute.amazonaws.com:9001/blog/#/))
+- [ ] AWS를 활용하여 지속적인 배포 구현, 현재 ~~Jenkins -> Docker Hub -> AWS ECS~~ (ECS가 프리티어에서 사용불가..)
+
+github action -> AWS EB 로 변경하여 배포하는 과정을 테스트 중([링크](http://kkyblog-env.eba-qminpptm.ap-northeast-2.elasticbeanstalk.com/blog/#/))
 
