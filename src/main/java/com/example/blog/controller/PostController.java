@@ -32,9 +32,10 @@ public class PostController {
     @GetMapping
     @ResponseBody
     public GetPostsResponse getPosts(@RequestParam(required = true, value = "page", defaultValue = "0") int page,
-            @RequestParam(required = true, value = "per_page", defaultValue = "0") int perPage) {
+            @RequestParam(required = true, value = "per_page", defaultValue = "0") int perPage,
+            @RequestParam(required = false, value = "query") String query) {
         Pageable pageable = perPage == 0 ? Pageable.unpaged() : PageRequest.of(page, perPage);
-        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(pageable));
+        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(pageable, query));
     }
 
     @GetMapping(value = "/{id}")
@@ -47,15 +48,6 @@ public class PostController {
     @ResponseBody
     public GetCategoryResponse getPost() {
         return new GetCategoryResponse(ResponseCode.OK, "", postService.getCategoryCounts());
-    }
-
-    @GetMapping(value = "/category/{category}")
-    @ResponseBody
-    public GetPostsResponse getPost(@PathVariable("category") String category,
-            @RequestParam(required = true, value = "page", defaultValue = "0") int page,
-            @RequestParam(required = true, value = "per_page", defaultValue = "0") int perPage) {
-        Pageable pageable = perPage == 0 ? Pageable.unpaged() : PageRequest.of(page, perPage);
-        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(pageable));
     }
 
     @PutMapping

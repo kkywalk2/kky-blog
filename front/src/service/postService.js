@@ -15,12 +15,25 @@ const createPost = (token, title, content, category) => {
     return axios.post(`${process.env.VUE_APP_SERVER_ADDRESS}/post`, postInfo, { headers })
 }
 
-const getPosts = (page, perPage) => {
+const getPosts = (page, perPage, category, title) => {
     let headers = {
         'Content-type': 'application/json'
     }
 
-    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post?page=${page}&per_page=${perPage}`, { headers })
+    let query = ''
+
+    if(category) {
+        query += `category%3D${category}`
+
+        if(title)
+            query += '%2C'
+    }
+
+    if(title) {
+        query += `title%3D${title}`
+    }
+
+    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post?page=${page}&per_page=${perPage}&query=${query}`, { headers })
 }
 
 const getPost = (id) => {
@@ -37,14 +50,6 @@ const getCategories = () => {
     }
 
     return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/category`, { headers })
-}
-
-const getPostByCategory = (category, page, perPage) => {
-    let headers = {
-        'Content-type': 'application/json'
-    }
-
-    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post/category/${category}?page=${page}&per_page=${perPage}`, { headers })
 }
 
 const updatePost = (token, postId, title, content, category) => {
@@ -72,4 +77,4 @@ const deletePost = (token, postId) => {
     return axios.delete(`${process.env.VUE_APP_SERVER_ADDRESS}/post/${postId}`, { headers })
 }
 
-export default { createPost, getPosts, getPost, getCategories, getPostByCategory, updatePost, deletePost }
+export default { createPost, getPosts, getPost, getCategories, updatePost, deletePost }

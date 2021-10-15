@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -17,6 +18,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import static com.example.blog.entity.QPostEntity.postEntity;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -29,11 +31,12 @@ public class PostRepositoryImpl extends QuerydslRepositorySupport implements Pos
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public Page<GetPostsData> findAllData(Pageable pageable) {
+    public Page<GetPostsData> findAllData(Pageable pageable, HashMap<String, String> map) {
         JPAQuery<GetPostsData> query = jpaQueryFactory.from(postEntity)
                 .select(Projections.constructor(GetPostsData.class, postEntity.id, postEntity.title,
-                        postEntity.category, postEntity.views, postEntity.createAt));
-        
+                        postEntity.category, postEntity.views, postEntity.createAt))
+                .where(createSearchBuilder(map));
+
         QueryResults<GetPostsData> result = getQuerydsl().applyPagination(pageable, query).fetchResults();
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
@@ -44,23 +47,18 @@ public class PostRepositoryImpl extends QuerydslRepositorySupport implements Pos
                 .groupBy(postEntity.category).fetch();
     }
 
-    public Page<GetPostsData> findAllByCategory(String category, Pageable pageable) {
-        JPAQuery<GetPostsData> query = jpaQueryFactory.from(postEntity)
-                .select(Projections.constructor(GetPostsData.class, postEntity.id, postEntity.title,
-                        postEntity.category, postEntity.views, postEntity.createAt))
-                .where(postEntity.category.eq(category));
-        
-        QueryResults<GetPostsData> result = getQuerydsl().applyPagination(pageable, query).fetchResults();
-        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
-    }
-
-    public Page<GetPostsData> findByTitle(String title, Pageable pageable) {
-        JPAQuery<GetPostsData> query = jpaQueryFactory.from(postEntity)
-                .select(Projections.constructor(GetPostsData.class, postEntity.id, postEntity.title,
-                        postEntity.category, postEntity.views, postEntity.createAt))
-                .where(postEntity.title.contains(title));
-        
-        QueryResults<GetPostsData> result = getQuerydsl().applyPagination(pageable, query).fetchResults();
-        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
+    public BooleanBuilder createSearchBuilder(HashMap<String, String> map) {
+        BooleanBuilder builder = new BooleanBuilder();
+        for (String key : map.keySet()) {
+            switch (key) {
+                case "title":
+                    builder.and(postEntity.title.contains(map.get(key)));
+                    break;
+                case "category":
+                    builder.and(postEntity.category.eq(map.get(key)));
+                    break;
+            }
+        }
+        return builder;
     }
 }

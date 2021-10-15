@@ -40,8 +40,8 @@ public class PostServiceTests {
 
         Page<GetPostsData> pages = new PageImpl<GetPostsData>(result, PageRequest.of(0, 3), 3);
 
-        given(postRepository.findAllData(PageRequest.of(0, 3))).willReturn(pages);
+        given(postRepository.findAllData(PageRequest.of(0, 3), null)).willReturn(pages);
 
-        Assertions.assertEquals("test1", postService.getPosts(PageRequest.of(0, 3)).getContent().get(0).getTitle());
+        Assertions.assertEquals("test1", postService.getPosts(PageRequest.of(0, 3), null).getContent().get(0).getTitle());
     }
 }

@@ -45,9 +45,9 @@ const createPosts = async (token, title, content, category) => {
     }
 }
 
-const getPosts = async (page, perPage) => {
+const getPosts = async (page, perPage, category, title) => {
     try {
-        const res = await postService.getPosts(page, perPage)
+        const res = await postService.getPosts(page, perPage, category, title)
         if (res.status === 200)
             return res.data
         else
@@ -110,19 +110,6 @@ const getCategories = async () => {
     }
 }
 
-const getPostByCategory = async (category, page, perPage) => {
-    try {
-        const res = await postService.getPostByCategory(category, page, perPage)
-        if (res.status === 200)
-            return res.data
-        else
-            return null
-    } catch (err) {
-        console.error(err)
-        return null
-    }
-}
-
 const addComment = async (token, postId, comment) => {
     try {
         const res = await commentService.addComment(token, postId, comment)
@@ -174,4 +161,4 @@ const deletePost = async (token, postId) => {
     }
 }
 
-export { login, signUp, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, getPostByCategory, addComment, checkAuthentication, updatePost, deletePost }
+export { login, signUp, createPosts, getPosts, uploadImage, getImage, getPost, getCategories, addComment, checkAuthentication, updatePost, deletePost }

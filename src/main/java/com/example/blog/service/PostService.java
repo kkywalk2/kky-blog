@@ -5,15 +5,15 @@ import com.example.blog.dto.post.PostCategories;
 import com.example.blog.repository.PostRepository;
 import com.google.common.base.Preconditions;
 
+import java.util.HashMap;
 import java.util.List;
-
-import javax.transaction.Transactional;
 
 import com.example.blog.entity.PostEntity;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PostService {
@@ -29,22 +29,29 @@ public class PostService {
         postRepository.save(new PostEntity(accountId, title, content, category));
     }
 
-    public Page<GetPostsData> getPosts(Pageable pageable) {
-        return postRepository.findAllData(pageable);
+    @Transactional(readOnly = true)
+    public Page<GetPostsData> getPosts(Pageable pageable, String query) {
+        HashMap<String, String> map = null;
+
+        if (query != null) {
+            map = new HashMap<>();
+            String[] parameters = query.split(",");
+            for (String parameter : parameters) {
+                String[] keyValue = parameter.split("=");
+                if (keyValue.length == 2) {
+                    map.put(keyValue[0], keyValue[1]);
+                }
+            }
+        }
+        return postRepository.findAllData(pageable, map);
     }
 
-    public Page<GetPostsData> getPosts(String category, Pageable pageable) {
-        return postRepository.findAllByCategory(category, pageable);
-    }
-
-    public Page<GetPostsData> searchPostsByTitle(String title, Pageable pageable) {
-        return postRepository.findByTitle(title, pageable);
-    }
-
+    @Transactional(readOnly = true)
     public PostEntity getPost(Long postId) {
         return postRepository.findById(postId).orElseThrow(() -> new NullPointerException("Unavailable Post"));
     }
 
+    @Transactional(readOnly = true)
     public List<PostCategories> getCategoryCounts() {
         return postRepository.findCategoryCounts();
     }

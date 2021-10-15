@@ -1,68 +1,75 @@
 <template>
   <div>
-    <div></div>
     <nav class="level">
       <div class="level-left">
         <p class="title is-3">Posts</p>
       </div>
-      <div class="level-right">
-        <p class="level-item">{{ versionInfo }}</p>
-      </div>
     </nav>
-    <ul class="left">
-      <li v-for="item in categoryData" :key="item.category">
-        <b-navbar-item v-on:click="refreshPostList(item.category, page)">{{item.category}}({{item.count}})</b-navbar-item>
-      </li>
-    </ul>
-    <ul class="list-view">
-      <li v-for="item in postData" :key="item.id">
-        <div class="list-element">
-          <b-navbar-item tag="router-link" :to="{ path: `/post/${item.id}` }">{{item.title}}</b-navbar-item>
-          <label>{{new Date(item.createAt).toLocaleDateString()}}</label>
+    <div class="columns is-multiline is-desktop">
+      <div class="column is-narrow" style="width: 300px;">
+        <AuthorCard />
+        <ul>
+          <li v-for="item in categoryData" :key="item.category">
+            <b-navbar-item tag="router-link" :to="{ path: `/` , query: {'category': item.category} }">{{item.category}}({{item.count}})</b-navbar-item>
+          </li>
+        </ul>
         </div>
-      </li>
-      <b-pagination
-            :total="totalElements"
-            v-model="page"
-            :per-page="10">
-            <template #default="props">
-                <b-pagination-button
-                    :page="props.page"
-                    :id="`page${props.page.number}`"
-                    tag="button"
-                    :click="refreshPostList(category, page)">
-                    {{props.page.number}}
-                </b-pagination-button>
-            </template>
+        <div class="column">
+        <ul>
+          <li v-for="item in postData" :key="item.id">
+            <div class="list-element">
+              <b-navbar-item tag="router-link" :to="{ path: `/post/${item.id}` }">{{item.title}}</b-navbar-item>
+              <label>{{new Date(item.createAt).toLocaleDateString()}}</label>
+            </div>
+          </li>
+          <b-pagination
+                :total="totalElements"
+                v-model="page"
+                :per-page="10">
+                <template #default="props">
+                    <b-pagination-button
+                        :page="props.page"
+                        :id="`page${props.page.number}`"
+                        tag="button"
+                        :click="refreshPostList($route.query.category, page)">
+                        {{props.page.number}}
+                    </b-pagination-button>
+                </template>
 
 
-            <template #previous="props">
-                <b-pagination-button
-                    :page="props.page"
-                    tag="button"
-                    :click="refreshPostList(category, page)">
-                    Previous
-                </b-pagination-button>
-            </template>
+                <template #previous="props">
+                    <b-pagination-button
+                        :page="props.page"
+                        tag="button"
+                        :click="refreshPostList($route.query.category, page)">
+                        Previous
+                    </b-pagination-button>
+                </template>
 
-            <template #next="props">
-                <b-pagination-button
-                    :page="props.page"
-                    tag="button"
-                    :click="refreshPostList(category, page)">
-                    Next
-                </b-pagination-button>
-            </template>
-       </b-pagination>
-    </ul>
+                <template #next="props">
+                    <b-pagination-button
+                        :page="props.page"
+                        tag="button"
+                        :click="refreshPostList($route.query.category, page)">
+                        Next
+                    </b-pagination-button>
+                </template>
+          </b-pagination>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import {getPosts, getCategories, getPostByCategory} from "@/service";
+import AuthorCard from "../components/AuthorCard.vue";
+import {getPosts, getCategories} from "@/service";
 
 export default {
   name: 'BlogMain',
+  components: {
+    AuthorCard,
+  },
   data: function () {
     return {
       versionInfo: '',
@@ -70,16 +77,14 @@ export default {
       categoryData:[],
       page:1,
       totalPages:0,
-      totalElements:0,
-      category:""
+      totalElements:0
     };
   },
   created: async function () {
-    await this.refreshPostList("", this.page)
+    await this.refreshPostList(this.$route.query.category, this.page)
   },
   methods: {
     async refreshPostList(category, page) {
-      this.category = category
       if(!category) {
         let data = (await getPosts(page - 1, 10)).data
         this.postData = data.content
@@ -87,38 +92,23 @@ export default {
         this.totalPages = data.totalPages
       }
       else {
-        let data = (await getPostByCategory(category, page - 1, 10)).data
+        let data = (await getPosts(page - 1, 10, category)).data
         this.postData = data.content
         this.totalElements = data.totalElements
         this.totalPages = data.totalPages
       }
       this.categoryData = (await getCategories()).data
     }
+  },
+  watch: {
+    $route() {
+      this.refreshPostList(this.$route.query.category, this.page)
+    }
   }
 }
 </script>
 
 <style>
-.left{
-  position:fixed;
-  top:20px;
-  left:0px;
-  width:250px;
-  height:1000px;
-  background:rgba(0,0,0,0);
-  padding:40px 0;
-  overflow: hidden
-}
-.list-view{
-  position:relative;
-  top:0px;
-  left:250px;
-}
-.level-left{
-  position:relative;
-  top:0px;
-  left:250px;
-}
 .list-element{
   display: flex;
   justify-content: left;
