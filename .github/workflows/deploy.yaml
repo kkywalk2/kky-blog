@@ -61,6 +61,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: kky-blog
           environment_name: Kkyblog-env
-          version_label: 12345
+          version_label: ${{github.run_number}}
+          use_existing_version_if_available: true
           region: ap-northeast-2
           deployment_package: deploy/deploy.zip

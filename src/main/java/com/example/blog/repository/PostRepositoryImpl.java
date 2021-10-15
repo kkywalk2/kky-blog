@@ -48,6 +48,7 @@ public class PostRepositoryImpl extends QuerydslRepositorySupport implements Pos
     }
 
     public BooleanBuilder createSearchBuilder(HashMap<String, String> map) {
+        if(map == null) return null;
         BooleanBuilder builder = new BooleanBuilder();
         for (String key : map.keySet()) {
             switch (key) {
