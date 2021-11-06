@@ -13,8 +13,17 @@
             <b-navbar-item tag="router-link" :to="{ path: `/` , query: {'category': item.category} }">{{item.category}}({{item.count}})</b-navbar-item>
           </li>
         </ul>
-        </div>
-        <div class="column">
+      </div>
+      <div class="column">
+        <b-field>
+          <b-input placeholder="Search..."
+                   type="search"
+                   icon="magnify"
+                   icon-clickable
+                   v-model="searchText"
+                   @keydown.enter.native="onSearch">
+          </b-input>
+        </b-field>
         <ul>
           <li v-for="item in postData" :key="item.id">
             <div class="list-element">
@@ -31,7 +40,7 @@
                         :page="props.page"
                         :id="`page${props.page.number}`"
                         tag="button"
-                        :click="refreshPostList($route.query.category, page)">
+                        :click="refreshPostList($route.query.search, $route.query.category, page)">
                         {{props.page.number}}
                     </b-pagination-button>
                 </template>
@@ -41,7 +50,7 @@
                     <b-pagination-button
                         :page="props.page"
                         tag="button"
-                        :click="refreshPostList($route.query.category, page)">
+                        :click="refreshPostList($route.query.search, $route.query.category, page)">
                         Previous
                     </b-pagination-button>
                 </template>
@@ -50,7 +59,7 @@
                     <b-pagination-button
                         :page="props.page"
                         tag="button"
-                        :click="refreshPostList($route.query.category, page)">
+                        :click="refreshPostList($route.query.search, $route.query.category, page)">
                         Next
                     </b-pagination-button>
                 </template>
@@ -77,32 +86,25 @@ export default {
       categoryData:[],
       page:1,
       totalPages:0,
-      totalElements:0
+      totalElements:0,
+      searchText:''
     };
   },
-  created: async function () {
-    await this.refreshPostList(this.$route.query.category, this.page)
-  },
   methods: {
-    async refreshPostList(category, page) {
-      if(!category) {
-        let data = (await getPosts(page - 1, 10)).data
-        this.postData = data.content
-        this.totalElements = data.totalElements
-        this.totalPages = data.totalPages
-      }
-      else {
-        let data = (await getPosts(page - 1, 10, category)).data
-        this.postData = data.content
-        this.totalElements = data.totalElements
-        this.totalPages = data.totalPages
-      }
+    async refreshPostList(searchText, category, page) {
+      let data = (await getPosts(page - 1, 10, category, searchText)).data
+      this.postData = data.content
+      this.totalElements = data.totalElements
+      this.totalPages = data.totalPages
       this.categoryData = (await getCategories()).data
+    },
+    async onSearch() {
+      await this.$router.push({ path: '/', query: { 'search': this.searchText , 'category' : this.$route.query.category } })
     }
   },
   watch: {
     $route() {
-      this.refreshPostList(this.$route.query.category, this.page)
+      this.refreshPostList(this.$route.query.search, this.$route.query.category, this.page)
     }
   }
 }

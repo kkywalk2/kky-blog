@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-image">
       <figure class="image is-3by3">
-        <g-image src="../assets/logo.png" alt="주인장" />
+        <image src="../assets/logo.png" alt="주인장" />
       </figure>
     </div>
     <div class="card-content">
