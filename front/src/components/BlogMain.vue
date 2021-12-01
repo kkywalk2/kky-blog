@@ -26,9 +26,9 @@
         </b-field>
         <ul>
           <li v-for="item in postData" :key="item.id">
-            <div class="list-element">
-              <b-navbar-item tag="router-link" :to="{ path: `/post/${item.id}` }">{{item.title}}</b-navbar-item>
-              <label>{{new Date(item.createAt).toLocaleDateString()}}</label>
+            <div class="columns is-multiline is-desktop">
+              <b-navbar-item class="column" tag="router-link" :to="{ path: `/post/${item.id}` }">{{item.title}}</b-navbar-item>
+              <label class="column is-one-quarter">{{new Date(item.createAt).toLocaleDateString()}}</label>
             </div>
           </li>
           <b-pagination
@@ -109,11 +109,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.list-element{
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-</style>
