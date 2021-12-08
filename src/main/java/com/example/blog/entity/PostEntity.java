@@ -43,7 +43,7 @@ public class PostEntity {
     private LocalDateTime UpdatedAt;
     private boolean deleted = Boolean.FALSE;
 
-    @OneToMany(mappedBy="postId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="postId", fetch = FetchType.EAGER)
     private List<CommentEntity> comments = Lists.newArrayList();
 
     public PostEntity(long accountId, String title, String content, String category){

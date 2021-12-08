@@ -7,10 +7,12 @@
     </nav>
     <div class="columns is-multiline is-desktop">
       <div class="column is-narrow" style="width: 300px;">
-        <AuthorCard />
+        <AuthorCard/>
         <ul>
           <li v-for="item in categoryData" :key="item.category">
-            <b-navbar-item tag="router-link" :to="{ path: `/` , query: {'category': item.category} }">{{item.category}}({{item.count}})</b-navbar-item>
+            <b-navbar-item tag="router-link" :to="{ path: `/` , query: {'category': item.category} }">
+              {{ item.category }}({{ item.count }})
+            </b-navbar-item>
           </li>
         </ul>
       </div>
@@ -26,43 +28,29 @@
         </b-field>
         <ul>
           <li v-for="item in postData" :key="item.id">
-            <div class="columns is-multiline is-desktop">
-              <b-navbar-item class="column" tag="router-link" :to="{ path: `/post/${item.id}` }">{{item.title}}</b-navbar-item>
-              <label class="column is-one-quarter">{{new Date(item.createAt).toLocaleDateString()}}</label>
-            </div>
+            <b-navbar-item tag="router-link" :to="{ path: `/post/${item.id}` }"
+                           class="date columns is-multiline is-desktop">
+              <h1 class="column">{{ item.title }}</h1>
+              <p class="column is-one-quarter">{{ new Date(item.createAt).toLocaleDateString() }}</p>
+            </b-navbar-item>
+            <br/>
           </li>
-          <b-pagination
-                :total="totalElements"
-                v-model="page"
-                :per-page="10">
-                <template #default="props">
-                    <b-pagination-button
-                        :page="props.page"
-                        :id="`page${props.page.number}`"
-                        tag="button"
-                        :click="refreshPostList($route.query.search, $route.query.category, page)">
-                        {{props.page.number}}
-                    </b-pagination-button>
-                </template>
+          <b-pagination v-model="page" :total="totalElements" :per-page="perPage" @change="pageClick">
+            <template #previous="props">
+              <b-pagination-button
+                  :page="props.page"
+                  tag="button">
+                Previous
+              </b-pagination-button>
+            </template>
 
-
-                <template #previous="props">
-                    <b-pagination-button
-                        :page="props.page"
-                        tag="button"
-                        :click="refreshPostList($route.query.search, $route.query.category, page)">
-                        Previous
-                    </b-pagination-button>
-                </template>
-
-                <template #next="props">
-                    <b-pagination-button
-                        :page="props.page"
-                        tag="button"
-                        :click="refreshPostList($route.query.search, $route.query.category, page)">
-                        Next
-                    </b-pagination-button>
-                </template>
+            <template #next="props">
+              <b-pagination-button
+                  :page="props.page"
+                  tag="button">
+                Next
+              </b-pagination-button>
+            </template>
           </b-pagination>
         </ul>
       </div>
@@ -83,28 +71,36 @@ export default {
     return {
       versionInfo: '',
       postData: [],
-      categoryData:[],
-      page:1,
-      totalPages:0,
-      totalElements:0,
-      searchText:''
+      categoryData: [],
+      page: 1,
+      totalPages: 0,
+      totalElements: 0,
+      searchText: '',
+      perPage: 10
     };
   },
+  created() {
+    this.refreshPostList()
+  },
   methods: {
-    async refreshPostList(searchText, category, page) {
-      let data = (await getPosts(page - 1, 10, category, searchText)).data
+    async pageClick(page) {
+      this.page = page
+      await this.refreshPostList()
+    },
+    async refreshPostList() {
+      const data = (await getPosts(this.page - 1, this.perPage, this.$route.query.category, this.$route.query.search)).data
       this.postData = data.content
       this.totalElements = data.totalElements
       this.totalPages = data.totalPages
       this.categoryData = (await getCategories()).data
     },
     async onSearch() {
-      await this.$router.push({ path: '/', query: { 'search': this.searchText , 'category' : this.$route.query.category } })
+      await this.$router.push({path: '/', query: {'search': this.searchText, 'category': this.$route.query.search}})
     }
   },
   watch: {
     $route() {
-      this.refreshPostList(this.$route.query.search, this.$route.query.category, this.page)
+      this.refreshPostList()
     }
   }
 }
