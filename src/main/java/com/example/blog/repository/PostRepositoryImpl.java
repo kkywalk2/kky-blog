@@ -35,7 +35,7 @@ public class PostRepositoryImpl extends QuerydslRepositorySupport implements Pos
         JPAQuery<GetPostsData> query = jpaQueryFactory.from(postEntity)
                 .select(Projections.constructor(GetPostsData.class, postEntity.id, postEntity.title,
                         postEntity.category, postEntity.views, postEntity.createAt))
-                .where(createSearchBuilder(map));
+                .where(createSearchBuilder(map)).orderBy(postEntity.createAt.desc());
 
         QueryResults<GetPostsData> result = getQuerydsl().applyPagination(pageable, query).fetchResults();
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
