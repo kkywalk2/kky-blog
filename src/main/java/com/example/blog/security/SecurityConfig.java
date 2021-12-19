@@ -23,9 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private AccountDetailService jwtUserDetailsService;
-    private JwtRequestFilter jwtRequestFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final AccountDetailService jwtUserDetailsService;
+    private final JwtRequestFilter jwtRequestFilter;
 
     SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, AccountDetailService jwtUserDetailsService, JwtRequestFilter jwtRequestFilter) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
@@ -44,22 +44,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors();
 
         http.csrf().disable()
-                /*.authorizeRequests().antMatchers(
-                "/",
-                "/favicon.ico",
-                "/js/**",
-                "/css/**",
-                "/account/signup",
-                "/account/signin",
-                "/image/**")
-                .permitAll()
-                .anyRequest().authenticated()*/
                 .authorizeRequests().antMatchers(
                     HttpMethod.POST, "/post"
                 ).authenticated().antMatchers(

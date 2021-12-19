@@ -13,9 +13,9 @@ import com.example.blog.dto.ExceptionResponse;
 public class ExceptionResponseHandler {
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ResponseEntity<ExceptionResponse> handleException(Exception ex) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(ResponseCode.UNKNOWN_ERROR, ex.toString());
-        return new ResponseEntity<ExceptionResponse>(bodyOfResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(bodyOfResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
