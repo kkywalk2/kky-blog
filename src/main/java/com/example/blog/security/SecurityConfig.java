@@ -3,40 +3,25 @@ package com.example.blog.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final AccountDetailService jwtUserDetailsService;
-    private final JwtRequestFilter jwtRequestFilter;
+    private final JwtUtil jwtUtil;
 
-    SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, AccountDetailService jwtUserDetailsService, JwtRequestFilter jwtRequestFilter) {
+    public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, AccountDetailService jwtUserDetailsService, JwtUtil jwtUtil) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtUserDetailsService = jwtUserDetailsService;
-        this.jwtRequestFilter = jwtRequestFilter;
-    }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailsService)
-                .passwordEncoder(passwordEncoder());
+        this.jwtUtil = jwtUtil;
     }
 
     @Bean
@@ -47,24 +32,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors();
+        http.csrf().disable();
 
-        http.csrf().disable()
-                .authorizeRequests().antMatchers(
-                    HttpMethod.POST, "/post"
-                ).authenticated().antMatchers(
-                    HttpMethod.PUT, "/post"
-                ).authenticated().antMatchers(
-                    HttpMethod.DELETE, "/post/**"
-                ).authenticated().antMatchers(
-                    HttpMethod.GET, "/account"
-                ).authenticated()
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUserDetailsService, jwtUtil))
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/post").authenticated()
+                .antMatchers(HttpMethod.PUT, "/post").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/post/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/account").authenticated()
                 .antMatchers("/comment").authenticated()
                 .anyRequest().permitAll()
-                .and()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .formLogin().disable()
-                .headers().frameOptions().disable();
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
     }
 }

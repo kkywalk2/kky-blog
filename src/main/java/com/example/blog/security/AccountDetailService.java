@@ -22,17 +22,6 @@ public class AccountDetailService implements UserDetailsService {
     public AccountDetail loadUserByUsername(String accountName) throws UsernameNotFoundException {
         AccountEntity account = accountRepository.findByAccountName(accountName);
         Preconditions.checkState(account != null, "user name not found!");
-
-        //AccountDetail 초기화
-        AccountDetail accountDetail = new AccountDetail();
-        accountDetail.setUsername(account.getAccountName());
-        accountDetail.setPassword(account.getPassword());
-        accountDetail.setId(account.getId());
-        accountDetail.setEnabled(true);
-        accountDetail.setAccountNonExpired(true);
-        accountDetail.setAccountNonLocked(true);
-        accountDetail.setCredentialsNonExpired(true);
-
-        return accountDetail;
+        return new AccountDetail(account);
     }
 }

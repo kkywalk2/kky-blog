@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,17 +24,16 @@ public class PostController {
 
     @PostMapping
     @ResponseBody
-    public CreateResponse createPost(@Valid @RequestBody CreateRequest req, Authentication authentication) {
-        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+    public CreateResponse createPost(@Valid @RequestBody CreateRequest req, @AuthenticationPrincipal AccountDetail accountDetail) {
         postService.createPost(accountDetail.getId(), req.getTitle(), req.getContent(), req.getCategory());
         return new CreateResponse(ResponseCode.OK, "");
     }
 
     @GetMapping
     @ResponseBody
-    public GetPostsResponse getPosts(@RequestParam(required = true, value = "page", defaultValue = "0") int page,
-            @RequestParam(required = true, value = "per_page", defaultValue = "0") int perPage,
-            @RequestParam(required = false, value = "query") String query) {
+    public GetPostsResponse getPosts(@RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "per_page", defaultValue = "0") int perPage,
+                                     @RequestParam(required = false, value = "query") String query) {
         Pageable pageable = perPage == 0 ? Pageable.unpaged() : PageRequest.of(page, perPage);
         return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(pageable, query));
     }
@@ -52,8 +52,7 @@ public class PostController {
 
     @PutMapping
     @ResponseBody
-    public CreateResponse updatePost(@Valid @RequestBody UpdateRequest req, Authentication authentication) {
-        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+    public CreateResponse updatePost(@Valid @RequestBody UpdateRequest req, @AuthenticationPrincipal AccountDetail accountDetail) {
         postService.updatePost(accountDetail.getId(), req.getPostId(), req.getTitle(), req.getContent(),
                 req.getCategory());
         return new CreateResponse(ResponseCode.OK, "");
@@ -61,8 +60,7 @@ public class PostController {
 
     @DeleteMapping(value = "/{id}")
     @ResponseBody
-    public DeleteResponse deletePost(@PathVariable("id") Long id, Authentication authentication) {
-        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+    public DeleteResponse deletePost(@PathVariable("id") Long id, @AuthenticationPrincipal AccountDetail accountDetail) {
         postService.deletePost(accountDetail.getId(), id);
         return new DeleteResponse(ResponseCode.OK, "");
     }

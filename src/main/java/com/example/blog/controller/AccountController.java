@@ -20,28 +20,28 @@ public class AccountController {
     private final AccountService accountService;
     private final JwtUtil jwtUtil;
 
-	AccountController(AccountService accountService, JwtUtil jwtUtil){
+    AccountController(AccountService accountService, JwtUtil jwtUtil) {
         this.accountService = accountService;
         this.jwtUtil = jwtUtil;
     }
-	
+
     @PostMapping("/signup")
     @ResponseBody
-    public SignUpResponse signUp(@Valid @RequestBody SignUpRequest req){
-    	accountService.createAccount(req.getAccountName(),req.getPassword(), req.getEmail());
-        return new SignUpResponse(ResponseCode.OK,"");
+    public SignUpResponse signUp(@Valid @RequestBody SignUpRequest req) {
+        accountService.createAccount(req.getAccountName(), req.getPassword(), req.getEmail());
+        return new SignUpResponse(ResponseCode.OK, "");
     }
-    
+
     @PostMapping("/signin")
     @ResponseBody
-    public SignInResponse signIn(@Valid @RequestBody SignInRequest req){
+    public SignInResponse signIn(@Valid @RequestBody SignInRequest req) {
         Preconditions.checkState(accountService.accountValidation(req.getAccountName(), req.getPassword()), "Account info mismatch");
-        return new SignInResponse(ResponseCode.OK,"", jwtUtil.createToken(req.getAccountName()));
+        return new SignInResponse(ResponseCode.OK, "", jwtUtil.createToken(req.getAccountName()));
     }
 
     @GetMapping
     @ResponseBody
-    public Response AuthCheck(){
-        return new Response(ResponseCode.OK,"");
+    public Response AuthCheck() {
+        return new Response(ResponseCode.OK, "");
     }
 }

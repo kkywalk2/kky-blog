@@ -6,6 +6,7 @@ import com.example.blog.dto.comment.AddResponse;
 import com.example.blog.security.AccountDetail;
 import com.example.blog.service.CommentService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,8 +20,7 @@ public class CommentController {
 
     @PostMapping
     @ResponseBody
-    public AddResponse addComment(@RequestBody AddRequest req, Authentication authentication) {
-        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+    public AddResponse addComment(@RequestBody AddRequest req, @AuthenticationPrincipal AccountDetail accountDetail) {
         commentService.addComment(accountDetail.getId(), accountDetail.getUsername(), req.getPostId(), req.getContent());
         return new AddResponse(ResponseCode.OK, "");
     }
