@@ -7,7 +7,7 @@
           <b-button tag="router-link" :to="`/editor/${this.$route.params.id}`">수정</b-button>
           <b-button v-on:click="deletePost">삭제</b-button>
         </b-field>
-        <viewer v-if="content!=null" :initialValue="content"/>
+        <viewer v-if="content!=null" :initialValue="content" :options="options"/>
         <ul>
           <li class="list-view" v-for="item in comments" :key="item.id">
             <label>{{ item.accountName }}:{{ item.content }}</label>
@@ -25,8 +25,12 @@
 
 <script>
 
-import '@toast-ui/editor/dist/toastui-editor-viewer.css';
-import {Viewer} from '@toast-ui/vue-editor'
+import Prism from 'prismjs';
+import 'prismjs/components/prism-java'
+
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
+import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell'
+import {Viewer} from "@toast-ui/vue-editor";
 
 import {getPost, addComment, deletePost, checkAuthentication} from "@/service";
 
@@ -35,22 +39,13 @@ export default {
   components: {
     'viewer': Viewer
   },
-  /*props:{
-    postTitle : {
-      type:String,
-      default:""
-    },
-    content : {
-      type:String,
-      default:""
-    }
-  },*/
   data: function () {
     return {
       postTitle: '',
       content: null,
       comments: [],
-      comment: ''
+      comment: '',
+      options: {plugins: [tableMergedCell, [codeSyntaxHighlight, {highlighter: Prism}]]}
     };
   },
   created: async function () {
@@ -68,7 +63,7 @@ export default {
           this.comments = (await getPost(this.$route.params.id)).data.comments
         } else {
           alert("로그인 해주세요")
-          this.$router.push({name: 'Login'})
+          await this.$router.push({name: 'Login'})
         }
       } catch (ex) {
         alert("뭔가 잘못됨! : " + ex)
@@ -80,13 +75,13 @@ export default {
           let data = await deletePost(localStorage.getItem("token"), this.$route.params.id)
           if (data != null) {
             alert("삭제완료")
-            this.$router.push({name: 'Blog'})
+            await this.$router.push({name: 'Blog'})
           } else {
             alert("삭제에 실패하였습니다")
           }
         } else {
           alert("로그인 해주세요")
-          this.$router.push({name: 'Login'})
+          await this.$router.push({name: 'Login'})
         }
       } catch (ex) {
         alert("뭔가 잘못됨! : " + ex)
