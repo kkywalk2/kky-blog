@@ -27,6 +27,7 @@
 
 import Prism from 'prismjs';
 import 'prismjs/components/prism-java'
+import 'prismjs/components/prism-kotlin'
 
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell'
