@@ -25,15 +25,16 @@
 
 <script>
 
-import Prism from 'prismjs';
+import Prism from 'prismjs'
+import 'prismjs/themes/prism.css'
 import 'prismjs/components/prism-java'
 import 'prismjs/components/prism-kotlin'
 
-import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight'
 import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell'
-import {Viewer} from "@toast-ui/vue-editor";
+import {Viewer} from "@toast-ui/vue-editor"
 
-import {getPost, addComment, deletePost, checkAuthentication} from "@/service";
+import {getPost, addComment, deletePost, checkAuthentication} from "@/service"
 
 export default {
   name: 'Post',
@@ -91,3 +92,14 @@ export default {
   }
 }
 </script>
+
+<style>
+code .number {
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  justify-content: normal;
+  min-width: 0;
+  vertical-align: unset;
+}
+</style>
