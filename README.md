@@ -17,10 +17,6 @@
 - [x] 이미지 업로드와 에디터 연동 
 - [x] 댓글달기 
 - [x] 글을 카테고리 별로 분류 
-  
-추가 목표
-- [ ] API의 테스트 코드 구현, Mock과 H2 인메모리 DB를 사용하여 구현중
-- [ ] AWS를 활용하여 지속적인 배포 구현, 현재 ~~Jenkins -> Docker Hub -> AWS ECS~~ (ECS가 프리티어에서 사용불가..)
-
-github action -> AWS EB 로 변경하여 배포하는 과정을 테스트 중([링크](http://kkyblog-env.eba-qminpptm.ap-northeast-2.elasticbeanstalk.com/blog/#/))
+- [x] API의 테스트 코드 구현, Mock과 H2 인메모리 DB를 사용하여 구현
+- [x] ~~AWS를 활용하여 지속적인 배포 구현, AWS EB로 구현, 현재는 프리티어가 만료되어 배포스크립트 제거~~ -> docker hub에 올리고 온프레미스 서버에 배포하는 방식으로 변경, aws 요금이 무섭다..
 
