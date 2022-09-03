@@ -21,19 +21,10 @@ const getPosts = (page, perPage, category, title) => {
     }
 
     let query = ''
+    if(category) { query += `&category=${category}` }
+    if(title) { query += `&title=${title}` }
 
-    if(category) {
-        query += `category%3D${category}`
-
-        if(title)
-            query += '%2C'
-    }
-
-    if(title) {
-        query += `title%3D${title}`
-    }
-
-    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post?page=${page}&per_page=${perPage}&query=${query}`, { headers })
+    return axios.get(`${process.env.VUE_APP_SERVER_ADDRESS}/post?page=${page}&per_page=${perPage}${query}`, { headers })
 }
 
 const getPost = (id) => {

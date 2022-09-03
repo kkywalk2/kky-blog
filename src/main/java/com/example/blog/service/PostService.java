@@ -7,6 +7,7 @@ import com.google.common.base.Preconditions;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import com.example.blog.entity.PostEntity;
 
@@ -30,20 +31,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<GetPostsData> getPosts(Pageable pageable, String query) {
-        HashMap<String, String> map = null;
-
-        if (query != null) {
-            map = new HashMap<>();
-            String[] parameters = query.split(",");
-            for (String parameter : parameters) {
-                String[] keyValue = parameter.split("=");
-                if (keyValue.length == 2) {
-                    map.put(keyValue[0], keyValue[1]);
-                }
-            }
-        }
-        return postRepository.findAllData(pageable, map);
+    public Page<GetPostsData> getPosts(Pageable pageable, Optional<String> title, Optional<String> category) {
+        return postRepository.findAllData(pageable, title, category);
     }
 
     @Transactional(readOnly = true)

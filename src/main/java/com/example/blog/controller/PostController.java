@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("post")
 public class PostController {
@@ -33,9 +35,10 @@ public class PostController {
     @ResponseBody
     public GetPostsResponse getPosts(@RequestParam(value = "page", defaultValue = "0") int page,
                                      @RequestParam(value = "per_page", defaultValue = "0") int perPage,
-                                     @RequestParam(required = false, value = "query") String query) {
+                                     @RequestParam(value = "title") Optional<String> title,
+                                     @RequestParam(value = "category") Optional<String> category) {
         Pageable pageable = perPage == 0 ? Pageable.unpaged() : PageRequest.of(page, perPage);
-        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(pageable, query));
+        return new GetPostsResponse(ResponseCode.OK, "", postService.getPosts(pageable, title, category));
     }
 
     @GetMapping(value = "/{id}")

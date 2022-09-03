@@ -18,11 +18,12 @@ import com.example.blog.dto.post.GetPostsData;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = { PostService.class, PostRepository.class })
+@SpringBootTest(classes = {PostService.class, PostRepository.class})
 public class PostServiceTests {
 
     @Autowired
@@ -40,8 +41,8 @@ public class PostServiceTests {
 
         Page<GetPostsData> pages = new PageImpl<GetPostsData>(result, PageRequest.of(0, 3), 3);
 
-        given(postRepository.findAllData(PageRequest.of(0, 3), null)).willReturn(pages);
+        given(postRepository.findAllData(PageRequest.of(0, 3), Optional.empty(), Optional.empty())).willReturn(pages);
 
-        Assertions.assertEquals("test1", postService.getPosts(PageRequest.of(0, 3), null).getContent().get(0).getTitle());
+        Assertions.assertEquals("test1", postService.getPosts(PageRequest.of(0, 3), Optional.empty(), Optional.empty()).getContent().get(0).getTitle());
     }
 }

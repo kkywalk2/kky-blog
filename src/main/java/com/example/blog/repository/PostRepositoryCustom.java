@@ -6,10 +6,10 @@ import com.example.blog.dto.post.PostCategories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
-public interface PostRepositoyCustom {
-    Page<GetPostsData> findAllData(Pageable pageable, HashMap<String, String> map);
+public interface PostRepositoryCustom {
+    Page<GetPostsData> findAllData(Pageable pageable, Optional<String> title, Optional<String> category);
     List<PostCategories> findCategoryCounts();
 }
