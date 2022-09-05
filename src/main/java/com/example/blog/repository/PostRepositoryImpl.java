@@ -30,19 +30,18 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     public Page<GetPostsData> findAllData(Pageable pageable, Optional<String> title, Optional<String> category) {
         JPAQuery<GetPostsData> query = jpaQueryFactory.from(postEntity)
-                .select(Projections.constructor(GetPostsData.class,
+                .select(Projections.constructor(
+                        GetPostsData.class,
                         postEntity.id,
                         postEntity.title,
                         postEntity.category,
                         postEntity.views,
                         postEntity.createAt))
-                .where(
-                        containsTitle(title)
-                        , equalCategory(category)
-                )
-                .orderBy(postEntity.createAt.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .where(containsTitle(title), equalCategory(category))
+                .orderBy(postEntity.createAt.desc());
+
+        if(pageable.isPaged())
+            query.offset(pageable.getOffset()).limit(pageable.getPageSize());
 
         QueryResults<GetPostsData> result = query.fetchResults();
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
@@ -50,7 +49,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     public List<PostCategories> findCategoryCounts() {
         return jpaQueryFactory.from(postEntity)
-                .select(Projections.constructor(PostCategories.class,
+                .select(Projections.constructor(
+                        PostCategories.class,
                         postEntity.category,
                         postEntity.category.count()))
                 .groupBy(postEntity.category)
