@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PostCategories {
+public class CategoryDto {
     private String category;
     private Long count;
 }

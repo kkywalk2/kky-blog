@@ -9,8 +9,8 @@ import lombok.Getter;
 
 @Getter
 public class GetPostsResponse extends Response {
-    private Page<GetPostsData> data;
-    public GetPostsResponse(ResponseCode code, String message, Page<GetPostsData> data) {
+    private Page<PostDto> data;
+    public GetPostsResponse(ResponseCode code, String message, Page<PostDto> data) {
 		super(code, message);
         this.data = data;
 	}

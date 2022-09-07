@@ -13,7 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.example.blog.repository.PostRepository;
 import com.example.blog.service.PostService;
-import com.example.blog.dto.post.GetPostsData;
+import com.example.blog.dto.post.PostDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,12 +34,12 @@ public class PostServiceTests {
 
     @Test
     public void postServiceTest() {
-        List<GetPostsData> result = new ArrayList<>();
-        result.add(new GetPostsData(1L, "test1", "test", 0L, LocalDateTime.now()));
-        result.add(new GetPostsData(2L, "test2", "test", 0L, LocalDateTime.now()));
-        result.add(new GetPostsData(3L, "test3", "test", 0L, LocalDateTime.now()));
+        List<PostDto> result = new ArrayList<>();
+        result.add(new PostDto(1L, "test1", "test", 0L, LocalDateTime.now()));
+        result.add(new PostDto(2L, "test2", "test", 0L, LocalDateTime.now()));
+        result.add(new PostDto(3L, "test3", "test", 0L, LocalDateTime.now()));
 
-        Page<GetPostsData> pages = new PageImpl<GetPostsData>(result, PageRequest.of(0, 3), 3);
+        Page<PostDto> pages = new PageImpl(result, PageRequest.of(0, 3), 3);
 
         given(postRepository.findAllData(PageRequest.of(0, 3), Optional.empty(), Optional.empty())).willReturn(pages);
 

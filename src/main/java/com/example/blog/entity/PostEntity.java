@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+//todo: remove setter
 @Entity
 @Getter
 @Setter

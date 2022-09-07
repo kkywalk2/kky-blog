@@ -8,8 +8,8 @@ import java.util.List;
 
 @Getter
 public class GetCategoryResponse extends Response {
-    private List<PostCategories> data;
-    public GetCategoryResponse(ResponseCode code, String message, List<PostCategories> data) {
+    private List<CategoryDto> data;
+    public GetCategoryResponse(ResponseCode code, String message, List<CategoryDto> data) {
         super(code, message);
         this.data = data;
     }

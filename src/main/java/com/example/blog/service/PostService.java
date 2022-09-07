@@ -1,11 +1,10 @@
 package com.example.blog.service;
 
-import com.example.blog.dto.post.GetPostsData;
-import com.example.blog.dto.post.PostCategories;
+import com.example.blog.dto.post.PostDto;
+import com.example.blog.dto.post.CategoryDto;
 import com.example.blog.repository.PostRepository;
 import com.google.common.base.Preconditions;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,17 +30,18 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<GetPostsData> getPosts(Pageable pageable, Optional<String> title, Optional<String> category) {
+    public Page<PostDto> getPosts(Pageable pageable, Optional<String> title, Optional<String> category) {
         return postRepository.findAllData(pageable, title, category);
     }
 
+    //todo: modify return type to dto
     @Transactional(readOnly = true)
     public PostEntity getPost(Long postId) {
         return postRepository.findById(postId).orElseThrow(() -> new NullPointerException("Unavailable Post"));
     }
 
     @Transactional(readOnly = true)
-    public List<PostCategories> getCategoryCounts() {
+    public List<CategoryDto> getCategoryCounts() {
         return postRepository.findCategoryCounts();
     }
 
@@ -54,6 +54,7 @@ public class PostService {
         postEntity.setCategory(category);
     }
 
+    //TODO: modify return type to dto
     @Transactional
     public void deletePost(Long accountId, Long postId) {
         PostEntity postEntity = postRepository.getById(postId);

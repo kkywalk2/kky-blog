@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
+//todo: remove setter
 @Entity
 @Getter
 @Setter

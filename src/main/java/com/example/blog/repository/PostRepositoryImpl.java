@@ -1,7 +1,7 @@
 package com.example.blog.repository;
 
-import com.example.blog.dto.post.GetPostsData;
-import com.example.blog.dto.post.PostCategories;
+import com.example.blog.dto.post.PostDto;
+import com.example.blog.dto.post.CategoryDto;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.data.domain.Page;
@@ -28,10 +28,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public Page<GetPostsData> findAllData(Pageable pageable, Optional<String> title, Optional<String> category) {
-        JPAQuery<GetPostsData> query = jpaQueryFactory.from(postEntity)
+    public Page<PostDto> findAllData(Pageable pageable, Optional<String> title, Optional<String> category) {
+        JPAQuery<PostDto> query = jpaQueryFactory.from(postEntity)
                 .select(Projections.constructor(
-                        GetPostsData.class,
+                        PostDto.class,
                         postEntity.id,
                         postEntity.title,
                         postEntity.category,
@@ -43,14 +43,14 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         if(pageable.isPaged())
             query.offset(pageable.getOffset()).limit(pageable.getPageSize());
 
-        QueryResults<GetPostsData> result = query.fetchResults();
+        QueryResults<PostDto> result = query.fetchResults();
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
-    public List<PostCategories> findCategoryCounts() {
+    public List<CategoryDto> findCategoryCounts() {
         return jpaQueryFactory.from(postEntity)
                 .select(Projections.constructor(
-                        PostCategories.class,
+                        CategoryDto.class,
                         postEntity.category,
                         postEntity.category.count()))
                 .groupBy(postEntity.category)
