@@ -22,7 +22,7 @@ const login = async (accountName, password) => {
 const signUp = async (accountName, password, email) => {
     try {
         const res = await accountService.signUp(accountName, password, email)
-        if (res.status === 200)
+        if (res.status === 201)
             return res.data
         else
             return null
@@ -126,10 +126,7 @@ const addComment = async (token, postId, comment) => {
 const checkAuthentication = async (token) => {
     try {
         const res = await accountService.checkAuthentication(token)
-        if (res.status === 200)
-            return true
-        else
-            return false
+        return res.status === 200;
     } catch (err) {
         return false
     }

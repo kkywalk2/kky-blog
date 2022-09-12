@@ -1,5 +1,7 @@
 package com.example.blog;
 
+import com.example.blog.dto.account.AuthDto;
+import com.example.blog.security.JwtUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,10 +29,13 @@ public class AccountServiceTests {
     @MockBean
     AccountRepository accountRepository;
 
+    @MockBean
+    JwtUtil jwtUtil;
+
     @BeforeEach
     public void initService() {
         passwordEncoder = new BCryptPasswordEncoder();
-        accountService = new AccountService(accountRepository, passwordEncoder);
+        accountService = new AccountService(accountRepository, passwordEncoder, jwtUtil);
     }
 
     @Test
@@ -42,6 +47,8 @@ public class AccountServiceTests {
 
         given(accountRepository.findByAccountName("kkywalk2")).willReturn(accountEntity);
 
-        Assertions.assertEquals(true, accountService.accountValidation("kkywalk2","pruna333"));
+        given(jwtUtil.createToken("kkywalk2")).willReturn("token");
+
+        Assertions.assertEquals(new AuthDto("kkywalk2", "token"), accountService.accountValidation("kkywalk2","pruna333"));
     }
 }
