@@ -1,41 +1,58 @@
-package com.example.blog.entity;
+package com.example.blog.entity
 
-import java.time.LocalDateTime;
+import com.example.blog.dto.CommentDto
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDateTime
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-//todo: remove setter
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-public class CommentEntity {
+class CommentEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String accountName;
-    private Long accountId;
-    private Long postId;
-    private String content;
-    @CreationTimestamp
-    private LocalDateTime createAt;
-    @UpdateTimestamp
-    private LocalDateTime UpdatedAt;
+    val id: Long = 0,
 
-    public CommentEntity(Long accountId, String accountName, Long postId, String content) {
-        this.accountId = accountId;
-        this.accountName = accountName;
-        this.postId = postId;
-        this.content = content;
+    val accountName: String,
+
+    val accountId: Long,
+
+    val postId: Long,
+
+    val content: String,
+
+    @CreationTimestamp
+    private val createAt: LocalDateTime = LocalDateTime.now(),
+
+    @UpdateTimestamp
+    private val updatedAt: LocalDateTime = LocalDateTime.now()
+) {
+    fun copy(
+        content: String = this.content,
+        createAt: LocalDateTime = this.createAt,
+        updatedAt: LocalDateTime = this.updatedAt
+    ): CommentEntity {
+        return CommentEntity(
+            id = id,
+            postId = postId,
+            accountName = accountName,
+            accountId = accountId,
+            content = content,
+            createAt = createAt,
+            updatedAt = updatedAt
+        )
+    }
+
+    fun toDto(): CommentDto {
+        return CommentDto(
+            id = id,
+            postId = postId,
+            accountName = accountName,
+            content = content,
+            createAt = createAt,
+            updatedAt = updatedAt
+        )
     }
 }

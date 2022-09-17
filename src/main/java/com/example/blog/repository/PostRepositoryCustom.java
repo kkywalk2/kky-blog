@@ -1,8 +1,7 @@
 package com.example.blog.repository;
 
-import com.example.blog.dto.post.PostDto;
-import com.example.blog.dto.post.CategoryDto;
-
+import com.example.blog.dto.CategoryDto;
+import com.example.blog.dto.PostDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

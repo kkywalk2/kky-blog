@@ -88,7 +88,7 @@ export default {
       await this.refreshPostList()
     },
     async refreshPostList() {
-      const data = (await getPosts(this.page - 1, this.perPage, this.$route.query.category, this.$route.query.search)).data
+      const data = (await getPosts(this.page - 1, this.perPage, this.$route.query.category, this.$route.query.search))
       this.postData = data.content
       this.totalElements = data.totalElements
       this.totalPages = data.totalPages

@@ -1,57 +1,92 @@
-package com.example.blog.entity;
+package com.example.blog.entity
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.example.blog.dto.PostDetailDto
+import com.example.blog.dto.PostDto
+import com.google.common.collect.Lists
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.UpdateTimestamp
+import org.hibernate.annotations.Where
+import java.time.LocalDateTime
+import javax.persistence.*
+import kotlin.Long
+import kotlin.String
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-
-import com.google.common.collect.Lists;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.Where;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-//todo: remove setter
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
 @SQLDelete(sql = "UPDATE post_entity SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
-@Table(indexes = {
-    @Index(name = "title_index", columnList = "title"),
-  })
-public class PostEntity {
-	@Id
+@Table(indexes = [Index(name = "title_index", columnList = "title")])
+class PostEntity(
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long accountId;
-    @Size(max = 100)
-    private String title;
-    @Size
-    private String content;
-    private Long views;
-    @Size(min = 1, max = 30)
-    private String category;
+    val id: Long = 0,
+
+    val accountId: Long,
+
+    val views: Long = 0,
+
+    val deleted: Boolean = false,
+
+    val title: String,
+
+    val content: String,
+
+    val category: String,
+
     @CreationTimestamp
-    private LocalDateTime createAt;
+    val createAt: LocalDateTime = LocalDateTime.now(),
+
     @UpdateTimestamp
-    private LocalDateTime UpdatedAt;
-    private boolean deleted = Boolean.FALSE;
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 
-    @OneToMany(mappedBy="postId", fetch = FetchType.EAGER)
-    private List<CommentEntity> comments = Lists.newArrayList();
+    @OneToMany(mappedBy = "postId", fetch = FetchType.LAZY)
+    val comments: List<CommentEntity> = Lists.newArrayList()
+) {
+    fun copy(
+        views: Long = this.views,
+        deleted: Boolean = this.deleted,
+        title: String = this.title,
+        content: String = this.content,
+        category: String = this.category,
+        createAt: LocalDateTime = this.createAt,
+        updatedAt: LocalDateTime = this.updatedAt,
+        comments: List<CommentEntity> = this.comments
+    ): PostEntity {
+        return PostEntity(
+            id = id,
+            accountId = accountId,
+            views = views,
+            deleted = deleted,
+            title = title,
+            content = content,
+            category = category,
+            createAt = createAt,
+            updatedAt = updatedAt,
+            comments = comments
+        )
+    }
 
-    public PostEntity(long accountId, String title, String content, String category){
-    		this.accountId = accountId;
-    		this.title = title;
-            this.content = content;
-            this.category = category;
-            this.views = 0L;
+    fun toDto(): PostDto {
+        return PostDto(
+            id = id,
+            title = title,
+            category = category,
+            views = views,
+            createAt = createAt,
+            updateAt = updatedAt
+        )
+    }
+
+    fun toDetailDto(): PostDetailDto {
+        return PostDetailDto(
+            id = id,
+            title = title,
+            category = category,
+            views = views,
+            createAt = createAt,
+            updateAt = updatedAt,
+            content = content,
+            comments = comments.map { it.toDto() }
+        )
     }
 }

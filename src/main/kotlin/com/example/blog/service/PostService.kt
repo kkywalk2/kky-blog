@@ -1,64 +1,74 @@
-package com.example.blog.service;
+package com.example.blog.service
 
-import com.example.blog.dto.post.PostDto;
-import com.example.blog.dto.post.CategoryDto;
-import com.example.blog.repository.PostRepository;
-import com.google.common.base.Preconditions;
-
-import java.util.List;
-import java.util.Optional;
-
-import com.example.blog.entity.PostEntity;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.example.blog.dto.CreatePostRequest
+import com.example.blog.dto.PostDetailDto
+import com.example.blog.dto.PostDto
+import com.example.blog.dto.UpdatePostRequest
+import com.example.blog.dto.CategoryDto
+import com.example.blog.entity.PostEntity
+import com.example.blog.exception.UnauthorizedException
+import com.example.blog.repository.PostRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
-public class PostService {
-
-    private final PostRepository postRepository;
-
-    PostService(PostRepository postRepository) {
-        this.postRepository = postRepository;
+class PostService(
+    private val postRepository: PostRepository
+) {
+    @Transactional
+    fun createPost(accountId: Long, createPostRequest: CreatePostRequest): PostDto {
+        return postRepository.save(createPostRequest.toEntity(accountId)).toDto()
     }
 
-    @Transactional
-    public void createPost(Long accountId, String title, String content, String category) {
-        postRepository.save(new PostEntity(accountId, title, content, category));
+    //TODO: Page 객체를 사용하지 않는 것이 좋음, none offset pagination 으로 수정예정
+    @Transactional(readOnly = true)
+    fun getPosts(pageable: Pageable, title: Optional<String>, category: Optional<String>): Page<PostDto> {
+        return postRepository.findAllData(pageable, title, category)
     }
 
     @Transactional(readOnly = true)
-    public Page<PostDto> getPosts(Pageable pageable, Optional<String> title, Optional<String> category) {
-        return postRepository.findAllData(pageable, title, category);
-    }
-
-    //todo: modify return type to dto
-    @Transactional(readOnly = true)
-    public PostEntity getPost(Long postId) {
-        return postRepository.findById(postId).orElseThrow(() -> new NullPointerException("Unavailable Post"));
+    fun getPost(postId: Long): PostDetailDto {
+        return postRepository.findById(postId)
+            .orElseThrow { NullPointerException("Unavailable Post") }
+            .toDetailDto()
     }
 
     @Transactional(readOnly = true)
-    public List<CategoryDto> getCategoryCounts() {
-        return postRepository.findCategoryCounts();
+    fun getCategoryCounts(): List<CategoryDto> {
+        return postRepository.findCategoryCounts()
     }
 
     @Transactional
-    public void updatePost(Long accountId, Long postId, String title, String content, String category) {
-        PostEntity postEntity = postRepository.getById(postId);
-        Preconditions.checkState(postEntity.getAccountId() == accountId, "Unauthorized");
-        postEntity.setTitle(title);
-        postEntity.setContent(content);
-        postEntity.setCategory(category);
+    fun updatePost(accountId: Long, postId: Long, updatePostRequest: UpdatePostRequest): PostDetailDto {
+        val postEntity = postRepository.getById(postId)
+        if (postEntity.accountId != accountId) throw UnauthorizedException()
+        return postEntity.let { postRepository.save(updatePostRequest.toEntity(postEntity)) }.toDetailDto()
     }
 
-    //TODO: modify return type to dto
     @Transactional
-    public void deletePost(Long accountId, Long postId) {
-        PostEntity postEntity = postRepository.getById(postId);
-        Preconditions.checkState(postEntity.getAccountId() == accountId, "Unauthorized");
-        postRepository.deleteById(postId);
+    fun deletePost(accountId: Long, postId: Long): PostDto {
+        val postEntity = postRepository.getById(postId)
+        if (postEntity.accountId != accountId) throw UnauthorizedException()
+        return postEntity.apply { postRepository.delete(postEntity) }.toDto()
+    }
+
+    private fun CreatePostRequest.toEntity(accountId: Long): PostEntity {
+        return PostEntity(
+            accountId = accountId,
+            title = title,
+            content = content,
+            category = category
+        )
+    }
+
+    private fun UpdatePostRequest.toEntity(postEntity: PostEntity): PostEntity {
+        return postEntity.copy(
+            title = title,
+            content = content,
+            category = category
+        )
     }
 }

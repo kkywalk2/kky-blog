@@ -1,7 +1,7 @@
 package com.example.blog.repository;
 
-import com.example.blog.dto.post.PostDto;
-import com.example.blog.dto.post.CategoryDto;
+import com.example.blog.dto.PostDto;
+import com.example.blog.dto.CategoryDto;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.data.domain.Page;
@@ -36,13 +36,15 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         postEntity.title,
                         postEntity.category,
                         postEntity.views,
-                        postEntity.createAt))
+                        postEntity.createAt,
+                        postEntity.updatedAt))
                 .where(containsTitle(title), equalCategory(category))
                 .orderBy(postEntity.createAt.desc());
 
         if(pageable.isPaged())
             query.offset(pageable.getOffset()).limit(pageable.getPageSize());
 
+        //TODO: fetchResults deprecated 됨, none offset pagination 으로 수정하면서 제거 예정
         QueryResults<PostDto> result = query.fetchResults();
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }

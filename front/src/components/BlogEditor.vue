@@ -49,7 +49,7 @@ export default {
     }
 
     if(this.$route.params.id) {
-      let data = (await getPost(this.$route.params.id)).data
+      let data = (await getPost(this.$route.params.id))
       console.log(data)
       this.title = data.title
       this.editorText = data.content

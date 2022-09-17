@@ -1,19 +1,19 @@
-package com.example.blog.service;
+package com.example.blog.service
 
-import com.example.blog.repository.CommentRepository;
-import com.example.blog.entity.CommentEntity;
-
-import org.springframework.stereotype.Service;
+import com.example.blog.entity.CommentEntity
+import com.example.blog.repository.CommentRepository
+import org.springframework.stereotype.Service
 
 @Service
-public class CommentService {
-    private final CommentRepository commentRepository;
-
-    CommentService(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
-    }
-
-    public void addComment(Long accountId, String accountName, Long postId, String content) {
-        commentRepository.save(new CommentEntity(accountId, accountName, postId, content));
+class CommentService (
+    private val commentRepository: CommentRepository
+) {
+    fun addComment(accountId: Long, accountName: String, postId: Long, content: String) {
+        commentRepository.save(CommentEntity(
+            accountId = accountId,
+            accountName = accountName,
+            postId = postId,
+            content = content
+        ))
     }
 }

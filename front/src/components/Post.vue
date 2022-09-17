@@ -51,7 +51,7 @@ export default {
     };
   },
   created: async function () {
-    let data = (await getPost(this.$route.params.id)).data
+    let data = (await getPost(this.$route.params.id))
     console.log(data)
     this.postTitle = data.title
     this.content = data.content
@@ -62,7 +62,7 @@ export default {
       try {
         if (localStorage.getItem("token") && (await checkAuthentication(localStorage.getItem("token")))) {
           await addComment(localStorage.getItem("token"), this.$route.params.id, this.comment)
-          this.comments = (await getPost(this.$route.params.id)).data.comments
+          this.comments = (await getPost(this.$route.params.id)).comments
         } else {
           alert("로그인 해주세요")
           await this.$router.push({name: 'Login'})

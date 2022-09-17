@@ -50,13 +50,12 @@ const updatePost = (token, postId, title, content, category) => {
     }
 
     let postInfo = {
-        postId: postId,
         title: title,
         content: content,
         category: category
     };
 
-    return axios.put(`${process.env.VUE_APP_SERVER_ADDRESS}/post`, postInfo, { headers })
+    return axios.put(`${process.env.VUE_APP_SERVER_ADDRESS}/post/${postId}`, postInfo, { headers })
 }
 
 const deletePost = (token, postId) => {
