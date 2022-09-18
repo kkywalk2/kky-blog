@@ -35,7 +35,7 @@ const signUp = async (accountName, password, email) => {
 const createPosts = async (token, title, content, category) => {
     try {
         const res = await postService.createPost(token, title, content, category)
-        if (res.status === 200)
+        if (res.status === 201)
             return res.data
         else
             return null
@@ -113,7 +113,7 @@ const getCategories = async () => {
 const addComment = async (token, postId, comment) => {
     try {
         const res = await commentService.addComment(token, postId, comment)
-        if (res.status === 200)
+        if (res.status === 201)
             return res.data
         else
             return null

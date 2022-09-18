@@ -1,27 +1,24 @@
-package com.example.blog.controller;
+package com.example.blog.controller
 
-import com.example.blog.dto.ResponseCode;
-import com.example.blog.dto.comment.AddRequest;
-import com.example.blog.dto.comment.AddResponse;
-import com.example.blog.security.AccountDetail;
-import com.example.blog.service.CommentService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import com.example.blog.dto.CommentDto
+import com.example.blog.dto.CreateCommentRequest
+import com.example.blog.security.AccountDetail
+import com.example.blog.service.CommentService
+import org.springframework.http.HttpStatus
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("comment")
-public class CommentController {
-    private final CommentService commentService;
-
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
-
+class CommentController(
+    private val commentService: CommentService
+) {
     @PostMapping
-    @ResponseBody
-    public AddResponse addComment(@RequestBody AddRequest req, @AuthenticationPrincipal AccountDetail accountDetail) {
-        commentService.addComment(accountDetail.getId(), accountDetail.getUsername(), req.getPostId(), req.getContent());
-        return new AddResponse(ResponseCode.OK, "");
+    @ResponseStatus(HttpStatus.CREATED)
+    fun addComment(
+        @RequestBody request: CreateCommentRequest,
+        @AuthenticationPrincipal accountDetail: AccountDetail
+    ): CommentDto {
+        return commentService.addComment(accountDetail.id, accountDetail.username, request)
     }
 }

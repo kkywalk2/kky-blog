@@ -36,14 +36,5 @@ data class PostRequest(
     val category: String
 )
 
-data class CommentDto(
-    val id: Long,
-    val postId: Long,
-    val accountName: String,
-    val content: String,
-    val createAt: LocalDateTime,
-    val updatedAt: LocalDateTime
-)
-
 typealias CreatePostRequest = PostRequest
 typealias UpdatePostRequest = PostRequest

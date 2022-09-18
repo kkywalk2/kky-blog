@@ -6,6 +6,7 @@ import com.example.blog.service.PostService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -17,6 +18,7 @@ class PostController (
     private val postService: PostService
 ) {
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     fun createPost(
         @RequestBody request: @Valid CreatePostRequest,
         @AuthenticationPrincipal accountDetail: AccountDetail
