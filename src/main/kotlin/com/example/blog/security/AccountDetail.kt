@@ -1,57 +1,40 @@
-package com.example.blog.security;
+package com.example.blog.security
 
-import com.example.blog.entity.AccountEntity;
-import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.example.blog.entity.AccountEntity
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
-import java.util.Collection;
+class AccountDetail(
+    private val accountEntity: AccountEntity
+) : UserDetails {
 
-@Data
-public class AccountDetail implements UserDetails {
+    val id = accountEntity.id
 
-    private final AccountEntity accountEntity;
-
-    public AccountDetail(AccountEntity accountEntity) {
-        this.accountEntity = accountEntity;
+    override fun getAuthorities(): Collection<GrantedAuthority>? {
+        return null
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    override fun getPassword(): String? {
+        return null
     }
 
-    @Override
-    public String getPassword() {
-        return null;
+    override fun getUsername(): String {
+        return accountEntity.accountName
     }
 
-    @Override
-    public String getUsername() {
-        return accountEntity.getAccountName();
+    override fun isAccountNonExpired(): Boolean {
+        return true
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    override fun isAccountNonLocked(): Boolean {
+        return true
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    override fun isCredentialsNonExpired(): Boolean {
+        return true
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    public long getId() {
-        return accountEntity.getId();
+    override fun isEnabled(): Boolean {
+        return true
     }
 }

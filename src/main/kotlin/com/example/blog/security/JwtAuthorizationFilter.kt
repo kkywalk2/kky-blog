@@ -1,59 +1,46 @@
-package com.example.blog.security;
+package com.example.blog.security
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import java.util.*
+import javax.servlet.FilterChain
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Optional;
+class JwtAuthorizationFilter(
+    private val accountDetailService: AccountDetailService,
+    private val jwtUtil: JwtUtil,
+    authenticationManager: AuthenticationManager
+) : BasicAuthenticationFilter(authenticationManager) {
 
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
+        val header = request.getHeader("Authorization")
 
-    private final AccountDetailService accountDetailService;
-
-    private final JwtUtil jwtUtil;
-
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, AccountDetailService accountDetailService, JwtUtil jwtUtil) {
-        super(authenticationManager);
-        this.accountDetailService = accountDetailService;
-        this.jwtUtil = jwtUtil;
-    }
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String header = request.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
-            chain.doFilter(request, response);
-            return;
+            chain.doFilter(request, response)
+            return
         }
 
-        String token = header.replace("Bearer ", "");
+        val token = header.replace("Bearer ", "")
 
         try {
-            String accountName = jwtUtil.getAccountNameFromToken(token);
-
-            Optional.ofNullable(accountName).ifPresent(
-                    s -> {
-                        AccountDetail accountDetail = accountDetailService.loadUserByUsername(s);
-                        Authentication authentication =
-                                new UsernamePasswordAuthenticationToken(
-                                        accountDetail,
-                                        null,
-                                        accountDetail.getAuthorities());
-
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
-            );
-        } catch (RuntimeException ex) {
+            val accountName = jwtUtil.getAccountNameFromToken(token)
+            Optional.ofNullable(accountName).ifPresent {
+                val accountDetail = accountDetailService.loadUserByUsername(it)
+                val authentication: Authentication = UsernamePasswordAuthenticationToken(
+                    accountDetail,
+                    null,
+                    accountDetail.authorities
+                )
+                SecurityContextHolder.getContext().authentication = authentication
+            }
+        } catch (ex: RuntimeException) {
             //TODO Something
         }
 
-        chain.doFilter(request, response);
+        chain.doFilter(request, response)
     }
 }
