@@ -1,21 +1,17 @@
-package com.example.blog.config;
+package com.example.blog.config
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import com.querydsl.jpa.impl.JPAQueryFactory;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.querydsl.jpa.impl.JPAQueryFactory
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 @Configuration
-public class QueryDSLConfig {
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
+class QueryDSLConfig(
+    @PersistenceContext private val entityManager: EntityManager
+) {
     @Bean
-    public JPAQueryFactory jpaQueryFactory() {
-        return new JPAQueryFactory(entityManager);
+    fun jpaQueryFactory(): JPAQueryFactory {
+        return JPAQueryFactory(entityManager)
     }
 }
