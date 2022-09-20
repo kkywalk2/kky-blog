@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.example.blog.entity.AccountEntity;
 
+import java.util.Optional;
+
 @Repository
 public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
-	AccountEntity findByAccountName(String accountName);
+	Optional<AccountEntity> findByAccountName(String accountName);
 }

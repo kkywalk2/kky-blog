@@ -19,6 +19,7 @@ import com.example.blog.repository.AccountRepository;
 import com.example.blog.service.AccountService;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
 
@@ -53,7 +54,7 @@ public class AccountServiceTests {
                 LocalDateTime.now()
         );
 
-        given(accountRepository.findByAccountName("kkywalk2")).willReturn(accountEntity);
+        given(accountRepository.findByAccountName("kkywalk2")).willReturn(Optional.of(accountEntity));
 
         given(jwtUtil.createToken("kkywalk2")).willReturn("token");
 

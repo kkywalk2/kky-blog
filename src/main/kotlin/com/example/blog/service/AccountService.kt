@@ -26,8 +26,11 @@ class AccountService(
     }
 
     fun accountValidation(request: SignInRequest): AuthDto {
-        val account = accountRepository.findByAccountName(request.accountName)
-        if (!passwordEncoder.matches(request.password, account.password)) throw UnauthorizedException()
+        val account = accountRepository
+            .findByAccountName(request.accountName)
+            .filter { passwordEncoder.matches(request.password, it.password) }
+            .orElseThrow { UnauthorizedException() }
+
         return AuthDto(account.accountName, jwtUtil.createToken(account.accountName))
     }
 
