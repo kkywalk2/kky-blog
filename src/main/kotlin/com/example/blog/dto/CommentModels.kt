@@ -7,7 +7,7 @@ data class CommentDto(
     val postId: Long,
     val accountName: String,
     val content: String,
-    val createAt: LocalDateTime,
+    val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
 )
 

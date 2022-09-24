@@ -46,8 +46,8 @@ class AccountService(
         return AccountDto(
             name = accountName,
             email = email,
-            createAt = Optional.ofNullable(createAt),
-            updateAt = Optional.ofNullable(updatedAt)
+            createdAt = Optional.ofNullable(createdAt),
+            updatedAt = Optional.ofNullable(updatedAt)
         )
     }
 }

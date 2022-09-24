@@ -36,10 +36,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         postEntity.title,
                         postEntity.category,
                         postEntity.views,
-                        postEntity.createAt,
+                        postEntity.createdAt,
                         postEntity.updatedAt))
                 .where(containsTitle(title), equalCategory(category))
-                .orderBy(postEntity.createAt.desc());
+                .orderBy(postEntity.createdAt.desc());
 
         if(pageable.isPaged())
             query.offset(pageable.getOffset()).limit(pageable.getPageSize());

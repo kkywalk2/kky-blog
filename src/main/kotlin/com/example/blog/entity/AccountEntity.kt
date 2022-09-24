@@ -11,16 +11,20 @@ class AccountEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
-    @Column(unique = true)
+    @Column(name = "account_name", unique = true)
     val accountName: String,
 
+    @Column(name = "password")
     val password: String,
 
+    @Column(name = "email")
     val email: String,
 
     @CreationTimestamp
-    val createAt: LocalDateTime? = null,
+    @Column(name = "create_at")
+    val createdAt: LocalDateTime? = null,
 
     @UpdateTimestamp
+    @Column(name = "updated_at")
     val updatedAt: LocalDateTime? = null,
 )

@@ -13,8 +13,8 @@ data class PostDto(
     val title: String,
     val category: String,
     val views: Long,
-    val createAt: LocalDateTime,
-    val updateAt: LocalDateTime
+    val createdAt: LocalDateTime,
+    val updatedAt: LocalDateTime
 )
 
 data class PostDetailDto(
@@ -22,8 +22,8 @@ data class PostDetailDto(
     val title: String,
     val category: String,
     val views: Long,
-    val createAt: LocalDateTime,
-    val updateAt: LocalDateTime,
+    val createdAt: LocalDateTime,
+    val updatedAt: LocalDateTime,
     val content: String,
     val comments: List<CommentDto>
 )

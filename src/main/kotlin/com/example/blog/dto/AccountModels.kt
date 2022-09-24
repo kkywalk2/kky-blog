@@ -8,8 +8,8 @@ import javax.validation.constraints.Size
 data class AccountDto (
     var name: String,
     var email: String,
-    val createAt: Optional<LocalDateTime>,
-    val updateAt: Optional<LocalDateTime>,
+    val createdAt: Optional<LocalDateTime>,
+    val updatedAt: Optional<LocalDateTime>,
 )
 
 data class AuthDto (
