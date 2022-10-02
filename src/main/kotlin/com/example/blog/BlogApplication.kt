@@ -1,13 +1,11 @@
-package com.example.blog;
+package com.example.blog
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
 @SpringBootApplication
-public class BlogApplication {
+class BlogApplication
 
-    public static void main(String[] args) {
-        SpringApplication.run(BlogApplication.class, args);
-    }
-
+fun main(args: Array<String>) {
+    runApplication<BlogApplication>(*args)
 }
