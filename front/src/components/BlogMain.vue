@@ -31,7 +31,7 @@
             <b-navbar-item tag="router-link" :to="{ path: `/post/${item.id}` }"
                            class="date columns is-multiline is-desktop">
               <h1 class="column">{{ item.title }}</h1>
-              <p class="column is-one-quarter">{{ new Date(item.createAt).toLocaleDateString() }}</p>
+              <p class="column is-one-quarter">{{ new Date(item.createdAt).toLocaleDateString() }}</p>
             </b-navbar-item>
             <br/>
           </li>
