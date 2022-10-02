@@ -2,6 +2,7 @@ package com.example.blog.service
 
 import com.example.blog.dto.ImageUploadResponse
 import com.example.blog.entity.ImageEntity
+import com.example.blog.exception.FileNotFoundException
 import com.example.blog.repository.ImageRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
@@ -18,6 +19,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
 import kotlin.io.path.name
+import kotlin.io.path.notExists
 
 @Service
 class ImageService(
@@ -46,6 +48,8 @@ class ImageService(
         val image = imageRepository.findByFilePath(Paths.get(path, fileName).toString())
         val path = image.getPath()
         val headers = path.toHeaders()
+
+        if(path.notExists()) throw FileNotFoundException
 
         val resource: Resource = InputStreamResource(Files.newInputStream(path))
 
