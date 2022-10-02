@@ -61,7 +61,7 @@ const getPosts = async (page, perPage, category, title) => {
 const uploadImage = async (blob) => {
     try {
         const res = await imageService.uploadImage(blob)
-        if (res.status === 200)
+        if (res.status === 201)
             return res.data
         else
             return null

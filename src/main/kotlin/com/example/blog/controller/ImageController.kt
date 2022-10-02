@@ -1,35 +1,29 @@
-package com.example.blog.controller;
+package com.example.blog.controller
 
-import com.example.blog.dto.ResponseCode;
-import com.example.blog.dto.image.UploadRequest;
-import com.example.blog.dto.image.UploadResponse;
-import com.example.blog.service.ImageService;
-import org.springframework.core.io.Resource;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.io.IOException;
+import com.example.blog.dto.ImageUploadRequest
+import com.example.blog.dto.ImageUploadResponse
+import com.example.blog.service.ImageService
+import org.springframework.core.io.Resource
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("image")
-public class ImageController {
+class ImageController(
+    private val imageService: ImageService
+) {
 
-    private final ImageService imageService;
-
-    public ImageController(ImageService imageService){
-        this.imageService = imageService;
+    @GetMapping(value = ["/{fileName}"])
+    fun downloadImage(@PathVariable("fileName") fileName: String): ResponseEntity<Resource> {
+        return imageService.downloadImage(fileName)
     }
 
-    @ResponseBody
-    @GetMapping(value = "/{fileName}")
-    public ResponseEntity<Resource> downloadImage(@PathVariable("fileName") String fileName) throws IOException {
-        return imageService.downloadImage(fileName);
-    }
-
-    @ResponseBody
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public UploadResponse uploadImage(@Valid @ModelAttribute UploadRequest req) throws IOException {
-        return new UploadResponse(ResponseCode.OK,"", imageService.saveImage(req.getImageFile()));
+    @PostMapping(consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @ResponseStatus(HttpStatus.CREATED)
+    fun uploadImage(@ModelAttribute req: @Valid ImageUploadRequest): ImageUploadResponse {
+        return imageService.saveImage(req.imageFile)
     }
 }
