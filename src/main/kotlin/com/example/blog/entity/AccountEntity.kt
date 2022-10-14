@@ -1,8 +1,10 @@
 package com.example.blog.entity
 
+import com.example.blog.dto.AccountDto
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -27,4 +29,13 @@ class AccountEntity(
     @UpdateTimestamp
     @Column(name = "updated_at")
     val updatedAt: LocalDateTime? = null,
-)
+) {
+    fun toDto(): AccountDto {
+        return AccountDto(
+            name = accountName,
+            email = email,
+            createdAt = Optional.ofNullable(createdAt),
+            updatedAt = Optional.ofNullable(updatedAt)
+        )
+    }
+}

@@ -11,7 +11,6 @@ import com.example.blog.security.JwtUtil
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 @Service
 class AccountService(
@@ -39,15 +38,6 @@ class AccountService(
             accountName = accountName,
             password = passwordEncoder.encode(password),
             email = email
-        )
-    }
-
-    private fun AccountEntity.toDto(): AccountDto {
-        return AccountDto(
-            name = accountName,
-            email = email,
-            createdAt = Optional.ofNullable(createdAt),
-            updatedAt = Optional.ofNullable(updatedAt)
         )
     }
 }
