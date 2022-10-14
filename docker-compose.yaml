@@ -3,7 +3,10 @@ services:
   db: 
     image: mysql:5.7 
     restart: always
-    command: --lower_case_table_names=1
+    command:
+    - --lower_case_table_names=1
+    - --character-set-server=utf8mb4
+    - --collation-server=utf8mb4_unicode_ci
     container_name: mysql-test 
     ports:
       - "52312:3306" 
@@ -11,9 +14,5 @@ services:
       - MYSQL_DATABASE=testdb
       - MYSQL_ROOT_PASSWORD=1234  
       - TZ=Asia/Seoul
-
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./mysql:/var/lib/mysql
