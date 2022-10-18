@@ -25,7 +25,7 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {AccountService.class, BCryptPasswordEncoder.class, AccountRepository.class})
-public class AccountServiceTests {
+public class AccountsServiceTests {
 
     AccountService accountService;
 

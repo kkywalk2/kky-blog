@@ -41,7 +41,7 @@ public class PostServiceTests {
 
         Page<PostDto> pages = new PageImpl(result, PageRequest.of(0, 3), 3);
 
-        given(postRepository.findAllData(PageRequest.of(0, 3), Optional.empty(), Optional.empty())).willReturn(pages);
+        given(postRepository.getByTitleAndCategory(PageRequest.of(0, 3), Optional.empty(), Optional.empty())).willReturn(pages);
 
         Assertions.assertEquals("test1", postService.getPosts(PageRequest.of(0, 3), Optional.empty(), Optional.empty()).getContent().get(0).getTitle());
     }
