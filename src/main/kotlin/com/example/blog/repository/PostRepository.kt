@@ -16,11 +16,12 @@ import org.springframework.stereotype.Component
 @Component
 class PostRepository {
 
-    fun save(request: CreatePostRequest): PostDto {
+    fun save(accountId: Long, request: CreatePostRequest): PostDto {
         val insertedPost = Posts.insert {
             it[title] = request.title
             it[content] = request.content
             it[category] = request.category
+            it[Posts.accountId] = accountId
         }
 
         return PostDto(
@@ -116,7 +117,7 @@ class PostRepository {
             .selectAll()
             .andWhere(title) { Posts.title like "%$it%" }
             .andWhere(category) { Posts.category eq it }
-            .orderBy(Pair(Posts.createdAt, SortOrder.DESC))
+            .orderBy(Posts.createdAt to SortOrder.DESC)
             .limit(pageable.pageSize, pageable.offset)
             .map {
                 PostDto(
@@ -130,7 +131,9 @@ class PostRepository {
             }
 
         val count = Posts
-            .select { (Posts.title eq title.get()) and (Posts.category eq category.get()) }
+            .selectAll()
+            .andWhere(title) { Posts.title like "%$it%" }
+            .andWhere(category) { Posts.category eq it }
             .count()
 
         return PageImpl(result, pageable, count)
