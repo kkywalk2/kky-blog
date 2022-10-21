@@ -43,28 +43,7 @@ class PostRepository {
             it[category] = request.category
         }
 
-        return PostsEntity.find(expression)
-            .first().let {
-                PostDetailDto(
-                    it.id.value,
-                    it.title,
-                    it.category,
-                    it.views,
-                    it.createdAt,
-                    it.updatedAt,
-                    it.content,
-                    it.comments.map { c ->
-                        CommentDto(
-                            c.id.value,
-                            c.postId.value,
-                            c.accountName,
-                            c.content,
-                            c.createdAt,
-                            c.updatedAt
-                        )
-                    }
-                )
-            }
+        return PostsEntity.find(expression).first().toDetailDto()
     }
 
     fun delete(accountId: Long, postId: Long): PostDto {
@@ -72,43 +51,13 @@ class PostRepository {
 
         Posts.deleteWhere { expression }
 
-        return Posts.select { expression }
-            .first().let {
-                PostDto(
-                    it[Posts.id].value,
-                    it[Posts.title],
-                    it[Posts.category],
-                    it[Posts.views],
-                    it[Posts.createdAt],
-                    it[Posts.updatedAt]
-                )
-            }
+        return Posts.select { expression }.first().toDto()
     }
 
     fun findById(id: Long): Optional<PostDetailDto> {
         return Optional.ofNullable(PostsEntity.findById(id))
             .map { it.load(PostsEntity::comments) }
-            .map {
-                PostDetailDto(
-                    it.id.value,
-                    it.title,
-                    it.category,
-                    it.views,
-                    it.createdAt,
-                    it.updatedAt,
-                    it.content,
-                    it.comments.map { c ->
-                        CommentDto(
-                            c.id.value,
-                            c.postId.value,
-                            c.accountName,
-                            c.content,
-                            c.createdAt,
-                            c.updatedAt
-                        )
-                    }
-                )
-            }
+            .map { it.toDetailDto() }
     }
 
     fun getByTitleAndCategory(pageable: Pageable, title: Optional<String>, category: Optional<String>): Page<PostDto> {
@@ -119,16 +68,7 @@ class PostRepository {
             .andWhere(category) { Posts.category eq it }
             .orderBy(Posts.createdAt to SortOrder.DESC)
             .limit(pageable.pageSize, pageable.offset)
-            .map {
-                PostDto(
-                    it[Posts.id].value,
-                    it[Posts.title],
-                    it[Posts.category],
-                    it[Posts.views],
-                    it[Posts.createdAt],
-                    it[Posts.updatedAt]
-                )
-            }
+            .map { it.toDto() }
 
         val count = Posts
             .selectAll()
@@ -144,6 +84,39 @@ class PostRepository {
             .selectAll()
             .groupBy(Posts.category)
             .map { CategoryDto(it[Posts.category], it[Posts.category.count()]) }
+    }
+
+    private fun ResultRow.toDto(): PostDto {
+        return PostDto(
+            this[Posts.id].value,
+            this[Posts.title],
+            this[Posts.category],
+            this[Posts.views],
+            this[Posts.createdAt],
+            this[Posts.updatedAt]
+        )
+    }
+
+    private fun PostsEntity.toDetailDto(): PostDetailDto {
+        return PostDetailDto(
+            id.value,
+            title,
+            category,
+            views,
+            createdAt,
+            updatedAt,
+            content,
+            comments.map { c ->
+                CommentDto(
+                    c.id.value,
+                    c.postId.value,
+                    c.accountName,
+                    c.content,
+                    c.createdAt,
+                    c.updatedAt
+                )
+            }
+        )
     }
 
     private fun <T> Query.andWhere(
