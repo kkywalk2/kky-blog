@@ -4,6 +4,7 @@ import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.LongIdTable
+import org.jetbrains.exposed.sql.javatime.CurrentTimestamp
 import org.jetbrains.exposed.sql.javatime.datetime
 import java.time.LocalDateTime
 
@@ -14,8 +15,8 @@ object Posts : LongIdTable("post_entity") {
     val title = varchar("title", 255)
     val content = text("content")
     val category = varchar("category", 50)
-    val createdAt = datetime("create_at").default(LocalDateTime.now())
-    val updatedAt = datetime("updated_at").default(LocalDateTime.now())
+    val createdAt = datetime("create_at").defaultExpression(CurrentTimestamp()).clientDefault { LocalDateTime.now() }
+    val updatedAt = datetime("updated_at").defaultExpression(CurrentTimestamp()).clientDefault { LocalDateTime.now() }
 }
 
 class PostsEntity(id: EntityID<Long>) : LongEntity(id) {
