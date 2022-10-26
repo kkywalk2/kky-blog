@@ -4,9 +4,9 @@ import com.example.blog.dto.CommentDto
 import com.example.blog.dto.CreateCommentRequest
 import com.example.blog.entity.Comments
 import org.jetbrains.exposed.sql.insert
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
 
-@Component
+@Repository
 class CommentRepository {
 
     fun save(accountId: Long, accountName: String, request: CreateCommentRequest): CommentDto {

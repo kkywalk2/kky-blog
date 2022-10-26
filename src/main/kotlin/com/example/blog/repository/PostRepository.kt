@@ -11,16 +11,16 @@ import java.util.*
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
 
-@Component
+@Repository
 class PostRepository {
 
     fun save(accountId: Long, request: CreatePostRequest): PostDto {
         val insertedPost = Posts.insert {
-            it[title] = request.title
-            it[content] = request.content
-            it[category] = request.category
+            it[Posts.title] = request.title
+            it[Posts.content] = request.content
+            it[Posts.category] = request.category
             it[Posts.accountId] = accountId
         }
 
