@@ -2,28 +2,31 @@ package com.example.blog.repository
 
 import com.example.blog.dto.CommentDto
 import com.example.blog.dto.CreateCommentRequest
-import com.example.blog.entity.Comments
-import org.jetbrains.exposed.sql.insert
+import com.example.blog.entity.CommentsEntity
+import com.example.blog.entity.Posts
+import org.jetbrains.exposed.dao.id.EntityID
 import org.springframework.stereotype.Repository
 
 @Repository
 class CommentRepository {
 
     fun save(accountId: Long, accountName: String, request: CreateCommentRequest): CommentDto {
-        val insertedComment = Comments.insert {
-            it[Comments.accountId] = accountId
-            it[Comments.accountName] = accountName
-            it[Comments.postId] = request.postId
-            it[Comments.content] = request.content
-        }
+        return CommentsEntity.new {
+            this.accountId = accountId
+            this.accountName = accountName
+            this.postId = EntityID(request.postId, Posts)
+            this.content = request.content
+        }.toDto()
+    }
 
+    private fun CommentsEntity.toDto(): CommentDto {
         return CommentDto(
-            insertedComment[Comments.id].value,
-            insertedComment[Comments.postId].value,
-            insertedComment[Comments.accountName],
-            insertedComment[Comments.content],
-            insertedComment[Comments.createdAt],
-            insertedComment[Comments.updatedAt]
+            id.value,
+            postId.value,
+            accountName,
+            content,
+            createdAt,
+            updatedAt
         )
     }
 }

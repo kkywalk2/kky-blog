@@ -20,10 +20,10 @@ object Comments : LongIdTable("comment_entity") {
 class CommentsEntity(id: EntityID<Long>) : LongEntity(id) {
     companion object : LongEntityClass<CommentsEntity>(Comments)
 
-    val accountName by Comments.accountName
-    val accountId by Comments.accountId
-    val postId by Comments.postId
-    val content by Comments.content
-    val createdAt by Comments.createdAt
-    val updatedAt by Comments.updatedAt
+    var accountName by Comments.accountName
+    var accountId by Comments.accountId
+    var postId by Comments.postId
+    var content by Comments.content
+    var createdAt by Comments.createdAt
+    var updatedAt by Comments.updatedAt
 }

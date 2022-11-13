@@ -22,13 +22,13 @@ object Posts : LongIdTable("post_entity") {
 class PostsEntity(id: EntityID<Long>) : LongEntity(id) {
     companion object : LongEntityClass<PostsEntity>(Posts)
 
-    val accountId by Posts.accountId
-    val views by Posts.views
-    val deleted by Posts.deleted
-    val title by Posts.title
-    val content by Posts.content
-    val category by Posts.category
-    val createdAt by Posts.createdAt
-    val updatedAt by Posts.updatedAt
+    var accountId by Posts.accountId
+    var views by Posts.views
+    var deleted by Posts.deleted
+    var title by Posts.title
+    var content by Posts.content
+    var category by Posts.category
+    var createdAt by Posts.createdAt
+    var updatedAt by Posts.updatedAt
     val comments by CommentsEntity referrersOn Comments.postId
 }

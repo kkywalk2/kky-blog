@@ -17,41 +17,33 @@ import org.springframework.stereotype.Repository
 class PostRepository {
 
     fun save(accountId: Long, request: CreatePostRequest): PostDto {
-        val insertedPost = Posts.insert {
-            it[Posts.title] = request.title
-            it[Posts.content] = request.content
-            it[Posts.category] = request.category
-            it[Posts.accountId] = accountId
-        }
-
-        return PostDto(
-            insertedPost[Posts.id].value,
-            insertedPost[Posts.title],
-            insertedPost[Posts.category],
-            insertedPost[Posts.views],
-            insertedPost[Posts.createdAt],
-            insertedPost[Posts.updatedAt]
-        )
+        return PostsEntity.new {
+            this.accountId = accountId
+            title = request.title
+            content = request.content
+            category = request.category
+        }.toDto()
     }
 
     fun update(accountId: Long, postId: Long, request: UpdatePostRequest): PostDetailDto {
         val expression = (Posts.accountId eq accountId) and (Posts.id eq postId)
 
-        Posts.update({ expression }) {
-            it[title] = request.title
-            it[content] = request.content
-            it[category] = request.category
-        }
-
-        return PostsEntity.find(expression).first().toDetailDto()
+        return PostsEntity.find(expression)
+            .first()
+            .apply {
+                title = request.title
+                content = request.content
+                category = request.category
+            }.toDetailDto()
     }
 
     fun delete(accountId: Long, postId: Long): PostDto {
         val expression = (Posts.accountId eq accountId) and (Posts.id eq postId)
 
-        Posts.deleteWhere { expression }
-
-        return Posts.select { expression }.first().toDto()
+        return PostsEntity.find(expression)
+            .first()
+            .also { it.delete() }
+            .toDto()
     }
 
     fun findById(id: Long): Optional<PostDetailDto> {
@@ -94,6 +86,17 @@ class PostRepository {
             this[Posts.views],
             this[Posts.createdAt],
             this[Posts.updatedAt]
+        )
+    }
+
+    private fun PostsEntity.toDto(): PostDto {
+        return PostDto(
+            id.value,
+            title,
+            category,
+            views,
+            createdAt,
+            updatedAt
         )
     }
 
