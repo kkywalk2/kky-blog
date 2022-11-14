@@ -9,9 +9,9 @@ import org.jetbrains.exposed.sql.javatime.datetime
 import java.time.LocalDateTime
 
 object Accounts : LongIdTable("account_entity") {
-    val accountName = varchar("account_name", 50)
-    val password = long("password")
-    val email = reference("email", Posts)
+    val accountName = varchar("account_name", 255)
+    val password = varchar("password", 255)
+    val email = varchar("email", 255)
     val createdAt = datetime("create_at").defaultExpression(CurrentTimestamp()).clientDefault { LocalDateTime.now() }
     val updatedAt = datetime("updated_at").defaultExpression(CurrentTimestamp()).clientDefault { LocalDateTime.now() }
 }

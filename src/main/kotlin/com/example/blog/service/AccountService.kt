@@ -4,13 +4,11 @@ import com.example.blog.dto.AccountDto
 import com.example.blog.dto.AuthDto
 import com.example.blog.dto.SignInRequest
 import com.example.blog.dto.SignUpRequest
-import com.example.blog.entity.AccountEntity
 import com.example.blog.exception.UnauthorizedException
 import com.example.blog.repository.AccountRepository
 import com.example.blog.security.JwtUtil
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AccountService(
@@ -18,10 +16,9 @@ class AccountService(
     private val passwordEncoder: PasswordEncoder,
     private val jwtUtil: JwtUtil
 ) {
-    @Transactional
+
     fun createAccount(request: SignUpRequest): AccountDto {
-        val accountEntity = accountRepository.save(request.toEntity())
-        return accountEntity.toDto()
+        return accountRepository.save(request)
     }
 
     fun accountValidation(request: SignInRequest): AuthDto {
@@ -31,13 +28,5 @@ class AccountService(
             .orElseThrow { UnauthorizedException() }
 
         return AuthDto(account.accountName, jwtUtil.createToken(account.accountName))
-    }
-
-    private fun SignUpRequest.toEntity(): AccountEntity {
-        return AccountEntity(
-            accountName = accountName,
-            password = passwordEncoder.encode(password),
-            email = email
-        )
     }
 }

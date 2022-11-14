@@ -1,14 +1,14 @@
 package com.example.blog.security
 
-import com.example.blog.entity.AccountEntity
+import com.example.blog.entity.AccountsEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class AccountDetail(
-    private val accountEntity: AccountEntity
+    private val accountEntity: AccountsEntity
 ) : UserDetails {
 
-    val id = accountEntity.id
+    val id = accountEntity.id.value
 
     override fun getAuthorities(): Collection<GrantedAuthority>? {
         return null
