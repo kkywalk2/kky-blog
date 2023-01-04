@@ -1,8 +1,20 @@
 package com.example.blog.repository
 
-import com.example.blog.entity.ImageEntity
-import org.springframework.data.jpa.repository.JpaRepository
+import com.example.blog.entity.Images
+import com.example.blog.entity.ImagesEntity
+import org.springframework.stereotype.Repository
 
-interface ImageRepository : JpaRepository<ImageEntity, Long> {
-    fun findByFilePath(filePath: String): ImageEntity
+@Repository
+class ImageRepository {
+
+    fun save(originalName: String, filePath: String): ImagesEntity {
+        return ImagesEntity.new {
+            this.originalName = originalName
+            this.filePath = filePath
+        }
+    }
+
+    fun findByFilePath(filePath: String): ImagesEntity {
+        return ImagesEntity.find { Images.filePath eq filePath }.first()
+    }
 }

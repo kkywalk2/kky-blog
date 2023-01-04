@@ -5,7 +5,6 @@ plugins {
     id "com.github.node-gradle.node" version "2.2.3"
     id 'org.jetbrains.kotlin.jvm' version '1.6.20'
     id "org.jetbrains.kotlin.plugin.spring" version "1.6.20"
-    id "org.jetbrains.kotlin.plugin.jpa" version "1.6.20"
     id "org.jetbrains.kotlin.kapt" version "1.6.20"
 }
 
@@ -13,10 +12,6 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-}
-
-allOpen {
-    annotation 'javax.persistence.Entity'
 }
 
 kapt {
@@ -52,31 +47,21 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'com.auth0:java-jwt:3.18.2'
-    implementation 'com.google.guava:guava:31.0.1-jre'
-    implementation "com.querydsl:querydsl-jpa:5.0.0"
-    implementation "com.querydsl:querydsl-core:5.0.0"
     implementation 'org.jetbrains:annotations:20.1.0'
 
-    implementation 'org.jetbrains.exposed:exposed-core:0.40.1'
-    implementation 'org.jetbrains.exposed:exposed-dao:0.40.1'
-    implementation 'org.jetbrains.exposed:exposed-jdbc:0.40.1'
     implementation 'org.jetbrains.exposed:exposed-java-time:0.40.1'
+    implementation 'org.jetbrains.exposed:exposed-spring-boot-starter:0.41.1'
 
-    compileOnly 'org.springframework.boot:spring-boot-starter-jdbc'
     runtimeOnly 'mysql:mysql-connector-java'
-    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.h2database:h2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    kapt "com.querydsl:querydsl-apt:5.0.0:jpa"
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.20"
 }
 
