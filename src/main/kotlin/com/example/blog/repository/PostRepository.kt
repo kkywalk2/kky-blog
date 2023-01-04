@@ -53,14 +53,14 @@ class PostRepository {
     }
 
     fun getByTitleAndCategory(pageable: Pageable, title: Optional<String>, category: Optional<String>): Page<PostDto> {
-        val result = Posts
+        val query = Posts
             .slice(Posts.id, Posts.title, Posts.category, Posts.views, Posts.createdAt, Posts.updatedAt)
             .selectAll()
             .andWhere(title) { Posts.title like "%$it%" }
             .andWhere(category) { Posts.category eq it }
             .orderBy(Posts.createdAt to SortOrder.DESC)
-            .limit(pageable.pageSize, pageable.offset)
-            .map { it.toDto() }
+
+        if(pageable.isPaged) query.limit(pageable.pageSize, pageable.offset)
 
         val count = Posts
             .selectAll()
@@ -68,7 +68,7 @@ class PostRepository {
             .andWhere(category) { Posts.category eq it }
             .count()
 
-        return PageImpl(result, pageable, count)
+        return PageImpl(query.map { it.toDto() }, pageable, count)
     }
 
     fun getCategoryCounts(): List<CategoryDto> {
