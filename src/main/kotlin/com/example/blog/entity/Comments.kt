@@ -17,8 +17,8 @@ object Comments : LongIdTable("comment_entity") {
     val updatedAt = datetime("updated_at").defaultExpression(CurrentTimestamp()).clientDefault { LocalDateTime.now() }
 }
 
-class CommentsEntity(id: EntityID<Long>) : LongEntity(id) {
-    companion object : LongEntityClass<CommentsEntity>(Comments)
+class Comment(id: EntityID<Long>) : LongEntity(id) {
+    companion object : LongEntityClass<Comment>(Comments)
 
     var accountName by Comments.accountName
     var accountId by Comments.accountId

@@ -2,7 +2,7 @@ package com.example.blog.repository
 
 import com.example.blog.dto.*
 import com.example.blog.entity.Posts
-import com.example.blog.entity.PostsEntity
+import com.example.blog.entity.Post
 import org.jetbrains.exposed.dao.load
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository
 class PostRepository {
 
     fun save(accountId: Long, request: CreatePostRequest): PostDto {
-        return PostsEntity.new {
+        return Post.new {
             this.accountId = accountId
             title = request.title
             content = request.content
@@ -28,7 +28,7 @@ class PostRepository {
     fun update(accountId: Long, postId: Long, request: UpdatePostRequest): PostDetailDto {
         val expression = (Posts.accountId eq accountId) and (Posts.id eq postId)
 
-        return PostsEntity.find(expression)
+        return Post.find(expression)
             .first()
             .apply {
                 title = request.title
@@ -40,15 +40,15 @@ class PostRepository {
     fun delete(accountId: Long, postId: Long): PostDto {
         val expression = (Posts.accountId eq accountId) and (Posts.id eq postId)
 
-        return PostsEntity.find(expression)
+        return Post.find(expression)
             .first()
             .also { it.delete() }
             .toDto()
     }
 
     fun findById(id: Long): Optional<PostDetailDto> {
-        return Optional.ofNullable(PostsEntity.findById(id))
-            .map { it.load(PostsEntity::comments) }
+        return Optional.ofNullable(Post.findById(id))
+            .map { it.load(Post::comments) }
             .map { it.toDetailDto() }
     }
 
@@ -89,7 +89,7 @@ class PostRepository {
         )
     }
 
-    private fun PostsEntity.toDto(): PostDto {
+    private fun Post.toDto(): PostDto {
         return PostDto(
             id.value,
             title,
@@ -100,7 +100,7 @@ class PostRepository {
         )
     }
 
-    private fun PostsEntity.toDetailDto(): PostDetailDto {
+    private fun Post.toDetailDto(): PostDetailDto {
         return PostDetailDto(
             id.value,
             title,

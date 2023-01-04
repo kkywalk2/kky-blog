@@ -19,8 +19,8 @@ object Posts : LongIdTable("post_entity") {
     val updatedAt = datetime("updated_at").defaultExpression(CurrentTimestamp()).clientDefault { LocalDateTime.now() }
 }
 
-class PostsEntity(id: EntityID<Long>) : LongEntity(id) {
-    companion object : LongEntityClass<PostsEntity>(Posts)
+class Post(id: EntityID<Long>) : LongEntity(id) {
+    companion object : LongEntityClass<Post>(Posts)
 
     var accountId by Posts.accountId
     var views by Posts.views
@@ -30,5 +30,5 @@ class PostsEntity(id: EntityID<Long>) : LongEntity(id) {
     var category by Posts.category
     var createdAt by Posts.createdAt
     var updatedAt by Posts.updatedAt
-    val comments by CommentsEntity referrersOn Comments.postId
+    val comments by Comment referrersOn Comments.postId
 }

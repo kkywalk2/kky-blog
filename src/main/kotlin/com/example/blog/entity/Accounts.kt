@@ -16,8 +16,8 @@ object Accounts : LongIdTable("account_entity") {
     val updatedAt = datetime("updated_at").defaultExpression(CurrentTimestamp()).clientDefault { LocalDateTime.now() }
 }
 
-class AccountsEntity(id: EntityID<Long>) : LongEntity(id) {
-    companion object : LongEntityClass<AccountsEntity>(Accounts)
+class Account(id: EntityID<Long>) : LongEntity(id) {
+    companion object : LongEntityClass<Account>(Accounts)
 
     var accountName by Accounts.accountName
     var password by Accounts.password

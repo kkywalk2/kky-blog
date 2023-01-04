@@ -4,7 +4,7 @@ import com.example.blog.config.firstOptional
 import com.example.blog.dto.AccountDto
 import com.example.blog.dto.SignUpRequest
 import com.example.blog.entity.Accounts
-import com.example.blog.entity.AccountsEntity
+import com.example.blog.entity.Account
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -14,21 +14,21 @@ class AccountRepository(
     private val passwordEncoder: PasswordEncoder
 ) {
 
-    fun findByAccountName(accountName: String): Optional<AccountsEntity> {
-        return AccountsEntity
+    fun findByAccountName(accountName: String): Optional<Account> {
+        return Account
             .find { Accounts.accountName eq accountName }
             .firstOptional()
     }
 
     fun save(request: SignUpRequest): AccountDto {
-        return AccountsEntity.new {
+        return Account.new {
             accountName = request.accountName
             password = passwordEncoder.encode(request.password)
             email = request.email
         }.toDto()
     }
 
-    private fun AccountsEntity.toDto(): AccountDto {
+    private fun Account.toDto(): AccountDto {
         return AccountDto(
             name = accountName,
             email = email,

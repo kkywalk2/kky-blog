@@ -1,11 +1,11 @@
 package com.example.blog.security
 
-import com.example.blog.entity.AccountsEntity
+import com.example.blog.entity.Account
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class AccountDetail(
-    private val accountEntity: AccountsEntity
+    private val accountEntity: Account
 ) : UserDetails {
 
     val id = accountEntity.id.value

@@ -17,8 +17,8 @@ object Images : LongIdTable("image_entity") {
     val updatedAt = datetime("updated_at").defaultExpression(CurrentTimestamp()).clientDefault { LocalDateTime.now() }
 }
 
-class ImagesEntity(id: EntityID<Long>) : LongEntity(id) {
-    companion object : LongEntityClass<ImagesEntity>(Images)
+class Image(id: EntityID<Long>) : LongEntity(id) {
+    companion object : LongEntityClass<Image>(Images)
 
     var originalName by Images.originalName
     var filePath by Images.filePath
