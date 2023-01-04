@@ -1,7 +1,6 @@
 package com.example.blog.service
 
 import com.example.blog.dto.ImageUploadResponse
-import com.example.blog.entity.ImageEntity
 import com.example.blog.exception.FileNotFoundException
 import com.example.blog.repository.ImageRepository
 import org.springframework.beans.factory.annotation.Value
@@ -12,6 +11,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -22,6 +22,7 @@ import kotlin.io.path.name
 import kotlin.io.path.notExists
 
 @Service
+@Transactional
 class ImageService(
     private val imageRepository: ImageRepository,
     @Value("\${path.image}") private val path: String
@@ -35,10 +36,8 @@ class ImageService(
         Files.write(combinedPath, bytes)
 
         imageRepository.save(
-            ImageEntity(
-                originalName = imageFile.originalFilename,
-                filePath = combinedPath.toString()
-            )
+            originalName = imageFile.originalFilename,
+            filePath = combinedPath.toString()
         )
 
         return ImageUploadResponse(uniqueName)
