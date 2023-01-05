@@ -63,7 +63,7 @@ class PostRepository {
         if(pageable.isPaged) query.limit(pageable.pageSize, pageable.offset)
 
         val count = Posts
-            .selectAll()
+            .select { Posts.deleted eq false }
             .andWhere(title) { Posts.title like "%$it%" }
             .andWhere(category) { Posts.category eq it }
             .count()
