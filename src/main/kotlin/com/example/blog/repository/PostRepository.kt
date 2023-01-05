@@ -42,7 +42,7 @@ class PostRepository {
 
         return Post.find(expression)
             .first()
-            .also { it.delete() }
+            .apply { this.delete() }
             .toDto()
     }
 
@@ -55,7 +55,7 @@ class PostRepository {
     fun getByTitleAndCategory(pageable: Pageable, title: Optional<String>, category: Optional<String>): Page<PostDto> {
         val query = Posts
             .slice(Posts.id, Posts.title, Posts.category, Posts.views, Posts.createdAt, Posts.updatedAt)
-            .selectAll()
+            .select { Posts.deleted eq false }
             .andWhere(title) { Posts.title like "%$it%" }
             .andWhere(category) { Posts.category eq it }
             .orderBy(Posts.createdAt to SortOrder.DESC)

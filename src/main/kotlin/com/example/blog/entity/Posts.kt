@@ -31,4 +31,8 @@ class Post(id: EntityID<Long>) : LongEntity(id) {
     var createdAt by Posts.createdAt
     var updatedAt by Posts.updatedAt
     val comments by Comment referrersOn Comments.postId
+
+    override fun delete() {
+        deleted = true
+    }
 }
