@@ -24,6 +24,7 @@ const config: Configuration = {
       '@pages': path.resolve(__dirname, 'pages'),
       '@utils': path.resolve(__dirname, 'utils'),
       '@typings': path.resolve(__dirname, 'typings'),
+      '@services': path.resolve(__dirname, 'services'),
     },
   },
   entry: {

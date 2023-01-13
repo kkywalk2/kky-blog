@@ -1,27 +1,76 @@
-import React from "react";
-import { Form, Label, Input, LinkContainer, Button, Header } from "./style"
+import useInput from '@hooks/userInput';
+import { Button, Error, Form, Header, Input, Label, LinkContainer, Success } from '@pages/SignUp/style';
+import { signUp } from '@services/index';
+import React, { useCallback, useState } from 'react';
 
 const SignUp = () => {
-    return (
-        <div id="container">
+  const [signUpError, setSignUpError] = useState(false);
+  const [signUpSuccess, setSignUpSuccess] = useState(false);
+  const [mismatchError, setMismatchError] = useState(false);
+  const [email, onChangeEmail] = useInput('');
+  const [nickname, onChangeNickname] = useInput('');
+  const [password, , setPassword] = useInput('');
+  const [passwordCheck, , setPasswordCheck] = useInput('');
+
+  const onChangePassword = useCallback(
+    (e: any) => {
+      setPassword(e.target.value);
+      setMismatchError(passwordCheck !== e.target.value);
+    },
+    [passwordCheck, setPassword],
+  );
+
+  const onChangePasswordCheck = useCallback(
+    (e: any) => {
+      setPasswordCheck(e.target.value);
+      setMismatchError(password !== e.target.value);
+    },
+    [password, setPasswordCheck],
+  );
+
+  const onSubmit = useCallback(
+    async (e: any) => {
+      e.preventDefault();
+      if (!nickname || !nickname.trim()) {
+        return;
+      }
+      if (!mismatchError) {
+        setSignUpError(false);
+        setSignUpSuccess(false);
+
+          let result = await signUp(nickname, password, email)
+
+          if(result == null) {
+            setSignUpError(true);
+          } else {
+            setSignUpSuccess(true);
+          }
+
+      }
+    },
+    [email, nickname, password, mismatchError],
+  );
+
+  return (
+    <div id="container">
       <Header>Sleact</Header>
-      <Form>
+      <Form onSubmit={onSubmit}>
         <Label id="email-label">
           <span>이메일 주소</span>
           <div>
-            <Input type="email" id="email" name="email"/>
+            <Input type="email" id="email" name="email" value={email} onChange={onChangeEmail} />
           </div>
         </Label>
         <Label id="nickname-label">
           <span>닉네임</span>
           <div>
-            <Input type="text" id="nickname" name="nickname"/>
+            <Input type="text" id="nickname" name="nickname" value={nickname} onChange={onChangeNickname} />
           </div>
         </Label>
         <Label id="password-label">
           <span>비밀번호</span>
           <div>
-            <Input type="password" id="password" name="password"/>
+            <Input type="password" id="password" name="password" value={password} onChange={onChangePassword} />
           </div>
         </Label>
         <Label id="password-check-label">
@@ -31,10 +80,14 @@ const SignUp = () => {
               type="password"
               id="password-check"
               name="password-check"
-              // value={passwordCheck}
-              // onChange={onChangePasswordCheck}
+              value={passwordCheck}
+              onChange={onChangePasswordCheck}
             />
           </div>
+          {mismatchError && <Error>비밀번호가 일치하지 않습니다.</Error>}
+          {!nickname && <Error>닉네임을 입력해주세요.</Error>}
+          {signUpError && <Error>이미 가입된 이메일입니다.</Error>}
+          {signUpSuccess && <Success>회원가입되었습니다! 로그인해주세요.</Success>}
         </Label>
         <Button type="submit">회원가입</Button>
       </Form>
@@ -43,7 +96,7 @@ const SignUp = () => {
         <a href="/login">로그인 하러가기</a>
       </LinkContainer>
     </div>
-    )
-}
+  );
+};
 
 export default SignUp;
