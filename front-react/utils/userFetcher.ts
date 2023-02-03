@@ -9,31 +9,32 @@ const userFetcher = async (token: string): Promise<boolean> => {
 
 export default function useAuth() {
   const [token, setToken] = useState<null | string>(localStorage.getItem('token'));
-  const [isLogin, setIsLogin] = useState(token !== null);
+
   const setAuth = (token: string) => {
     setToken(`Bearer ${token}`);
   };
-  const { data, mutate, error } = useSWR(token, userFetcher, {
+
+  const {
+    data: isLogin,
+    mutate,
+    error,
+  } = useSWR(token, userFetcher, {
     dedupingInterval: 1000000,
   });
 
   // TODO: checkAuthentication에서 refresh token을 통해 access token을 받을 수 있도록 수정하기
-  /*useEffect(() => {
-    if (data === true) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
+  useEffect(() => {
+    if (isLogin === false) {
+      localStorage.removeItem('token');
     }
-  }, [data, error]);*/
+  }, [isLogin, error]);
 
   // 일단은 access token만 사용..., token을 localstorage에 저장하는 것은 보안적으로 좋지 않음!
   useEffect(() => {
-    if (token) {
+    if (token !== null) {
       localStorage.setItem('token', token);
-      setIsLogin(true);
     } else {
       localStorage.removeItem('token');
-      setIsLogin(false);
     }
   }, [token]);
 
