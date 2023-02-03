@@ -8,12 +8,10 @@ const userFetcher = async (token: string): Promise<boolean> => {
 };
 
 export default function useAuth() {
-  const [token, setToken] = useState<null | string>(null);
-  const [isLogin, setIsLogin] = useState(localStorage.getItem('isLogin') === 'true');
+  const [token, setToken] = useState<null | string>(localStorage.getItem('token'));
+  const [isLogin, setIsLogin] = useState(token !== null);
   const setAuth = (token: string) => {
-    localStorage.setItem('isLogin', String(true));
     setToken(`Bearer ${token}`);
-    setIsLogin(true);
   };
   const { data, mutate, error } = useSWR(token, userFetcher, {
     dedupingInterval: 1000000,
@@ -28,16 +26,28 @@ export default function useAuth() {
     }
   }, [data, error]);*/
 
+  // 일단은 access token만 사용..., token을 localstorage에 저장하는 것은 보안적으로 좋지 않음!
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem('token', token);
+      setIsLogin(true);
+    } else {
+      localStorage.removeItem('token');
+      setIsLogin(false);
+    }
+  }, [token]);
+
   useEffect(() => {
     // Sync all tabs on login or logout
     window.addEventListener('storage', (e) => {
-      if (e.key === 'isLogin') {
-        setIsLogin(e.newValue === 'true');
+      if (e.key === 'token') {
+        setToken(e.newValue);
       }
     });
   });
 
   return {
+    token,
     setAuth,
     isLogin,
   };

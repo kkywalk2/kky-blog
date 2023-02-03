@@ -3,6 +3,7 @@ import { Button, Form, Header, Input, Label, LinkContainer, Success } from '@pag
 import { login } from '@services/index';
 import useAuth from '@utils/userFetcher';
 import React, { useCallback, useState } from 'react';
+import { Navigate } from 'react-router';
 
 const LogIn = () => {
     const [nickname, onChangeNickname] = useInput('');
@@ -25,7 +26,7 @@ const LogIn = () => {
         [nickname, password],
       );
 
-    if(isLogin) return <div>이미 로그인 됨</div>
+    if(isLogin) return <Navigate replace to="/list" />
     
     return (
     <div id="container">
