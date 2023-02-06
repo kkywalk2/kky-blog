@@ -1,10 +1,10 @@
 import React from "react";
 import loadable from "@loadable/component";
 import { Route, Routes, Navigate } from 'react-router-dom'
-import PostList from "@pages/PostList";
 
 const Login = loadable(() => import("@pages/Login"))
 const SignUp = loadable(() => import("@pages/SignUp"))
+const PostList = loadable(() => import("@pages/PostList"))
 
 const App = () => {
     return (

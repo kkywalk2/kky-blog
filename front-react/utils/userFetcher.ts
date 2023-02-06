@@ -3,10 +3,6 @@ import useSWR from 'swr';
 import { checkAuthentication } from '@services/index';
 import { useEffect, useState } from 'react';
 
-const userFetcher = async (token: string): Promise<boolean> => {
-  return await checkAuthentication(token);
-};
-
 export default function useAuth() {
   const [token, setToken] = useState<null | string>(localStorage.getItem('token'));
 
@@ -18,7 +14,7 @@ export default function useAuth() {
     data: isLogin,
     mutate,
     error,
-  } = useSWR(token, userFetcher, {
+  } = useSWR(['checkAuthentication', token], async ([_, token]) => await checkAuthentication(token), {
     dedupingInterval: 1000000,
   });
 

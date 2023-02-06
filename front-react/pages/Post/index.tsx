@@ -1,7 +1,12 @@
 import React from 'react';
 import { Container, Post, HeaderPost, BodyPost, PostContent, ContainerInfos, PostedBy, ContainerTags, Tags } from '@pages/Post/style'
 
-const PostCard = () => {
+interface Props {
+    title: string;
+    createdAt: string;
+}
+
+const PostCard = ({title, createdAt}: Props) => {
     return (
         <Container>
             <Post>
@@ -10,12 +15,14 @@ const PostCard = () => {
                 </HeaderPost>
                 <BodyPost>
                     <PostContent>
-                        <h1>Lorem Ipsum</h1>
+                        <h1>{title}</h1>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi assumenda cumque deserunt dolorum ex exercitationem.</p>
                         <ContainerInfos>
                             <PostedBy>
                                 <span>author</span>
                                 John Doe
+                                <span>created at</span>
+                                {`${createdAt}`}
                             </PostedBy>
                             <ContainerTags>
                                 <span>tags</span>

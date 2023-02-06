@@ -38,7 +38,7 @@ const createPosts = async (token: string, title: string, content: string, catego
   }
 };
 
-const getPosts = async (page: number, perPage: number, category: string, title: string) => {
+const getPosts = async (page: number, perPage: number, category: string | null = null, title: string | null = null) => {
   try {
     const res = await postService.getPosts(page, perPage, category, title);
     if (res.status === 200) return res.data;
@@ -104,7 +104,7 @@ const addComment = async (token: string, postId: string, comment: string) => {
   }
 };
 
-const checkAuthentication = async (token: string) => {
+const checkAuthentication = async (token: string | null) => {
   try {
     const res = await accountService.checkAuthentication(token);
     return res.status === 200;
