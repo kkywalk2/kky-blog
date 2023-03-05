@@ -25,7 +25,7 @@ const App = () => {
           <Col md={1}>
             <AuthorCard></AuthorCard>
           </Col>
-          <Col md={2}>
+          <Col md={10}>
             <Routes>
               <Route path="/" element={<Navigate replace to="/login" />} />
               <Route path="/login" element={<Login />} />

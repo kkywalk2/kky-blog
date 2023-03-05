@@ -7,13 +7,13 @@ export interface IPost {
   updatedAt: string;
 }
 
-export interface Sort {
+interface Sort {
   sorted: boolean;
   unsorted: boolean;
   empty: boolean;
 }
 
-export interface Pageable {
+interface Pageable {
   sort: Sort;
   offset: number;
   pageSize: number;
@@ -22,7 +22,7 @@ export interface Pageable {
   unpaged: boolean;
 }
 
-export interface Sort2 {
+interface Sort2 {
   sorted: boolean;
   unsorted: boolean;
   empty: boolean;
@@ -40,4 +40,24 @@ export interface PostResponse {
   first: boolean;
   numberOfElements: number;
   empty: boolean;
+}
+
+interface Comment {
+  id: number;
+  postId: number;
+  accountName: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PostDetailResponse {
+  id: number;
+  title: string;
+  category: string;
+  views: number;
+  createdAt: Date;
+  updatedAt: Date;
+  content: string;
+  comments: Comment[];
 }
