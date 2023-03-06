@@ -1,7 +1,7 @@
 import { IPost, PostResponse } from '@typings/Post';
 import axios, { AxiosResponse } from 'axios';
 
-const createPost = (token: string, title: string, content: string, category: string) => {
+const createPost = (token: string, title: string, content: string | undefined, category: string) => {
   let headers = {
     'Content-type': 'application/json',
     Authorization: `${token}`,

@@ -27,7 +27,7 @@ const signUp = async (accountName: string, password: string, email: string) => {
   }
 };
 
-const createPosts = async (token: string, title: string, content: string, category: string) => {
+const createPosts = async (token: string, title: string, content: string | undefined, category: string) => {
   try {
     const res = await postService.createPost(token, title, content, category);
     if (res.status === 201) return res.data;

@@ -1,24 +1,26 @@
 import React, { CSSProperties } from 'react';
+import { UnstyledA } from './style';
 
 const AuthorCard = () => {
-  const imgSize: CSSProperties = {
-    height: 100,
-    width: '100%',
-    maxWidth: 100,
-  };
-
   return (
-    <div className="card">
+    <div style={{ width: 300 }} className="card shadow-sm p-3 mb-5 bg-white rounded">
       <div className="card-image">
-        <img style={imgSize} src="../assets/dog with glass.jpg" alt="주인장" />
+        <img
+          style={{
+            height: 100,
+            width: '100%',
+            maxWidth: 100,
+          }}
+          src="../assets/dog with glass.jpg"
+          alt="주인장"
+        />
       </div>
       <div className="card-content">
         <div className="media">
           <div className="media-content">
-            <a className="plain" href="/">
-              <p className="title is-4"> KKY's BLOG</p>
-            </a>
-            <br />
+            <UnstyledA href="/">
+              <h3> KKY's BLOG</h3>
+            </UnstyledA>
             <a className="icon" href="https://www.linkedin.com/in/ki-young-kwon-168381193/">
               <i className="fab fa-linkedin fa-2x"></i>
             </a>

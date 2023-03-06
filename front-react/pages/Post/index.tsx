@@ -4,17 +4,25 @@ import React from 'react';
 import { useParams } from 'react-router';
 import useSWR from 'swr';
 import MDEditor from '@uiw/react-md-editor';
-import { Badge } from 'react-bootstrap';
+import { Badge, Button } from 'react-bootstrap';
 
 const Post = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useSWR<PostDetailResponse>(`/post/${id}`, fetcher);
 
   return (
-    <div className="markdownDiv" data-color-mode="light" style={{ padding: 15 }}>
+    <div>
       <h1>{data?.title}</h1>
-      <Badge>{data?.category}</Badge>
-      <MDEditor.Markdown source={data?.content} />
+      <div>
+        <Badge>{data?.category}</Badge>
+        <div className="float-md-end">
+          <Button style={{ marginRight: '10' }}>수정</Button>
+          <Button>삭제</Button>
+        </div>
+      </div>
+      <div className="markdownDiv" data-color-mode="light" style={{ padding: 15 }}>
+        <MDEditor.Markdown source={data?.content} />
+      </div>
     </div>
   );
 };

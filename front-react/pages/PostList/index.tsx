@@ -23,7 +23,9 @@ const PostList = () => {
       isReachingEnd={(swr) => swr.data?.[0]?.length === 0 || swr.data?.[swr.data?.length - 1]?.length < PAGE_SIZE}
     >
       {(data: IPost[]) =>
-        data.map((post) => <PostCard id={String(post.id)} title={post.title} createdAt={post.createdAt}></PostCard>)
+        data.map((post) => (
+          <PostCard key={post.id} id={String(post.id)} title={post.title} createdAt={post.createdAt}></PostCard>
+        ))
       }
     </InfiniteScroll>
   );
