@@ -33,7 +33,7 @@ const App = () => {
           </Col>
           <Col md>
             <Routes>
-              <Route path="/" element={<Navigate replace to="/login" />} />
+              <Route path="/" element={<Navigate replace to="/list" />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/list" element={<PostList />} />

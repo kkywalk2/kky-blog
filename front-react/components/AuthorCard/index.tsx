@@ -11,7 +11,7 @@ const AuthorCard = () => {
             width: '100%',
             maxWidth: 100,
           }}
-          src="../assets/dog with glass.jpg"
+          src="./assets/dog with glass.jpg"
           alt="주인장"
         />
       </div>
