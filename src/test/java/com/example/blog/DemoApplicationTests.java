@@ -26,7 +26,7 @@ class DemoApplicationTests {
 
     @Test
     void getAllPosts() throws Exception {
-        final ResultActions actions = mockMvc.perform(get("/post").contentType(MediaType.APPLICATION_JSON))
+        final ResultActions actions = mockMvc.perform(get("/api/post").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print());
         actions.andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andDo(print());
     }
