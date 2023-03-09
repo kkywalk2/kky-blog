@@ -24,14 +24,14 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 node { 
-    version = '12.16.1' 
-    npmVersion = '6.13.4' 
-    yarnVersion = "1.22.4"
-    npmInstallCommand = 'install' 
+    version = '16.18.1'
+    npmVersion = '8.19.2'
+    yarnVersion = '1.22.4'
+    npmInstallCommand = 'install'
     distBaseUrl = 'https://nodejs.org/dist' 
     download = true 
-    workDir = file("${project.buildDir}/front") 
-    nodeModulesDir = file("${project.projectDir}/front") 
+    workDir = file("${project.buildDir}/front-react")
+    nodeModulesDir = file("${project.projectDir}/front-react")
     workDir = file("${project.projectDir}/.gradle/nodejs")
     yarnWorkDir = file("${project.projectDir}/.gradle/yarn")
 } 
@@ -65,15 +65,34 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.20"
 }
 
+npm_install {
+    args = ['--force']
+}
+
 task deleteVueArtifact(type: Delete) {
     delete "src/main/resources/static"
 }
 
-task yarnBuild(type: YarnTask, dependsOn: ['deleteVueArtifact', 'yarn_install']) { 
-    args = ["run", "build" + profile] 
+task npmBuild(type: NpmTask, dependsOn: ['deleteVueArtifact', 'npm_install']) {
+    args = ["run", "build"]
 }
 
-processResources.dependsOn 'yarnBuild'
+task copyReactBuildFiles1(type: Copy, dependsOn: ['npmBuild']) {
+    from "front-react/dist"
+    into "src/main/resources/static/dist"
+}
+
+task copyReactBuildFiles2(type: Copy, dependsOn: ['copyReactBuildFiles1']) {
+    from "front-react/index.html"
+    into "src/main/resources/static"
+}
+
+task copyReactBuildFiles3(type: Copy, dependsOn: ['copyReactBuildFiles2']) {
+    from "front-react/assets"
+    into "src/main/resources/static/assets"
+}
+
+compileJava.dependsOn(copyReactBuildFiles3)
 
 test {
     useJUnitPlatform()

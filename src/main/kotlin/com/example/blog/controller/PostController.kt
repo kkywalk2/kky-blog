@@ -13,7 +13,7 @@ import java.util.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("post")
+@RequestMapping("/api/post")
 class PostController (
     private val postService: PostService
 ) {
