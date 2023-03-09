@@ -37,7 +37,6 @@ jobs:
           echo spring.jpa.show-sql=false >> ./src/main/resources/application-prod.properties
           echo jwt.secret="$JWT_SECRET" >> ./src/main/resources/application-prod.properties
           echo path.image=/root/Pictures >> ./src/main/resources/application-prod.properties
-          echo server.servlet.context-path=/blog >> ./src/main/resources/application-prod.properties
           cat ./src/main/resources/application-prod.properties | head -n 1
 
       - name: Grant execute permission for gradlew

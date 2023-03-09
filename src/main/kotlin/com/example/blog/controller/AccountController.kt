@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("account")
+@RequestMapping("/api/account")
 class AccountController(
     private val accountService: AccountService
 ) {

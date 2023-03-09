@@ -5,11 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
-@RequestMapping("/")
 class HomeController {
 
-    @GetMapping
+    @GetMapping("/**/{path:[^\\\\.]*}")
     fun index(): String {
-        return "/index.html"
+        return "forward:/"
     }
 }
