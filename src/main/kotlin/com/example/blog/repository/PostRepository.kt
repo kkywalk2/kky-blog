@@ -16,16 +16,16 @@ import org.springframework.stereotype.Repository
 @Repository
 class PostRepository {
 
-    fun save(accountId: Long, request: CreatePostRequest): PostDto {
+    fun save(accountId: Long, request: CreatePostRequest): Post {
         return Post.new {
             this.accountId = accountId
             title = request.title
             content = request.content
             category = request.category
-        }.toDto()
+        }
     }
 
-    fun update(accountId: Long, postId: Long, request: UpdatePostRequest): PostDetailDto {
+    fun update(accountId: Long, postId: Long, request: UpdatePostRequest): Post {
         val expression = (Posts.accountId eq accountId) and (Posts.id eq postId)
 
         return Post.find(expression)
@@ -34,33 +34,31 @@ class PostRepository {
                 title = request.title
                 content = request.content
                 category = request.category
-            }.toDetailDto()
+            }
     }
 
-    fun delete(accountId: Long, postId: Long): PostDto {
+    fun delete(accountId: Long, postId: Long): Post {
         val expression = (Posts.accountId eq accountId) and (Posts.id eq postId)
 
         return Post.find(expression)
             .first()
             .apply { this.delete() }
-            .toDto()
     }
 
-    fun findById(id: Long): Optional<PostDetailDto> {
+    fun findById(id: Long): Optional<Post> {
         return Optional.ofNullable(Post.findById(id))
             .map { it.load(Post::comments) }
-            .map { it.toDetailDto() }
     }
 
-    fun getByTitleAndCategory(pageable: Pageable, title: Optional<String>, category: Optional<String>): Page<PostDto> {
+    fun getByTitleAndCategory(pageable: Pageable, title: Optional<String>, category: Optional<String>): Page<Post> {
         val query = Posts
-            .slice(Posts.id, Posts.title, Posts.category, Posts.views, Posts.createdAt, Posts.updatedAt)
             .select { Posts.deleted eq false }
             .andWhere(title) { Posts.title like "%$it%" }
             .andWhere(category) { Posts.category eq it }
             .orderBy(Posts.createdAt to SortOrder.DESC)
 
-        if(pageable.isPaged) query.limit(pageable.pageSize, pageable.offset)
+        Post.find { Posts.deleted eq false }
+        if (pageable.isPaged) query.limit(pageable.pageSize, pageable.offset)
 
         val count = Posts
             .select { Posts.deleted eq false }
@@ -68,7 +66,7 @@ class PostRepository {
             .andWhere(category) { Posts.category eq it }
             .count()
 
-        return PageImpl(query.map { it.toDto() }, pageable, count)
+        return PageImpl(Post.wrapRows(query).toList(), pageable, count)
     }
 
     fun getCategoryCounts(): List<CategoryDto> {
@@ -76,50 +74,6 @@ class PostRepository {
             .selectAll()
             .groupBy(Posts.category)
             .map { CategoryDto(it[Posts.category], it[Posts.category.count()]) }
-    }
-
-    private fun ResultRow.toDto(): PostDto {
-        return PostDto(
-            this[Posts.id].value,
-            this[Posts.title],
-            this[Posts.category],
-            this[Posts.views],
-            this[Posts.createdAt],
-            this[Posts.updatedAt]
-        )
-    }
-
-    private fun Post.toDto(): PostDto {
-        return PostDto(
-            id.value,
-            title,
-            category,
-            views,
-            createdAt,
-            updatedAt
-        )
-    }
-
-    private fun Post.toDetailDto(): PostDetailDto {
-        return PostDetailDto(
-            id.value,
-            title,
-            category,
-            views,
-            createdAt,
-            updatedAt,
-            content,
-            comments.map { c ->
-                CommentDto(
-                    c.id.value,
-                    c.postId.value,
-                    c.accountName,
-                    c.content,
-                    c.createdAt,
-                    c.updatedAt
-                )
-            }
-        )
     }
 
     private fun <T> Query.andWhere(
