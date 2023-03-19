@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 
 axios.defaults.baseURL =
-  process.env.NODE_ENV === 'production' ? 'http://cnt2020.hopto.org:9000/blog/api' : 'http://localhost:9001/api';
+  process.env.NODE_ENV === 'production' ? 'http://cnt2020.hopto.org/blog/api' : 'http://localhost:9001/api';
 
 const rootNode = document.querySelector('#app');
 
