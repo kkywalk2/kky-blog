@@ -38,7 +38,7 @@ class PostController (
     }
 
     @GetMapping("/{id}")
-    fun getPost(@PathVariable("id") id: Long): PostDetailDto {
+    fun getPost(@PathVariable("id") id: Long): PostDto {
         return postService.getPost(id)
     }
 
@@ -52,7 +52,7 @@ class PostController (
         @PathVariable("id") id: Long,
         @RequestBody request: @Valid UpdatePostRequest,
         @AuthenticationPrincipal accountDetail: AccountDetail
-    ): PostDetailDto {
+    ): PostDto {
         return postService.updatePost(accountDetail.id, id, request)
     }
 

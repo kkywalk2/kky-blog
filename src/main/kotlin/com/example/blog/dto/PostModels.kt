@@ -14,15 +14,6 @@ data class PostDto(
     val category: String,
     val views: Long,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
-)
-
-data class PostDetailDto(
-    val id: Long,
-    val title: String,
-    val category: String,
-    val views: Long,
-    val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime,
     val content: String,
     val comments: List<CommentDto>

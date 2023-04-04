@@ -25,35 +25,24 @@ class PostService(
         return postRepository.getByTitleAndCategory(pageable, title, category).map { it.toDto() }
     }
 
-    fun getPost(postId: Long): PostDetailDto {
-        return postRepository.findById(postId).orElseThrow { NotFoundException() }.toDetailDto()
+    fun getPost(postId: Long): PostDto {
+        return postRepository.findById(postId).orElseThrow { NotFoundException() }.toDto(true)
     }
 
     fun getCategoryCounts(): List<CategoryDto> {
         return postRepository.getCategoryCounts()
     }
 
-    fun updatePost(accountId: Long, postId: Long, updatePostRequest: UpdatePostRequest): PostDetailDto {
-        return postRepository.update(accountId, postId, updatePostRequest).toDetailDto()
+    fun updatePost(accountId: Long, postId: Long, updatePostRequest: UpdatePostRequest): PostDto {
+        return postRepository.update(accountId, postId, updatePostRequest).toDto()
     }
 
     fun deletePost(accountId: Long, postId: Long): PostDto {
         return postRepository.delete(accountId, postId).toDto()
     }
 
-    private fun Post.toDto(): PostDto {
+    private fun Post.toDto(includeComments: Boolean = false): PostDto {
         return PostDto(
-            id.value,
-            title,
-            category,
-            views,
-            createdAt,
-            updatedAt
-        )
-    }
-
-    private fun Post.toDetailDto(): PostDetailDto {
-        return PostDetailDto(
             id.value,
             title,
             category,
@@ -61,15 +50,19 @@ class PostService(
             createdAt,
             updatedAt,
             content,
-            comments.map { c ->
-                CommentDto(
-                    c.id.value,
-                    c.postId.value,
-                    c.accountName,
-                    c.content,
-                    c.createdAt,
-                    c.updatedAt
-                )
+            comments = if(includeComments) {
+                comments.map { c ->
+                    CommentDto(
+                        c.id.value,
+                        c.postId.value,
+                        c.accountName,
+                        c.content,
+                        c.createdAt,
+                        c.updatedAt
+                    )
+                }
+            } else {
+                emptyList<CommentDto>()
             }
         )
     }
