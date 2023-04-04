@@ -1,4 +1,4 @@
-import { PostDetailResponse } from '@typings/Post';
+import { IPost } from '@typings/Post';
 import fetcher from '@utils/fetcher';
 import React from 'react';
 import { useParams } from 'react-router';
@@ -8,7 +8,7 @@ import { Badge, Button } from 'react-bootstrap';
 
 const Post = () => {
   const { id } = useParams<{ id: string }>();
-  const { data } = useSWR<PostDetailResponse>(`/post/${id}`, fetcher);
+  const { data } = useSWR<IPost>(`/post/${id}`, fetcher);
 
   return (
     <div>

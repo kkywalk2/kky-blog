@@ -6,10 +6,11 @@ import './style.css';
 interface Props {
   id: string;
   title: string;
+  content: string;
   createdAt: string;
 }
 
-const PostCard = ({ id, title, createdAt }: Props) => {
+const PostCard = ({ id, title, content, createdAt }: Props) => {
   const navigate = useNavigate();
 
   return (
@@ -18,10 +19,8 @@ const PostCard = ({ id, title, createdAt }: Props) => {
         <h1>{title}</h1>
       </Card.Header>
       <Card.Body>
-        <p>summary is not avalable yet....</p>
-        <div>
-          <Badge>Posted at {createdAt}</Badge>
-        </div>
+        <p>{content.substring(0, 100)}...</p>
+        <Badge>Posted at {createdAt}</Badge>
       </Card.Body>
     </Card>
   );

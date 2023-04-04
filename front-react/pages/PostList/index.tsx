@@ -24,7 +24,13 @@ const PostList = () => {
     >
       {(data: IPost[]) =>
         data.map((post) => (
-          <PostCard key={post.id} id={String(post.id)} title={post.title} createdAt={post.createdAt}></PostCard>
+          <PostCard
+            key={post.id}
+            id={String(post.id)}
+            title={post.title}
+            content={post.content}
+            createdAt={post.createdAt}
+          ></PostCard>
         ))
       }
     </InfiniteScroll>

@@ -1,12 +1,3 @@
-export interface IPost {
-  id: number;
-  title: string;
-  category: string;
-  views: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
 interface Sort {
   sorted: boolean;
   unsorted: boolean;
@@ -51,13 +42,13 @@ interface Comment {
   updatedAt: Date;
 }
 
-export interface PostDetailResponse {
+export interface IPost {
   id: number;
   title: string;
   category: string;
   views: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   content: string;
   comments: Comment[];
 }
