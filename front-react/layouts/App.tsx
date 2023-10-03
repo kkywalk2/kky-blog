@@ -22,8 +22,9 @@ const App = () => {
         <Row>
           <Navbar bg="dark" variant="dark" expand="lg">
             <Nav className="me-auto">
-              <Nav.Link href="/post-editor">글쓰기</Nav.Link>
-              <Nav.Link href="/signup">회원가입</Nav.Link>
+              {/*TODO: 제대로 된 기능을 만들기 전까지 주석처리 */}
+              {/* <Nav.Link href="/post-editor">글쓰기</Nav.Link> */}
+              {/* false && <Nav.Link href="/signup">회원가입</Nav.Link> */}
             </Nav>
           </Navbar>
         </Row>
