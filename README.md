@@ -2,7 +2,7 @@
 =============
 
 ### Stack
-- vue3 + buefy + tui editor
+- React 18 + Bootstrap + md editor
 - Kotlin 1.6.20 + JVM8 + sprint boot 2.5.2
 
 ### ER Diagram
