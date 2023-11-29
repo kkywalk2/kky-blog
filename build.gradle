@@ -1,11 +1,11 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.5.2'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
     id "com.github.node-gradle.node" version "2.2.3"
-    id 'org.jetbrains.kotlin.jvm' version '1.6.20'
-    id "org.jetbrains.kotlin.plugin.spring" version "1.6.20"
-    id "org.jetbrains.kotlin.kapt" version "1.6.20"
+    id 'org.jetbrains.kotlin.jvm' version '1.9.21'
+    id "org.jetbrains.kotlin.plugin.spring" version "1.9.21"
+    id "org.jetbrains.kotlin.kapt" version "1.9.21"
 }
 
 configurations {
@@ -20,8 +20,10 @@ kapt {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+
+java {
+    sourceCompatibility = '21'
+}
 
 node { 
     version = '16.18.1'
@@ -54,15 +56,16 @@ dependencies {
     implementation 'com.auth0:java-jwt:3.18.2'
     implementation 'org.jetbrains:annotations:20.1.0'
 
-    implementation 'org.jetbrains.exposed:exposed-java-time:0.40.1'
-    implementation 'org.jetbrains.exposed:exposed-spring-boot-starter:0.41.1'
+    implementation 'org.jetbrains.exposed:exposed-java-time:0.45.0'
+    implementation 'org.jetbrains.exposed:exposed-spring-boot-starter:0.45.0'
 
-    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.32'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.h2database:h2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.20"
 }
 
 npm_install {
@@ -100,12 +103,12 @@ test {
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = '21'
     }
 }
 
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = '21'
     }
 }

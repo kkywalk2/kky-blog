@@ -5,10 +5,13 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.config.annotation.web.invoke
+import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+
 
 @Configuration
 @EnableWebSecurity
@@ -16,28 +19,32 @@ class SecurityConfig(
     private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
     private val jwtUserDetailsService: AccountDetailService,
     private val jwtUtil: JwtUtil
-) : WebSecurityConfigurerAdapter() {
+)  {
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
     }
 
-    override fun configure(http: HttpSecurity) {
-        http.cors()
-        http.csrf().disable()
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .formLogin().disable()
-            .httpBasic().disable()
-            .addFilter(JwtAuthorizationFilter(jwtUserDetailsService, jwtUtil, authenticationManager()))
-            .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/api/post").authenticated()
-            .antMatchers(HttpMethod.PUT, "/api/post").authenticated()
-            .antMatchers(HttpMethod.DELETE, "/api/post/**").authenticated()
-            .antMatchers(HttpMethod.GET, "/api/account").authenticated()
-            .antMatchers("/api/comment").authenticated()
-            .anyRequest().permitAll()
-            .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+    @Bean
+    fun configure(http: HttpSecurity): SecurityFilterChain {
+        http {
+            cors {  }
+            csrf { disable() }
+            httpBasic { disable() }
+            formLogin { disable() }
+            sessionManagement { sessionCreationPolicy = SessionCreationPolicy.STATELESS }
+            addFilterBefore<UsernamePasswordAuthenticationFilter>(JwtAuthorizationFilter(jwtUserDetailsService, jwtUtil))
+            authorizeRequests {
+                authorize(HttpMethod.POST, "/api/post", authenticated)
+                authorize(HttpMethod.PUT, "/api/post", authenticated)
+                authorize(HttpMethod.DELETE, "/api/post/**", authenticated)
+                authorize(HttpMethod.GET, "/api/account", authenticated)
+                authorize("/api/comment", authenticated)
+                authorize(anyRequest, permitAll)
+            }
+            exceptionHandling { authenticationEntryPoint = jwtAuthenticationEntryPoint }
+        }
+        return http.orBuild
     }
 }

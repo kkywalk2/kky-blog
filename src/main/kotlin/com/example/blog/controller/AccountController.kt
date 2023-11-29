@@ -5,9 +5,9 @@ import com.example.blog.dto.AuthDto
 import com.example.blog.dto.SignInRequest
 import com.example.blog.dto.SignUpRequest
 import com.example.blog.service.AccountService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/account")

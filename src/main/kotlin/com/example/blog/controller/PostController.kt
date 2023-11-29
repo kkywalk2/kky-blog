@@ -3,6 +3,7 @@ package com.example.blog.controller
 import com.example.blog.dto.*
 import com.example.blog.security.AccountDetail
 import com.example.blog.service.PostService
+import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -10,7 +11,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/post")

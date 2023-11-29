@@ -1,7 +1,7 @@
 package com.example.blog.dto
 
+import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
-import javax.validation.constraints.Size
 
 data class CategoryDto(
     val category: String,
