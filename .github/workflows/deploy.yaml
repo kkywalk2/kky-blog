@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'corretto'
-          java-version: 21
+          java-version: 19
 
       - name: Create env file
         env:
