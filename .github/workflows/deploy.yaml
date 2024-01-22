@@ -33,7 +33,7 @@ jobs:
           echo spring.datasource.username="$DATABASE_USERNAME" >> ./src/main/resources/application-prod.properties
           echo spring.datasource.password="$DATABASE_PASSWORD" >> ./src/main/resources/application-prod.properties
           echo spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver >> ./src/main/resources/application-prod.properties
-          echo spring.exposed.generate-ddl=true >> ./src/main/resources/application-prod.properties
+          echo spring.exposed.generate-ddl=false >> ./src/main/resources/application-prod.properties
           echo jwt.secret="$JWT_SECRET" >> ./src/main/resources/application-prod.properties
           echo path.image=/root/Pictures >> ./src/main/resources/application-prod.properties
           echo spring.mvc.pathmatch.matching-strategy=ant_path_matcher >> ./src/main/resources/application-prod.properties
