@@ -19,7 +19,7 @@ const AuthorCard = () => {
         <div className="media">
           <div className="media-content">
             <UnstyledA href="/">
-              <h3>BLOG</h3>
+                <h3> KKY's BLOG</h3>
             </UnstyledA>
             <a className="icon" href="https://www.linkedin.com/in/ki-young-kwon-168381193/">
               <i className="fab fa-linkedin fa-2x"></i>
