@@ -23,12 +23,3 @@ data class SignInRequest (
     @field:Size(min = 8, max = 30)
     val password: String
 )
-
-data class SignUpRequest (
-    @field:Size(min = 8, max = 30)
-    val accountName: String,
-    @field:Size(min = 8, max = 30)
-    val password: String,
-    @field:Email
-    val email: String
-)
