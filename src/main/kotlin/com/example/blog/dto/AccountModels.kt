@@ -19,7 +19,7 @@ data class AuthDto (
 
 data class SignInRequest (
     @field:Size(min = 8, max = 30)
-    val accountName: String,
+    val name: String,
     @field:Size(min = 8, max = 30)
     val password: String
 )

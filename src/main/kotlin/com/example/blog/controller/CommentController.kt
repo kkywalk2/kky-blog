@@ -2,8 +2,8 @@ package com.example.blog.controller
 
 import com.example.blog.dto.CommentDto
 import com.example.blog.dto.CreateCommentRequest
-import com.example.blog.security.AccountDetail
 import com.example.blog.service.CommentService
+import com.example.blog.user.domains.UserDomain
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -17,8 +17,8 @@ class CommentController(
     @ResponseStatus(HttpStatus.CREATED)
     fun addComment(
         @RequestBody request: CreateCommentRequest,
-        @AuthenticationPrincipal accountDetail: AccountDetail
+        @AuthenticationPrincipal userDomain: UserDomain,
     ): CommentDto {
-        return commentService.addComment(accountDetail.id, accountDetail.username, request)
+        return commentService.addComment(userDomain.id, userDomain.username, request)
     }
 }

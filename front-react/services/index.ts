@@ -1,4 +1,4 @@
-import accountService from '@services/accountService';
+import accountService from '@services/userService';
 import commentService from '@services/commentService';
 import imageService from '@services/imageService';
 import postService from '@services/postService';

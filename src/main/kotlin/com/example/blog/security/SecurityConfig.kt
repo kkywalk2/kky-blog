@@ -1,5 +1,6 @@
 package com.example.blog.security
 
+import com.example.blog.core.TokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -17,8 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 class SecurityConfig(
     private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
-    private val jwtUserDetailsService: AccountDetailService,
-    private val jwtUtil: JwtUtil
+    private val tokenProvider: TokenProvider,
 )  {
 
     @Bean
@@ -34,7 +34,7 @@ class SecurityConfig(
             httpBasic { disable() }
             formLogin { disable() }
             sessionManagement { sessionCreationPolicy = SessionCreationPolicy.STATELESS }
-            addFilterBefore<UsernamePasswordAuthenticationFilter>(JwtAuthorizationFilter(jwtUserDetailsService, jwtUtil))
+            addFilterBefore<UsernamePasswordAuthenticationFilter>(JwtAuthorizationFilter(tokenProvider))
             authorizeRequests {
                 authorize(HttpMethod.POST, "/api/post", authenticated)
                 authorize(HttpMethod.PUT, "/api/post", authenticated)
