@@ -1,9 +1,9 @@
-import accountService from '@services/userService';
-import commentService from '@services/commentService';
-import imageService from '@services/imageService';
-import postService from '@services/postService';
+import accountService from '@/services/userService';
+import commentService from '@/services/commentService';
+import imageService from '@/services/imageService';
+import postService from '@/services/postService';
 
-const login = async (accountName: string, password: string) => {
+const login = async (accountName, password) => {
   try {
     const res = await accountService.login(accountName, password);
     if (res.status === 200) {
@@ -16,7 +16,7 @@ const login = async (accountName: string, password: string) => {
   }
 };
 
-const signUp = async (accountName: string, password: string, email: string) => {
+const signUp = async (accountName, password, email) => {
   try {
     const res = await accountService.signUp(accountName, password, email);
     if (res.status === 201) return res.data;
@@ -27,7 +27,7 @@ const signUp = async (accountName: string, password: string, email: string) => {
   }
 };
 
-const createPosts = async (token: string, title: string, content: string | undefined, category: string) => {
+const createPosts = async (token, title, content, category) => {
   try {
     const res = await postService.createPost(token, title, content, category);
     if (res.status === 201) return res.data;
@@ -38,7 +38,7 @@ const createPosts = async (token: string, title: string, content: string | undef
   }
 };
 
-const getPosts = async (page: number, perPage: number, category: string | null = null, title: string | null = null) => {
+const getPosts = async (page, perPage, category = null, title = null) => {
   try {
     const res = await postService.getPosts(page, perPage, category, title);
     if (res.status === 200) return res.data;
@@ -49,7 +49,7 @@ const getPosts = async (page: number, perPage: number, category: string | null =
   }
 };
 
-const uploadImage = async (blob: any) => {
+const uploadImage = async (blob) => {
   try {
     const res = await imageService.uploadImage(blob);
     if (res.status === 201) return res.data;
@@ -60,7 +60,7 @@ const uploadImage = async (blob: any) => {
   }
 };
 
-const getImage = async (path: string) => {
+const getImage = async (path) => {
   try {
     const res = await imageService.getImage(path);
     if (res.status === 200) return res.data;
@@ -71,7 +71,7 @@ const getImage = async (path: string) => {
   }
 };
 
-const getPost = async (id: string) => {
+const getPost = async (id) => {
   try {
     const res = await postService.getPost(id);
     if (res.status === 200) return res.data;
@@ -93,7 +93,7 @@ const getCategories = async () => {
   }
 };
 
-const addComment = async (token: string, postId: string, comment: string) => {
+const addComment = async (token, postId, comment) => {
   try {
     const res = await commentService.addComment(token, postId, comment);
     if (res.status === 201) return res.data;
@@ -104,7 +104,7 @@ const addComment = async (token: string, postId: string, comment: string) => {
   }
 };
 
-const checkAuthentication = async (token: string | null) => {
+const checkAuthentication = async (token) => {
   try {
     const res = await accountService.checkAuthentication(token);
     return res.status === 200;
@@ -113,7 +113,7 @@ const checkAuthentication = async (token: string | null) => {
   }
 };
 
-const updatePost = async (token: string, postId: string, title: string, content: string, category: string) => {
+const updatePost = async (token, postId, title, content, category) => {
   try {
     const res = await postService.updatePost(token, postId, title, content, category);
     if (res.status === 200) return res.data;
@@ -124,7 +124,7 @@ const updatePost = async (token: string, postId: string, title: string, content:
   }
 };
 
-const deletePost = async (token: string, postId: string) => {
+const deletePost = async (token, postId) => {
   try {
     const res = await postService.deletePost(token, postId);
     if (res.status === 200) return res.data;

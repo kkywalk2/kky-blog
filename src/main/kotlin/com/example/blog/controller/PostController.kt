@@ -1,8 +1,8 @@
 package com.example.blog.controller
 
 import com.example.blog.dto.*
-import com.example.blog.security.AccountDetail
 import com.example.blog.service.PostService
+import com.example.blog.user.domains.UserDomain
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -14,16 +14,16 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/post")
-class PostController (
+class PostController(
     private val postService: PostService
 ) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createPost(
         @RequestBody request: @Valid CreatePostRequest,
-        @AuthenticationPrincipal accountDetail: AccountDetail
+        @AuthenticationPrincipal userDomain: UserDomain,
     ): PostDto {
-        return postService.createPost(accountDetail.id, request)
+        return postService.createPost(userDomain.id, request)
     }
 
     @GetMapping
@@ -51,16 +51,16 @@ class PostController (
     fun updatePost(
         @PathVariable("id") id: Long,
         @RequestBody request: @Valid UpdatePostRequest,
-        @AuthenticationPrincipal accountDetail: AccountDetail
+        @AuthenticationPrincipal userDomain: UserDomain,
     ): PostDto {
-        return postService.updatePost(accountDetail.id, id, request)
+        return postService.updatePost(userDomain.id, id, request)
     }
 
     @DeleteMapping("/{id}")
     fun deletePost(
         @PathVariable("id") id: Long,
-        @AuthenticationPrincipal accountDetail: AccountDetail
+        @AuthenticationPrincipal userDomain: UserDomain,
     ): PostDto {
-        return postService.deletePost(accountDetail.id, id)
+        return postService.deletePost(userDomain.id, id)
     }
 }

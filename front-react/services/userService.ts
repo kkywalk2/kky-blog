@@ -6,7 +6,7 @@ const login = (accountName: string, password: string) => {
     password: password,
   };
 
-  return axios.post(`/account/signin`, authInfo);
+  return axios.post(`/users/token`, authInfo);
 };
 
 const signUp = (accountName: string, password: string, email: string) => {
@@ -16,7 +16,7 @@ const signUp = (accountName: string, password: string, email: string) => {
     email: email,
   };
 
-  return axios.post(`/account/signup`, signUpInfo);
+  return axios.post(`/users`, signUpInfo);
 };
 
 const checkAuthentication = (token: string | null) => {
@@ -27,7 +27,7 @@ const checkAuthentication = (token: string | null) => {
 
   console.log(token);
 
-  return axios.get(`/account`, { headers });
+  return axios.get(`/users`, { headers });
 };
 
 export default {
