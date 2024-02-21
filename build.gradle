@@ -26,14 +26,14 @@ java {
 }
 
 node { 
-    version = '16.18.1'
+    version = '20.11.0'
     npmVersion = '8.19.2'
     yarnVersion = '1.22.4'
     npmInstallCommand = 'install'
     distBaseUrl = 'https://nodejs.org/dist' 
     download = true 
-    workDir = file("${project.buildDir}/front-react")
-    nodeModulesDir = file("${project.projectDir}/front-react")
+    workDir = file("${project.buildDir}/front-react-vite")
+    nodeModulesDir = file("${project.projectDir}/front-react-vite")
     workDir = file("${project.projectDir}/.gradle/nodejs")
     yarnWorkDir = file("${project.projectDir}/.gradle/yarn")
 } 
@@ -69,10 +69,6 @@ dependencies {
     testImplementation 'com.h2database:h2:2.2.224'
 }
 
-npm_install {
-    args = ['--force']
-}
-
 task deleteVueArtifact(type: Delete) {
     delete "src/main/resources/static"
 }
@@ -82,21 +78,16 @@ task npmBuild(type: NpmTask, dependsOn: ['deleteVueArtifact', 'npm_install']) {
 }
 
 task copyReactBuildFiles1(type: Copy, dependsOn: ['npmBuild']) {
-    from "front-react/dist"
-    into "src/main/resources/static/dist"
-}
-
-task copyReactBuildFiles2(type: Copy, dependsOn: ['copyReactBuildFiles1']) {
-    from "front-react/index.html"
+    from "front-react-vite/dist"
     into "src/main/resources/static"
 }
 
-task copyReactBuildFiles3(type: Copy, dependsOn: ['copyReactBuildFiles2']) {
-    from "front-react/assets"
+task copyReactBuildFiles2(type: Copy, dependsOn: ['copyReactBuildFiles1']) {
+    from "front-react-vite/assets"
     into "src/main/resources/static/assets"
 }
 
-compileJava.dependsOn(copyReactBuildFiles3)
+compileJava.dependsOn(copyReactBuildFiles2)
 
 test {
     useJUnitPlatform()

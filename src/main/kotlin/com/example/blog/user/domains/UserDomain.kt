@@ -15,8 +15,7 @@ class UserDomain(
 ) : UserDetails {
 
     fun validatePassword(password: String, passwordEncoder: PasswordEncoder): Boolean {
-        val result =  passwordEncoder.matches(password, this.encodedPassword)
-        return result
+        return passwordEncoder.matches(password, this.encodedPassword)
     }
 
     fun toClaims(): Map<String, String> {
