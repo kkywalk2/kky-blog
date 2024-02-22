@@ -18,15 +18,15 @@ axios.defaults.baseURL = mode === 'production' ? 'https://cnt2020.hopto.org/blog
 const router = createBrowserRouter(
   [
     {
-      path: '/blog',
+      path: '/',
       element: <App />,
       children: [
         {
-          path: '/blog',
+          path: '/',
           element: <PostList />,
         },
         {
-          path: '/blog/posts/:postId',
+          path: '/posts/:postId',
           element: <Post />,
         },
       ],

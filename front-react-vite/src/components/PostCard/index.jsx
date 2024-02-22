@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown';
 
 const PostCard = ({ id, title, content, createdAt }) => {
   return (
-    <Link to={`/blog/posts/${id}`}>
+    <Link to={`/posts/${id}`}>
       <div className="py-6 lg:py-10 px-6 lg:px-16 block focus:outline-none focus:ring-4 h-96 rounded-md border-2">
         {createdAt && (
           <p className="uppercase mb-3 font-bold opacity-60">
