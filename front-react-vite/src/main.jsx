@@ -12,25 +12,27 @@ import {
 import Post from '@/pages/Post';
 import PostList from '@/pages/PostList';
 
-axios.defaults.baseURL =
-  process.env.NODE_ENV === 'production' ? 'https://cnt2020.hopto.org/blog/api' : 'http://localhost:9001/blog/api';
+const mode = import.meta.env.MODE;
+axios.defaults.baseURL = mode === 'production' ? 'https://cnt2020.hopto.org/blog/api' : 'http://localhost:9001/blog/api';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      {
-        path: "lists",
-        element: <PostList />,
-      },
-      {
-        path: "posts/:postId",
-        element: <Post />,
-      },
-    ],
-  },
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: '/blog',
+      element: <App />,
+      children: [
+        {
+          path: '/blog/lists',
+          element: <PostList />,
+        },
+        {
+          path: '/blog/posts/:postId',
+          element: <Post />,
+        },
+      ],
+    },
+  ],
+);
 
 window.addEventListener('vite:preloadError', (event) => {
   console.log(event);

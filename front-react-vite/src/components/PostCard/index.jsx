@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const PostCard = ({ id, title, content, createdAt }) => {
   return (
-    <Link to={`/posts/${id}`}>
+    <Link to={`/blog/posts/${id}`}>
       <div className="py-6 lg:py-10 px-6 lg:px-16 block focus:outline-none focus:ring-4">
         {createdAt && (
           <p className="uppercase mb-3 font-bold opacity-60">

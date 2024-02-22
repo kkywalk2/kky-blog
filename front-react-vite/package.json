@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode dev",
-    "devbuild": "vite build --mode dev --base=/blog -d true",
-    "build": "vite build --mode production --base=/blog",
+    "devbuild": "vite build --mode dev -d true",
+    "build": "vite build --mode production",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
