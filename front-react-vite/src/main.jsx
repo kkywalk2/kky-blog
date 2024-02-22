@@ -22,7 +22,7 @@ const router = createBrowserRouter(
       element: <App />,
       children: [
         {
-          path: '/blog/lists',
+          path: '/blog',
           element: <PostList />,
         },
         {

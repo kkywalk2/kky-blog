@@ -1,19 +1,29 @@
-import React from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
+import { getPost } from '@/services';
 
 const Post = () => {
-  const { id } = useParams(0);
-  // const { data } = useSWR<IPost>(`/post/${id}`, fetcher);
+  const { postId } = useParams();
+  const [ data, setData ] = useState(null);
+
+  const fetchData = async () => {
+    const postData = await getPost(postId);
+    setData(postData);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [])
 
   return (
-    <div>
+    <div className='text-4xl font-bold w-3/4'>
       <h1>{data?.title}</h1>
       <div>
-        <Badge>{data?.category}</Badge>
+        <span className='bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>{data?.category}</span>
         <div className="float-md-end">
-          <Button style={{ marginRight: '10' }}>수정</Button>
-          <Button>삭제</Button>
+          <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>수정</button>
+          <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>삭제</button>
         </div>
       </div>
       <div className="markdownDiv" data-color-mode="light" style={{ padding: 15 }}>

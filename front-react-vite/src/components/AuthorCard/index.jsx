@@ -4,7 +4,7 @@ import dogWithGlass from '@/assets/dog with glass.jpg'
 
 const AuthorCard = () => {
   return (
-    <div style={{ width: 300 }} className="card shadow-sm p-3 mb-5 bg-white border-solid border-black">
+    <div className="card shadow-sm p-3 mb-5 bg-white border-solid border-black rounded-md border-2 h-72">
       <div className="card-image">
         <img
           style={{
