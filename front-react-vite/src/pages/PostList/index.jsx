@@ -52,14 +52,14 @@ const PostList = () => {
   }, [currentPage])
 
   return (
-    <div>
+    <div className='justify-center w-full'>
       <ul>
         {data.map((post) => (
           <PostCard
             key={post.id}
             id={String(post.id)}
             title={post.title}
-            content={post.content}
+            summary={post.summary}
             createdAt={post.createdAt}
           ></PostCard>
         ))

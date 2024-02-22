@@ -13,7 +13,7 @@ import Post from '@/pages/Post';
 import PostList from '@/pages/PostList';
 
 const mode = import.meta.env.MODE;
-axios.defaults.baseURL = mode === 'production' ? 'https://cnt2020.hopto.org/blog/api' : 'http://localhost:9001/blog/api';
+axios.defaults.baseURL = mode === 'production' ? 'https://cnt2020.hopto.org/api' : 'http://localhost:9001/api';
 
 const router = createBrowserRouter(
   [
