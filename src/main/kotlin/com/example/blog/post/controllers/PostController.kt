@@ -1,7 +1,7 @@
-package com.example.blog.controller
+package com.example.blog.post.controllers
 
 import com.example.blog.dto.*
-import com.example.blog.service.PostService
+import com.example.blog.post.services.PostService
 import com.example.blog.user.domains.UserDomain
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping("/api/posts")
 class PostController(
     private val postService: PostService
 ) {
@@ -62,5 +62,10 @@ class PostController(
         @AuthenticationPrincipal userDomain: UserDomain,
     ): PostDto {
         return postService.deletePost(userDomain.id, id)
+    }
+
+    @PostMapping("/{id}/comments")
+    fun addComment(@PathVariable id: String): CommentDto {
+        TODO("")
     }
 }

@@ -1,4 +1,4 @@
-package com.example.blog.entity
+package com.example.blog.post.infrastuctures
 
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.javatime.datetime
 import java.time.LocalDateTime
 
 object Posts : LongIdTable("post_entity") {
-    val accountId = long("account_id")
+    val userId = long("account_id")
     val views = long("views").default(0)
     val deleted = bool("deleted").default(false)
     val title = varchar("title", 255)
@@ -19,10 +19,10 @@ object Posts : LongIdTable("post_entity") {
     val updatedAt = datetime("updated_at").defaultExpression(CurrentTimestamp()).clientDefault { LocalDateTime.now() }
 }
 
-class Post(id: EntityID<Long>) : LongEntity(id) {
-    companion object : LongEntityClass<Post>(Posts)
+class PostDao(id: EntityID<Long>) : LongEntity(id) {
+    companion object : LongEntityClass<PostDao>(Posts)
 
-    var accountId by Posts.accountId
+    var userId by Posts.userId
     var views by Posts.views
     var deleted by Posts.deleted
     var title by Posts.title
@@ -30,7 +30,7 @@ class Post(id: EntityID<Long>) : LongEntity(id) {
     var category by Posts.category
     var createdAt by Posts.createdAt
     var updatedAt by Posts.updatedAt
-    val comments by Comment referrersOn Comments.postId
+    val comments by CommentDao referrersOn Comments.postId
 
     override fun delete() {
         deleted = true

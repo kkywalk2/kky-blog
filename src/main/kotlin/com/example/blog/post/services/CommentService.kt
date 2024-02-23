@@ -1,9 +1,9 @@
-package com.example.blog.service
+package com.example.blog.post.services
 
 import com.example.blog.dto.CommentDto
 import com.example.blog.dto.CreateCommentRequest
-import com.example.blog.entity.Comment
-import com.example.blog.repository.CommentRepository
+import com.example.blog.post.infrastuctures.CommentDao
+import com.example.blog.post.infrastuctures.CommentRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,7 +16,7 @@ class CommentService(
         return commentRepository.save(accountId, accountName, request).toDto()
     }
 
-    private fun Comment.toDto(): CommentDto {
+    private fun CommentDao.toDto(): CommentDto {
         return CommentDto(
             id.value,
             postId.value,

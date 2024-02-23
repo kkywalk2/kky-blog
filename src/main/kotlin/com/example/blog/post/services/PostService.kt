@@ -1,8 +1,8 @@
-package com.example.blog.service
+package com.example.blog.post.services
 
 import com.example.blog.dto.*
-import com.example.blog.entity.Post
-import com.example.blog.repository.PostRepository
+import com.example.blog.post.infrastuctures.PostDao
+import com.example.blog.post.infrastuctures.PostRepository
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -41,7 +41,7 @@ class PostService(
         return postRepository.delete(accountId, postId).toDto()
     }
 
-    private fun Post.toDto(includeComments: Boolean = false): PostDto {
+    private fun PostDao.toDto(includeComments: Boolean = false): PostDto {
         return PostDto(
             id.value,
             title,

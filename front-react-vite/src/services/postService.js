@@ -12,7 +12,7 @@ const createPost = (token, title, content, category) => {
     category: category,
   };
 
-  return axios.post(`/post`, postInfo, { headers });
+  return axios.post(`/posts`, postInfo, { headers });
 };
 
 const getPosts = (
@@ -33,7 +33,7 @@ const getPosts = (
     query += `&title=${title}`;
   }
 
-  return axios.get(`/post?page=${page}&per_page=${perPage}${query}`, { headers });
+  return axios.get(`/posts?page=${page}&per_page=${perPage}${query}`, { headers });
 };
 
 const getPost = (id) => {
@@ -41,7 +41,7 @@ const getPost = (id) => {
     'Content-type': 'application/json',
   };
 
-  return axios.get(`/post/${id}`, { headers });
+  return axios.get(`/posts/${id}`, { headers });
 };
 
 const getCategories = () => {
@@ -49,7 +49,7 @@ const getCategories = () => {
     'Content-type': 'application/json',
   };
 
-  return axios.get(`/post/category`, { headers });
+  return axios.get(`/posts/category`, { headers });
 };
 
 const updatePost = (token, postId, title, content, category) => {
@@ -64,7 +64,7 @@ const updatePost = (token, postId, title, content, category) => {
     category: category,
   };
 
-  return axios.put(`/post/${postId}`, postInfo, { headers });
+  return axios.put(`/posts/${postId}`, postInfo, { headers });
 };
 
 const deletePost = (token, postId) => {
@@ -73,7 +73,7 @@ const deletePost = (token, postId) => {
     Authorization: `${token}`,
   };
 
-  return axios.delete(`/post/${postId}`, { headers });
+  return axios.delete(`/posts/${postId}`, { headers });
 };
 
 export default { createPost, getPosts, getPost, getCategories, updatePost, deletePost };

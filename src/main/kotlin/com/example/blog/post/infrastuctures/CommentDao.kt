@@ -1,4 +1,4 @@
-package com.example.blog.entity
+package com.example.blog.post.infrastuctures
 
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
@@ -17,8 +17,8 @@ object Comments : LongIdTable("comment_entity") {
     val updatedAt = datetime("updated_at").defaultExpression(CurrentTimestamp()).clientDefault { LocalDateTime.now() }
 }
 
-class Comment(id: EntityID<Long>) : LongEntity(id) {
-    companion object : LongEntityClass<Comment>(Comments)
+class CommentDao(id: EntityID<Long>) : LongEntity(id) {
+    companion object : LongEntityClass<CommentDao>(Comments)
 
     var accountName by Comments.accountName
     var accountId by Comments.accountId

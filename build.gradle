@@ -74,7 +74,7 @@ task deleteVueArtifact(type: Delete) {
 }
 
 task npmBuild(type: NpmTask, dependsOn: ['deleteVueArtifact', 'npm_install']) {
-    args = ["run", "build"]
+    args = ["run", "devbuild"]
 }
 
 task copyReactBuildFiles1(type: Copy, dependsOn: ['npmBuild']) {
