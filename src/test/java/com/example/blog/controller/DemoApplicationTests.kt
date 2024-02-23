@@ -24,7 +24,7 @@ class DemoApplicationTests {
     @Test
     fun getAllPosts() {
         mockMvc
-            .perform(MockMvcRequestBuilders.get("/api/post").contentType(MediaType.APPLICATION_JSON))
+            .perform(MockMvcRequestBuilders.get("/api/posts").contentType(MediaType.APPLICATION_JSON))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
