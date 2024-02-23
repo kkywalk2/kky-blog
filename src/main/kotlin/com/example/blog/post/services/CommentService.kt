@@ -18,7 +18,6 @@ class CommentService(
 
     private fun CommentDao.toDto(): CommentDto {
         return CommentDto(
-            id.value,
             postId.value,
             accountName,
             content,

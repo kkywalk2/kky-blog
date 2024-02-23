@@ -1,8 +1,11 @@
 package com.example.blog.post.services
 
 import com.example.blog.dto.*
-import com.example.blog.post.infrastuctures.PostDao
-import com.example.blog.post.infrastuctures.PostRepository
+import com.example.blog.exception.ResourceNotFoundException
+import com.example.blog.post.domains.CreatePost
+import com.example.blog.post.domains.PostDomain
+import com.example.blog.post.domains.UpdatePost
+import com.example.blog.post.services.ports.PostRepository
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -13,11 +16,12 @@ import java.util.*
 @Service
 @Transactional
 class PostService(
-    private val postRepository: PostRepository
+    private val postRepository: PostRepository,
 ) {
 
-    fun createPost(accountId: Long, createPostRequest: CreatePostRequest): PostDto {
-        return postRepository.save(accountId, createPostRequest).toDto()
+    fun create(userId: Long, createPost: CreatePost): PostDto {
+        val post = PostDomain.createPost(userId, createPost)
+        return postRepository.save(post).toDto()
     }
 
     //TODO: Page 객체를 사용하지 않는 것이 좋음, none offset pagination 으로 수정예정
@@ -26,43 +30,46 @@ class PostService(
     }
 
     fun getPost(postId: Long): PostDto {
-        return postRepository.findById(postId).orElseThrow { NotFoundException() }.toDto(true)
+        return postRepository.findById(postId).orElseThrow { NotFoundException() }.toDto()
     }
 
     fun getCategoryCounts(): List<CategoryDto> {
         return postRepository.getCategoryCounts()
     }
 
-    fun updatePost(accountId: Long, postId: Long, updatePostRequest: UpdatePostRequest): PostDto {
-        return postRepository.update(accountId, postId, updatePostRequest).toDto()
+    fun updatePost(userId: Long, postId: Long, updatePost: UpdatePost): PostDto {
+        return postRepository
+            .findById(postId)
+            .map { it.update(userId, updatePost) }
+            .map { postRepository.save(it).toDto() }
+            .orElseThrow { ResourceNotFoundException() }
     }
 
-    fun deletePost(accountId: Long, postId: Long): PostDto {
-        return postRepository.delete(accountId, postId).toDto()
+    fun deletePost(userId: Long, postId: Long): PostDto {
+        return postRepository
+            .findById(postId)
+            .map { it.delete(userId) }
+            .map { postRepository.save(it).toDto() }
+            .orElseThrow { ResourceNotFoundException() }
     }
 
-    private fun PostDao.toDto(includeComments: Boolean = false): PostDto {
+    private fun PostDomain.toDto(): PostDto {
         return PostDto(
-            id.value,
+            id,
             title,
             category,
             views,
             createdAt,
             updatedAt,
             content,
-            comments = if(includeComments) {
-                comments.map { c ->
-                    CommentDto(
-                        c.id.value,
-                        c.postId.value,
-                        c.accountName,
-                        c.content,
-                        c.createdAt,
-                        c.updatedAt
-                    )
-                }
-            } else {
-                emptyList<CommentDto>()
+            comments = comments.map { c ->
+                CommentDto(
+                    id,
+                    accountName = "",
+                    c.content,
+                    c.createdAt,
+                    c.updatedAt
+                )
             }
         )
     }

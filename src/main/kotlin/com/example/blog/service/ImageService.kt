@@ -48,7 +48,7 @@ class ImageService(
         val path = image.getPath()
         val headers = path.toHeaders()
 
-        if(path.notExists()) throw FileNotFoundException
+        if(path.notExists()) throw FileNotFoundException()
 
         val resource: Resource = InputStreamResource(Files.newInputStream(path))
 

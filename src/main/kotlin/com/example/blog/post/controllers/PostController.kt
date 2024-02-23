@@ -1,6 +1,8 @@
 package com.example.blog.post.controllers
 
 import com.example.blog.dto.*
+import com.example.blog.post.domains.CreatePost
+import com.example.blog.post.domains.UpdatePost
 import com.example.blog.post.services.PostService
 import com.example.blog.user.domains.UserDomain
 import jakarta.validation.Valid
@@ -20,10 +22,10 @@ class PostController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createPost(
-        @RequestBody request: @Valid CreatePostRequest,
+        @RequestBody @Valid request: CreatePost,
         @AuthenticationPrincipal userDomain: UserDomain,
     ): PostDto {
-        return postService.createPost(userDomain.id, request)
+        return postService.create(userDomain.id, request)
     }
 
     @GetMapping
@@ -50,7 +52,7 @@ class PostController(
     @PutMapping("/{id}")
     fun updatePost(
         @PathVariable("id") id: Long,
-        @RequestBody request: @Valid UpdatePostRequest,
+        @RequestBody @Valid request: UpdatePost,
         @AuthenticationPrincipal userDomain: UserDomain,
     ): PostDto {
         return postService.updatePost(userDomain.id, id, request)

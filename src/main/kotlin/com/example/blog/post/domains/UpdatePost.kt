@@ -1,6 +1,6 @@
 package com.example.blog.post.domains
 
-data class CreatePost(
+data class UpdatePost (
     val views: Long,
     val title: String,
     val content: String,

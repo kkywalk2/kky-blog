@@ -1,5 +1,6 @@
 package com.example.blog.post.domains
 
+import com.example.blog.exception.InvalidAccessException
 import com.example.blog.user.domains.UserDomain
 import java.time.LocalDateTime
 
@@ -22,15 +23,28 @@ data class PostDomain(
         newComments.add(Comment(userDomain.id, userDomain.name, content, now, now))
     }
 
-    fun delete(): PostDomain {
+    fun delete(userId: Long): PostDomain {
+        if (this.userId != userId) throw InvalidAccessException()
+
         return this.copy(deleted = true)
     }
 
+    fun update(userId: Long, updatePost: UpdatePost): PostDomain {
+        if (this.userId != userId) throw InvalidAccessException()
+
+        return this.copy(
+            views = updatePost.views,
+            title = updatePost.title,
+            content = updatePost.content,
+            category = updatePost.category
+        )
+    }
+
     companion object {
-        fun createPost(createPost: CreatePost, now: LocalDateTime = LocalDateTime.now()): PostDomain {
+        fun createPost(userId: Long, createPost: CreatePost, now: LocalDateTime = LocalDateTime.now()): PostDomain {
             return PostDomain(
                 id = 0,
-                userId = createPost.userId,
+                userId = userId,
                 views = createPost.views,
                 deleted = false,
                 title = createPost.title,

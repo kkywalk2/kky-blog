@@ -3,7 +3,6 @@ package com.example.blog.dto
 import java.time.LocalDateTime
 
 data class CommentDto(
-    val id: Long,
     val postId: Long,
     val accountName: String,
     val content: String,
