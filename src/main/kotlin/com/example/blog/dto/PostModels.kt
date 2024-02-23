@@ -1,6 +1,5 @@
 package com.example.blog.dto
 
-import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 
 data class CategoryDto(
@@ -18,14 +17,3 @@ data class PostDto(
     val content: String,
     val comments: List<CommentDto>
 )
-
-data class PostRequest(
-    @field:Size(max = 100)
-    val title: String,
-    val content: String,
-    @field:Size(min = 1, max = 30)
-    val category: String
-)
-
-typealias CreatePostRequest = PostRequest
-typealias UpdatePostRequest = PostRequest

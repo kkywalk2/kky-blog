@@ -1,4 +1,4 @@
-package com.example.blog.entity
+package com.example.blog.image.infrastructures
 
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass

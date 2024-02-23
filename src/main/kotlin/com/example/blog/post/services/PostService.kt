@@ -65,7 +65,7 @@ class PostService(
             comments = comments.map { c ->
                 CommentDto(
                     id,
-                    accountName = "",
+                    userName = "",
                     c.content,
                     c.createdAt,
                     c.updatedAt

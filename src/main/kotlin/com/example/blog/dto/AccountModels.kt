@@ -1,11 +1,10 @@
 package com.example.blog.dto
 
-import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 import java.util.Optional
 
-data class AccountDto (
+data class UserDto (
     var name: String,
     var email: String,
     val createdAt: Optional<LocalDateTime>,

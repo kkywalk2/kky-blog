@@ -1,8 +1,8 @@
-package com.example.blog.controller
+package com.example.blog.image.controllers
 
 import com.example.blog.dto.ImageUploadRequest
 import com.example.blog.dto.ImageUploadResponse
-import com.example.blog.service.ImageService
+import com.example.blog.image.services.ImageService
 import jakarta.validation.Valid
 import org.springframework.core.io.Resource
 import org.springframework.http.HttpStatus

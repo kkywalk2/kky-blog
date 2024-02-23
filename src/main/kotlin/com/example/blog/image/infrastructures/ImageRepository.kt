@@ -1,7 +1,5 @@
-package com.example.blog.repository
+package com.example.blog.image.infrastructures
 
-import com.example.blog.entity.Images
-import com.example.blog.entity.Image
 import org.springframework.stereotype.Repository
 
 @Repository

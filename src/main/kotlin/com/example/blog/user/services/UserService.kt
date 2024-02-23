@@ -1,7 +1,7 @@
 package com.example.blog.user.services
 
 import com.example.blog.core.TokenProvider
-import com.example.blog.dto.AccountDto
+import com.example.blog.dto.UserDto
 import com.example.blog.dto.AuthDto
 import com.example.blog.dto.SignInRequest
 import com.example.blog.exception.UnauthorizedException
@@ -22,7 +22,7 @@ class UserService(
     private val tokenProvider: TokenProvider,
 ) {
 
-    fun createAccount(request: CreateUser): AccountDto {
+    fun createAccount(request: CreateUser): UserDto {
         val user = UserDomain.createUser(request, passwordEncoder)
         return userRepository.save(user).toDto()
     }
@@ -35,8 +35,8 @@ class UserService(
             .orElseThrow { UnauthorizedException() }
     }
 
-    private fun UserDomain.toDto(): AccountDto {
-        return AccountDto(
+    private fun UserDomain.toDto(): UserDto {
+        return UserDto(
             name = name,
             email = email,
             createdAt = Optional.ofNullable(createdAt),

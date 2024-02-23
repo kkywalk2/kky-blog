@@ -1,8 +1,8 @@
-package com.example.blog.service
+package com.example.blog.image.services
 
 import com.example.blog.dto.ImageUploadResponse
 import com.example.blog.exception.FileNotFoundException
-import com.example.blog.repository.ImageRepository
+import com.example.blog.image.infrastructures.ImageRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
 import org.springframework.core.io.Resource

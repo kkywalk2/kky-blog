@@ -1,6 +1,6 @@
 package com.example.blog.user.controllers
 
-import com.example.blog.dto.AccountDto
+import com.example.blog.dto.UserDto
 import com.example.blog.dto.AuthDto
 import com.example.blog.dto.SignInRequest
 import com.example.blog.user.domains.CreateUser
@@ -17,7 +17,7 @@ class UserController(
 ) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun signUp(@Valid @RequestBody req: CreateUser): AccountDto {
+    fun signUp(@Valid @RequestBody req: CreateUser): UserDto {
         return userService.createAccount(req)
     }
 

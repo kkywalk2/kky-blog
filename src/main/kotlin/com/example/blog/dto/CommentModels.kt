@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 data class CommentDto(
     val postId: Long,
-    val accountName: String,
+    val userName: String,
     val content: String,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
