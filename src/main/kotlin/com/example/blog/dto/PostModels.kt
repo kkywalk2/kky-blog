@@ -17,3 +17,8 @@ data class PostDto(
     val content: String,
     val comments: List<CommentDto>
 )
+
+data class GetPostsResponse(
+    val posts: List<PostDto>,
+    val cursor: String
+)

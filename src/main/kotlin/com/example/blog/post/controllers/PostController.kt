@@ -39,6 +39,13 @@ class PostController(
         return postService.getPosts(pageable, title, category)
     }
 
+    @GetMapping(params = ["cursor"])
+    fun getPostsByCursor(
+        @RequestParam cursor: String,
+    ): GetPostsResponse {
+        TODO()
+    }
+
     @GetMapping("/{id}")
     fun getPost(@PathVariable("id") id: Long): PostDto {
         return postService.getPost(id)
