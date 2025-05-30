@@ -11,8 +11,8 @@ fun <T : Any> Iterable<T>.firstOptional(): Optional<T> = Optional.ofNullable(fir
 object Base64ObjectMapper {
     private val objectMapper: ObjectMapper = jacksonObjectMapper().registerModule(JavaTimeModule())
 
-    fun toBase64(): String {
-        val json = objectMapper.writeValueAsString(this)
+    fun toBase64(obj: Any): String {
+        val json = objectMapper.writeValueAsString(obj)
         return Base64.getUrlEncoder().encodeToString(json.toByteArray())
     }
 

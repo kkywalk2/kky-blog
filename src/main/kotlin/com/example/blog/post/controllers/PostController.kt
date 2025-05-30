@@ -1,18 +1,15 @@
 package com.example.blog.post.controllers
 
+import com.example.blog.config.Base64ObjectMapper
 import com.example.blog.dto.*
 import com.example.blog.post.domains.CreatePost
 import com.example.blog.post.domains.UpdatePost
 import com.example.blog.post.services.PostService
 import com.example.blog.user.domains.UserDomain
 import jakarta.validation.Valid
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @RestController
 @RequestMapping("/api/posts")
@@ -30,20 +27,46 @@ class PostController(
 
     @GetMapping
     fun getPosts(
-        @RequestParam(value = "page", defaultValue = "0") page: Int,
-        @RequestParam(value = "per_page", defaultValue = "0") perPage: Int,
-        @RequestParam(value = "title") title: Optional<String>,
-        @RequestParam(value = "category") category: Optional<String>
-    ): Page<PostDto> {
-        val pageable = if (perPage == 0) Pageable.unpaged() else PageRequest.of(page, perPage)
-        return postService.getPosts(pageable, title, category)
+        @RequestParam(value = "title") title: String?,
+        @RequestParam(value = "category") category: String?,
+        @RequestParam(value = "limit", defaultValue = "20") limit: Int,
+    ): GetPostsResponse {
+        val posts = postService.getPosts(title = title, category = category, limit = limit + 1)
+
+        return GetPostsResponse(
+            posts = posts.take(limit),
+            cursor = if (posts.size > limit) {
+                posts.last()
+                    .let { PostCursor(it.id, title, category, it.createdAt) }
+                    .let { Base64ObjectMapper.toBase64(it) }
+            } else
+                null
+        )
     }
 
     @GetMapping(params = ["cursor"])
     fun getPostsByCursor(
         @RequestParam cursor: String,
+        @RequestParam(value = "limit", defaultValue = "20") limit: Int,
     ): GetPostsResponse {
-        TODO()
+        val postCursor = Base64ObjectMapper.fromBase64<PostCursor>(cursor)
+        val posts = postService.getPosts(
+            title = postCursor.title,
+            category = postCursor.category,
+            lastId = postCursor.id,
+            lastCreatedAt = postCursor.createdAt,
+            limit = limit,
+        )
+
+        return GetPostsResponse(
+            posts = posts.take(limit),
+            cursor = if (posts.size > limit) {
+                posts.last()
+                    .let { PostCursor(it.id, postCursor.title, postCursor.category, it.createdAt) }
+                    .let { Base64ObjectMapper.toBase64(it) }
+            } else
+                null
+        )
     }
 
     @GetMapping("/{id}")

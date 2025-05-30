@@ -2,8 +2,7 @@ package com.example.blog.post.services.ports
 
 import com.example.blog.dto.CategoryDto
 import com.example.blog.post.domains.PostDomain
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
+import java.time.LocalDateTime
 import java.util.Optional
 
 interface PostRepository {
@@ -12,7 +11,13 @@ interface PostRepository {
 
     fun findById(id: Long): Optional<PostDomain>
 
-    fun getByTitleAndCategory(pageable: Pageable, title: Optional<String>, category: Optional<String>): Page<PostDomain>
+    fun getByTitleAndCategory(
+        limit: Int,
+        title: String?,
+        category: String?,
+        lastId: Long?,
+        lastCreatedAt: LocalDateTime?
+    ): List<PostDomain>
 
     fun getCategoryCounts(): List<CategoryDto>
 

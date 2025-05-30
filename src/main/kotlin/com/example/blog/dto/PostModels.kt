@@ -20,5 +20,12 @@ data class PostDto(
 
 data class GetPostsResponse(
     val posts: List<PostDto>,
-    val cursor: String
+    val cursor: String?
+)
+
+data class PostCursor(
+    val id: Long,
+    val title: String?,
+    val category: String?,
+    val createdAt: LocalDateTime,
 )
