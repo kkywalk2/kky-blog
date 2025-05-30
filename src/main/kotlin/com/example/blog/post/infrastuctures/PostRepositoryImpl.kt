@@ -51,8 +51,13 @@ class PostRepositoryImpl : PostRepository {
             .select { Posts.deleted eq false }
             .andWhere(title) { Posts.title like "%$it%" }
             .andWhere(category) { Posts.category eq it }
-            .andWhere2(lastId, lastCreatedAt) { id, createdAt ->
-                (Posts.createdAt less createdAt) or ((Posts.id less id) and (Posts.createdAt eq createdAt))
+            .apply {
+                if (lastId != null && lastCreatedAt != null) {
+                    andWhere {
+                        (Posts.createdAt less lastCreatedAt) or
+                                ((Posts.id less lastId) and (Posts.createdAt eq lastCreatedAt))
+                    }
+                }
             }
             .orderBy(Posts.createdAt to SortOrder.DESC, Posts.id to SortOrder.DESC)
             .limit(limit)
@@ -104,23 +109,6 @@ class PostRepositoryImpl : PostRepository {
             this.adjustWhere {
                 if (this == null) expr
                 else this and expr
-            }
-        }
-    }
-
-    private fun <U, T> Query.andWhere2(
-        parameter1: U?,
-        parameter2: T?,
-        andPart: SqlExpressionBuilder.(U, T) -> Op<Boolean>
-    ) = apply {
-        parameter1?.let {
-            parameter2?.let {
-                val expr = Op.build { andPart(parameter1, parameter2) }
-
-                this.adjustWhere {
-                    if (this == null) expr
-                    else this and expr
-                }
             }
         }
     }
