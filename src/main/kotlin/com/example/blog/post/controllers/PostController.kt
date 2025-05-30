@@ -27,10 +27,12 @@ class PostController(
 
     @GetMapping
     fun getPosts(
-        @RequestParam(value = "title") title: String?,
-        @RequestParam(value = "category") category: String?,
+        @RequestParam(value = "title", required = false) title: String?,
+        @RequestParam(value = "category", required = false) category: String?,
         @RequestParam(value = "limit", defaultValue = "20") limit: Int,
     ): GetPostsResponse {
+        require(limit in 1..100) { "Limit must be between 1 and 100" }
+
         val posts = postService.getPosts(title = title, category = category, limit = limit + 1)
 
         return GetPostsResponse(
@@ -49,13 +51,15 @@ class PostController(
         @RequestParam cursor: String,
         @RequestParam(value = "limit", defaultValue = "20") limit: Int,
     ): GetPostsResponse {
+        require(limit in 1..100) { "Limit must be between 1 and 100" }
+
         val postCursor = Base64ObjectMapper.fromBase64<PostCursor>(cursor)
         val posts = postService.getPosts(
             title = postCursor.title,
             category = postCursor.category,
             lastId = postCursor.id,
             lastCreatedAt = postCursor.createdAt,
-            limit = limit,
+            limit = limit + 1,
         )
 
         return GetPostsResponse(
