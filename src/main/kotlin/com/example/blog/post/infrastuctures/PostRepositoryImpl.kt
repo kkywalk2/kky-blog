@@ -7,10 +7,8 @@ import com.example.blog.post.domains.PostDomain
 import com.example.blog.post.services.ports.PostRepository
 import org.jetbrains.exposed.dao.load
 import org.jetbrains.exposed.sql.*
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 import java.util.*
 
 @Repository
@@ -43,26 +41,28 @@ class PostRepositoryImpl : PostRepository {
     }
 
     override fun getByTitleAndCategory(
-        pageable: Pageable,
-        title: Optional<String>,
-        category: Optional<String>
-    ): Page<PostDomain> {
+        limit: Int,
+        title: String?,
+        category: String?,
+        lastId: Long?,
+        lastCreatedAt: LocalDateTime?
+    ): List<PostDomain> {
         val query = Posts
             .select { Posts.deleted eq false }
             .andWhere(title) { Posts.title like "%$it%" }
             .andWhere(category) { Posts.category eq it }
-            .orderBy(Posts.createdAt to SortOrder.DESC)
+            .apply {
+                if (lastId != null && lastCreatedAt != null) {
+                    andWhere {
+                        (Posts.createdAt less lastCreatedAt) or
+                                ((Posts.id less lastId) and (Posts.createdAt eq lastCreatedAt))
+                    }
+                }
+            }
+            .orderBy(Posts.createdAt to SortOrder.DESC, Posts.id to SortOrder.DESC)
+            .limit(limit)
 
-        PostDao.find { Posts.deleted eq false }
-        if (pageable.isPaged) query.limit(pageable.pageSize, pageable.offset)
-
-        val count = Posts
-            .select { Posts.deleted eq false }
-            .andWhere(title) { Posts.title like "%$it%" }
-            .andWhere(category) { Posts.category eq it }
-            .count()
-
-        return PageImpl(PostDao.wrapRows(query).toList(), pageable, count).map { it.toDomain() }
+        return PostDao.wrapRows(query).toList().map { it.toDomain() }
     }
 
     override fun getCategoryCounts(): List<CategoryDto> {
@@ -100,10 +100,10 @@ class PostRepositoryImpl : PostRepository {
     }
 
     private fun <T> Query.andWhere(
-        parameter: Optional<T>,
+        parameter: T?,
         andPart: SqlExpressionBuilder.(T) -> Op<Boolean>
     ) = apply {
-        parameter.ifPresent {
+        parameter?.let {
             val expr = Op.build { andPart(it) }
 
             this.adjustWhere {
