@@ -16,9 +16,9 @@ const login = async (accountName, password) => {
   }
 };
 
-const signUp = async (accountName, password) => {
+const signUp = async (accountName, password, email) => {
   try {
-    const res = await accountService.signUp(accountName, password);
+    const res = await accountService.signUp(accountName, password, email);
     if (res.status === 201) return res.data;
     else return null;
   } catch (err) {
