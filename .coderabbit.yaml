@@ -14,38 +14,50 @@ reviews:
   path_filters:
     - "!**/README.md"
   path_instructions:
-    - path: "**"
+    - path: "**/*.kt"
       instructions: >
-        Review the API endpoints based on this guidelines.
+        class는 아래와 같은 컨벤션을 갖습니다
+        - 클래스 이름은 대문자로 시작하며, 카멜 케이스(camelCase)를 사용합니다.
         
-        ### Richardson Maturity Model (RMM)
-        1. Level 0: Single URI with POST requests for all actions.
-        2. Level 1: Separate URIs for individual resources.
-        3. Level 2: Use of HTTP methods (GET, POST, PUT, DELETE) to define operations on resources.
-        4. Level 3: Hypermedia (HATEOAS) for advanced RESTful APIs.
+        class SomeClass {
+          // 클래스 내용
+          // ..
         
-        ### API Conventions
-        - URI Rules:
-          - Should be intuitive and self-explanatory.
-          - Should not map 1:1 to database tables.
-          - Must be stateless, with no session state between requests.
-          - Include "api" and version in the URI (/api/{version}/resource).
-          - Use kebab-case for URIs and camelCase for parameters and body contents.
-          - Resource identifiers should be unique and only one per URI path.
+          // 닫는 괄호 전에 공백을 넣습니다.
+        }
+    - path: "**/*Controller.kt"
+      instructions: >
+        아래의 가이드라인에 따라 API 엔드포인트를 리뷰해주세요
         
-        - Design Principles:
-          - APIs should be designed around resources, which are abstractions rather than direct database tables.
-          - Stateless APIs facilitate scalability and flexibility.
-          - Clear separation of frontend and backend via URI structure.
-          - Versioning in URI paths is preferred for clarity and ease of caching.
-          - Maintain consistent naming conventions across the API.
-          - Use plural forms for resource names (/users instead of /user).
-          - Complex actions can include verbs in the URI (/orders/{orderId}/cancel).
-        
-        - Implementation Details:
-          - Avoid deeply nested resource paths to ensure maintainability.
-          - Ensure URIs reflect the data they provide, not the permissions or roles required to access them.
-          - Keep URIs simple and predictable, aiding both developers and automated systems.
+        ### Richardson 성숙도 모델 (RMM)
+        1. **레벨 0**: 모든 작업에 대해 하나의 URI와 POST 요청만 사용.
+        2. **레벨 1**: 개별 자원에 대해 별도의 URI 사용.
+        3. **레벨 2**: HTTP 메서드(GET, POST, PUT, DELETE)를 사용하여 자원에 대한 작업 정의.
+        4. **레벨 3**: 고급 RESTful API를 위한 하이퍼미디어(HATEOAS) 사용.
+        - 현재 API는 레벨 2에 해당하며, HTTP 메서드를 사용하여 자원에 대한 작업을 정의하고 있습니다.
+
+        ### API 규칙
+        - **URI 규칙**:
+          - 직관적이고 자기 설명적인 URI여야 한다.
+          - URI가 데이터베이스 테이블과 1:1로 매핑되어서는 안 된다.
+          - 요청 간 세션 상태 없이 상태 없는(stateless) API여야 한다.
+          - URI에 api나 version과 같은 prefix 없이 리소스로 표현된다. (/resource).
+          - URI는 케밥 케이스(kebab-case)를 사용하고, 파라미터와 본문 내용은 카멜 케이스(camelCase)를 사용한다.
+          - 자원 식별자는 고유해야 하며, 각 URI 경로에 대해 하나만 포함해야 한다.
+
+        - **설계 원칙**:
+          - API는 직접적인 데이터베이스 테이블이 아니라 자원을 추상화하여 설계해야 한다.
+          - 상태 없는(stateless) API는 확장성과 유연성을 제공한다.
+          - URI 구조를 통해 프론트엔드와 백엔드의 명확한 분리를 유지한다.
+          - 명확성과 캐싱 용이를 위해 URI 경로에 버전 정보를 포함하는 것이 좋다.
+          - 일관된 명명 규칙을 유지한다.
+          - 자원 이름은 복수형을 사용한다 (/user 대신 /users).
+          - 복잡한 작업에는 URI에 동사를 포함할 수 있다 (/orders/{orderId}/cancel).
+
+        - **구현 세부 사항**:
+          - 유지 보수를 용이하게 하기 위해 깊이 중첩된 자원 경로를 피한다.
+          - URI는 해당 자원이 제공하는 데이터만을 반영해야 하며, 접근에 필요한 권한이나 역할을 반영하지 않아야 한다.
+          - URI는 단순하고 예측 가능해야 하며, 개발자와 자동화된 시스템 모두에게 도움이 되어야 한다.
   abort_on_close: true
   auto_review:
     enabled: true
