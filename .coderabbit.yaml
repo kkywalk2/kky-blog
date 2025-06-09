@@ -67,6 +67,8 @@ reviews:
     drafts: false
     base_branches: []
   tools:
+    detekt:
+      enabled: true
     shellcheck:
       enabled: true
     ruff:
