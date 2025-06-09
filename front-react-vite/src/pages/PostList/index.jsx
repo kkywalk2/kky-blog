@@ -4,16 +4,18 @@ import PostCard from '@/components/PostCard';
 
 const PostList = () => {
   const [data, setData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const perPage = 10;
+  const [cursor, setCursor] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const limit = 10;
   const observerRef = useRef(null);
 
   const fetchData = async () => {
     try {
-      const data = await getPosts(currentPage - 1, perPage);
-      setTotalPages(data.totalPages);
-      setData((prevData) => uniqueArrayById([...prevData, ...data.content]));
+      const newData = await getPosts(limit, cursor);
+      
+      setData((prevData) => uniqueArrayById([...prevData, ...newData.posts]));
+      setCursor(newData.cursor);
+      setHasMore(newData.cursor !== null);
     } catch (error) {
       console.error('Error fetching data: ', error);
     }
@@ -36,20 +38,17 @@ const PostList = () => {
     }
 
     observerRef.current = new IntersectionObserver(async ([entry]) => {
-      if (entry.isIntersecting) {
-        console.log(totalPages);
-        if (currentPage < totalPages) {
-          setCurrentPage((prevPage) => prevPage + 1);
-        }
+      if (entry.isIntersecting && hasMore) {
+        await fetchData();
       }
     });
 
     node && observerRef.current.observe(node);
-  }, [currentPage, totalPages]);
+  }, [cursor, hasMore]);
 
   useEffect(() => {
     fetchData();
-  }, [currentPage])
+  }, []);
 
   return (
     <div className='justify-center w-full'>
@@ -62,11 +61,10 @@ const PostList = () => {
             summary={post.summary}
             createdAt={post.createdAt}
           ></PostCard>
-        ))
-        }
+        ))}
       </ul>
       <div ref={observer} style={{ textAlign: 'center' }}>
-        {currentPage < totalPages && <p>Loading...</p>}
+        {hasMore && <p>Loading...</p>}
       </div>
     </div>
   );

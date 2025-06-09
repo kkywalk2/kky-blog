@@ -16,9 +16,9 @@ const login = async (accountName, password) => {
   }
 };
 
-const signUp = async (accountName, password, email) => {
+const signUp = async (accountName, password) => {
   try {
-    const res = await accountService.signUp(accountName, password, email);
+    const res = await accountService.signUp(accountName, password);
     if (res.status === 201) return res.data;
     else return null;
   } catch (err) {
@@ -38,9 +38,9 @@ const createPosts = async (token, title, content, category) => {
   }
 };
 
-const getPosts = async (page, perPage, category = null, title = null) => {
+const getPosts = async (limit, cursor = null) => {
   try {
-    const res = await postService.getPosts(page, perPage, category, title);
+    const res = await postService.getPosts(limit, cursor);
     if (res.status === 200) return res.data;
     else return null;
   } catch (err) {
@@ -107,9 +107,11 @@ const addComment = async (token, postId, comment) => {
 const checkAuthentication = async (token) => {
   try {
     const res = await accountService.checkAuthentication(token);
-    return res.status === 200;
+    if (res.status === 200) return res.data;
+    else return null;
   } catch (err) {
-    return false;
+    console.error(err);
+    return null;
   }
 };
 

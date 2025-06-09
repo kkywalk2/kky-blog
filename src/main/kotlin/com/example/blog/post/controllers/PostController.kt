@@ -38,7 +38,7 @@ class PostController(
         return GetPostsResponse(
             posts = posts.take(limit),
             cursor = if (posts.size > limit) {
-                posts.last()
+                posts.take(limit).last()
                     .let { PostCursor(it.id, title, category, it.createdAt) }
                     .let { Base64ObjectMapper.toBase64(it) }
             } else
@@ -65,7 +65,7 @@ class PostController(
         return GetPostsResponse(
             posts = posts.take(limit),
             cursor = if (posts.size > limit) {
-                posts.last()
+                posts.take(limit).last()
                     .let { PostCursor(it.id, postCursor.title, postCursor.category, it.createdAt) }
                     .let { Base64ObjectMapper.toBase64(it) }
             } else
