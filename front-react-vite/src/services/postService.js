@@ -15,25 +15,16 @@ const createPost = (token, title, content, category) => {
   return axios.post(`/posts`, postInfo, { headers });
 };
 
-const getPosts = (
-  page,
-  perPage,
-  category,
-  title,
-) => {
+const getPosts = (limit, cursor = null) => {
   let headers = {
     'Content-type': 'application/json',
   };
 
-  let query = '';
-  if (category !== null) {
-    query += `&category=${category}`;
-  }
-  if (title !== null) {
-    query += `&title=${title}`;
-  }
+  const url = cursor 
+    ? `/posts?cursor=${cursor}&limit=${limit}`
+    : `/posts?limit=${limit}`;
 
-  return axios.get(`/posts?page=${page}&per_page=${perPage}${query}`, { headers });
+  return axios.get(url, { headers });
 };
 
 const getPost = (id) => {

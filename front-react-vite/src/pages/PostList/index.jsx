@@ -4,52 +4,46 @@ import PostCard from '@/components/PostCard';
 
 const PostList = () => {
   const [data, setData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const perPage = 10;
+  const [cursor, setCursor] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const limit = 10;
   const observerRef = useRef(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    if (isLoading) return;
+    
+    setIsLoading(true);
     try {
-      const data = await getPosts(currentPage - 1, perPage);
-      setTotalPages(data.totalPages);
-      setData((prevData) => uniqueArrayById([...prevData, ...data.content]));
+      const newData = await getPosts(limit, cursor);
+      
+      setData(prevData => [...prevData, ...newData.posts]);
+      setCursor(newData.cursor);
+      setHasMore(newData.cursor !== null);
     } catch (error) {
       console.error('Error fetching data: ', error);
+    } finally {
+      setIsLoading(false);
     }
-  };
-
-  // React Strict 모드에서 2번 렌더링하는 것을 고려한 임시코드, 제대로 된 해결책 찾아야함
-  const uniqueArrayById = (array) => {
-    return array.reduce((acc, current) => {
-      const existingItem = acc.find(item => item.id === current.id);
-      if (!existingItem) {
-        acc.push(current);
-      }
-      return acc;
-    }, []);
-  };
+  }, [cursor, isLoading]);
 
   const observer = useCallback((node) => {
     if (observerRef.current) {
       observerRef.current.disconnect();
     }
 
-    observerRef.current = new IntersectionObserver(async ([entry]) => {
-      if (entry.isIntersecting) {
-        console.log(totalPages);
-        if (currentPage < totalPages) {
-          setCurrentPage((prevPage) => prevPage + 1);
-        }
+    observerRef.current = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && hasMore && !isLoading) {
+        fetchData();
       }
     });
 
     node && observerRef.current.observe(node);
-  }, [currentPage, totalPages]);
+  }, [hasMore, isLoading, fetchData]);
 
   useEffect(() => {
     fetchData();
-  }, [currentPage])
+  }, []);
 
   return (
     <div className='justify-center w-full'>
@@ -61,12 +55,15 @@ const PostList = () => {
             title={post.title}
             summary={post.summary}
             createdAt={post.createdAt}
-          ></PostCard>
-        ))
-        }
+          />
+        ))}
       </ul>
-      <div ref={observer} style={{ textAlign: 'center' }}>
-        {currentPage < totalPages && <p>Loading...</p>}
+      <div ref={observer} className="py-4">
+        {isLoading && (
+          <div className="flex justify-center items-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+          </div>
+        )}
       </div>
     </div>
   );
