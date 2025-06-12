@@ -11,6 +11,8 @@ import {
 
 import Post from '@/pages/Post';
 import PostList from '@/pages/PostList';
+import Login from '@/pages/Login';
+import Editor from '@/components/Editor';
 
 const mode = import.meta.env.MODE;
 axios.defaults.baseURL = mode === 'production' ? 'https://cnt2020.hopto.org/api' : 'http://localhost:9001/api';
@@ -28,6 +30,14 @@ const router = createBrowserRouter(
         {
           path: '/posts/:postId',
           element: <Post />,
+        },
+        {
+          path: '/login',
+          element: <Login />,
+        },
+        {
+          path: '/write',
+          element: <Editor />,
         },
       ],
     },
