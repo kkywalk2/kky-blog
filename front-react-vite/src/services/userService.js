@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const login = (accountName, password) => {
   let authInfo = {
-    accountName: accountName,
+    name: accountName,
     password: password,
   };
 
@@ -11,7 +11,7 @@ const login = (accountName, password) => {
 
 const signUp = (accountName, password, email) => {
   let signUpInfo = {
-    accountName: accountName,
+    name: accountName,
     password: password,
     email: email,
   };
