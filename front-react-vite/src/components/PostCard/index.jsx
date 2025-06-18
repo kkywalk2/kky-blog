@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import dayjs from "dayjs";
 
 const PostCard = ({ id, title, summary, createdAt }) => {
   return (
@@ -10,11 +11,7 @@ const PostCard = ({ id, title, summary, createdAt }) => {
       <div className="p-6">
         {createdAt && (
           <p className="text-sm text-gray-500 mb-2">
-            {new Date(createdAt).toLocaleDateString('ko-KR', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
+            {dayjs(createdAt).format('YYYY년 M월 D일')}
           </p>
         )}
         <h2 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">
