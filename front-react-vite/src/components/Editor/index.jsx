@@ -11,6 +11,7 @@ const Editor = () => {
     category: '',
   });
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +23,9 @@ const Editor = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
     setError('');
+    setIsSubmitting(true);
 
     try {
       const token = sessionStorage.getItem('token');
@@ -40,6 +43,7 @@ const Editor = () => {
     } catch (err) {
       setError('글 작성 중 오류가 발생했습니다.');
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -107,9 +111,10 @@ const Editor = () => {
         <div className="flex justify-end">
           <button
             type="submit"
+            disabled={isSubmitting}
             className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            작성하기
+            {isSubmitting ? '작성 중…' : '작성하기'}
           </button>
         </div>
       </form>
