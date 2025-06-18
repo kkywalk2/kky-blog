@@ -25,7 +25,7 @@ const Editor = () => {
     setError('');
 
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) {
         setError('로그인이 필요합니다.');
         return;
