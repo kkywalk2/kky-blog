@@ -30,7 +30,7 @@ const Post = () => {
     }
 
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) {
         navigate('/login');
         return;
@@ -48,7 +48,7 @@ const Post = () => {
   };
 
   const handleEdit = () => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
       navigate('/login');
       return;
