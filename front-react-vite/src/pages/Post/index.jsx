@@ -22,7 +22,7 @@ const Post = () => {
     } finally {
       setIsLoading(false);
     }
-  },[]);
+  },[postId]);
 
   const handleDelete = async () => {
     if (!window.confirm('정말로 이 게시물을 삭제하시겠습니까?')) {
