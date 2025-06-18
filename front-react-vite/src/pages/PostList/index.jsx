@@ -51,12 +51,7 @@ const PostList = () => {
   }, [hasMore, isLoading, fetchData]);
 
   const handleWriteClick = () => {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    } else {
-      navigate('/write');
-    }
+    navigate('/write');
   };
 
   useEffect(() => {

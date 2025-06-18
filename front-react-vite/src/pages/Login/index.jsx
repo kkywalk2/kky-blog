@@ -9,6 +9,7 @@ const Login = () => {
     password: '',
   });
   const [error, setError] = useState('');
+  const from = location.state?.from?.pathname || '/';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +27,7 @@ const Login = () => {
       const token = await login(formData.accountName, formData.password);
       if (token) {
         sessionStorage.setItem('token', token);
-        navigate('/'); // 로그인 성공 후 메인 페이지로 이동
+        navigate(from, { replace: true });
       } else {
         setError('로그인에 실패했습니다. 계정명과 비밀번호를 확인해주세요.');
       }
