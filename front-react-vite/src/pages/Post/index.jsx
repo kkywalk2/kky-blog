@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { getPost, deletePost } from '@/services';
@@ -10,7 +10,7 @@ const Post = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
       const postData = await getPost(postId);
@@ -22,7 +22,7 @@ const Post = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[]);
 
   const handleDelete = async () => {
     if (!window.confirm('정말로 이 게시물을 삭제하시겠습니까?')) {

@@ -61,7 +61,7 @@ const updatePost = (token, postId, title, content, category) => {
 const deletePost = (token, postId) => {
   let headers = {
     'Content-type': 'application/json',
-    Authorization: `${token}`,
+    Authorization: `Bearer ${token}`,
   };
 
   return axios.delete(`/posts/${postId}`, { headers });
