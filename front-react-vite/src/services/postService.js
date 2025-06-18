@@ -3,7 +3,7 @@ import axios from 'axios';
 const createPost = (token, title, content, category) => {
   let headers = {
     'Content-type': 'application/json',
-    Authorization: `${token}`,
+    Authorization: `Bearer ${token}`,
   };
 
   let postInfo = {
@@ -46,7 +46,7 @@ const getCategories = () => {
 const updatePost = (token, postId, title, content, category) => {
   let headers = {
     'Content-type': 'application/json',
-    Authorization: `${token}`,
+    Authorization: `Bearer ${token}`,
   };
 
   let postInfo = {
