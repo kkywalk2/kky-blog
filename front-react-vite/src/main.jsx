@@ -16,7 +16,10 @@ import Editor from '@/components/Editor';
 import {requireAuth} from "@/components/RequireAuth.jsx";
 
 const mode = import.meta.env.MODE;
-axios.defaults.baseURL = mode === 'production' ? 'https://cnt2020.hopto.org/api' : 'http://localhost:9001/api';
+const contextPath = import.meta.env.VITE_CONTEXT_PATH || '';
+const apiBasePath = contextPath ? `${contextPath}/api` : '/api';
+
+axios.defaults.baseURL = mode === 'production' ? `https://cnt2020.hopto.org${apiBasePath}` : `http://localhost:9001${apiBasePath}`;
 
 const router = createBrowserRouter(
   [
@@ -44,6 +47,9 @@ const router = createBrowserRouter(
       ],
     },
   ],
+  {
+    basename: import.meta.env.VITE_BASE_PATH || '/'
+  }
 );
 
 window.addEventListener('vite:preloadError', (event) => {

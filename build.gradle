@@ -75,6 +75,10 @@ task deleteVueArtifact(type: Delete) {
 
 task npmBuild(type: NpmTask, dependsOn: ['deleteVueArtifact', 'npm_install']) {
     args = ["run", "build"]
+    environment = [
+        'VITE_BASE_PATH': project.findProperty('basePath') ?: '/',
+        'VITE_CONTEXT_PATH': project.findProperty('contextPath') ?: ''
+    ]
 }
 
 task copyReactBuildFiles1(type: Copy, dependsOn: ['npmBuild']) {
