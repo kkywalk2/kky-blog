@@ -36,9 +36,10 @@ class SecurityConfig(
             sessionManagement { sessionCreationPolicy = SessionCreationPolicy.STATELESS }
             addFilterBefore<UsernamePasswordAuthenticationFilter>(JwtAuthorizationFilter(tokenProvider))
             authorizeRequests {
-                authorize(HttpMethod.POST, "/api/post", authenticated)
-                authorize(HttpMethod.PUT, "/api/post", authenticated)
-                authorize(HttpMethod.DELETE, "/api/post/**", authenticated)
+                authorize(HttpMethod.POST, "/api/posts", authenticated)
+                authorize(HttpMethod.PUT, "/api/posts/**", authenticated)
+                authorize(HttpMethod.DELETE, "/api/posts/**", authenticated)
+                authorize(HttpMethod.POST, "/api/image", authenticated)
                 authorize(HttpMethod.GET, "/api/account", authenticated)
                 authorize("/api/comment", authenticated)
                 authorize(anyRequest, permitAll)

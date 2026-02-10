@@ -22,7 +22,7 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '19'
+    sourceCompatibility = '21'
 }
 
 node { 
@@ -74,7 +74,7 @@ task deleteVueArtifact(type: Delete) {
 }
 
 task npmBuild(type: NpmTask, dependsOn: ['deleteVueArtifact', 'npm_install']) {
-    args = ["run", "build"]
+    args = ["run", profile == 'prod' ? 'build' : 'devbuild']
 }
 
 task copyReactBuildFiles1(type: Copy, dependsOn: ['npmBuild']) {
@@ -89,18 +89,22 @@ task copyReactBuildFiles2(type: Copy, dependsOn: ['copyReactBuildFiles1']) {
 
 compileJava.dependsOn(copyReactBuildFiles2)
 
+tasks.named('processResources') {
+    dependsOn copyReactBuildFiles1, copyReactBuildFiles2
+}
+
 test {
     useJUnitPlatform()
 }
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = '19'
+        jvmTarget = '21'
     }
 }
 
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = '19'
+        jvmTarget = '21'
     }
 }

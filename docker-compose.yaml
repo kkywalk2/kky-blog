@@ -1,7 +1,7 @@
 version: "3.7" 
 services: 
-  db: 
-    image: mysql:5.7 
+  db:
+    image: mysql:8.0 
     restart: always
     command:
     - --lower_case_table_names=1
@@ -11,8 +11,8 @@ services:
     ports:
       - "3306:3306"
     environment: 
-      - MYSQL_DATABASE=kky_blog
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=testdb
+      - MYSQL_ROOT_PASSWORD=1234
       - TZ=Asia/Seoul
     volumes:
       - ./mysql:/var/lib/mysql

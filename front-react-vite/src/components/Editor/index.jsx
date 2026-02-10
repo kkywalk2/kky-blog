@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPosts } from '@/services';
 import ReactMarkdown from 'react-markdown';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Editor = () => {
   const navigate = useNavigate();
+  const { token } = useAuth();
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -28,9 +30,9 @@ const Editor = () => {
     setIsSubmitting(true);
 
     try {
-      const token = sessionStorage.getItem('token');
       if (!token) {
         setError('로그인이 필요합니다.');
+        navigate('/login');
         return;
       }
 
@@ -42,8 +44,9 @@ const Editor = () => {
       }
     } catch (err) {
       setError('글 작성 중 오류가 발생했습니다.');
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
   return (

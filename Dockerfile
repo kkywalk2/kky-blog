@@ -1,4 +1,4 @@
-FROM eclipse-temurin:19-alpine
+FROM eclipse-temurin:21-jdk-alpine
 EXPOSE 9001
 COPY ./build/libs/*.jar spring-boot-application.jar
 ENTRYPOINT ["java","-jar","-Dspring.profiles.active=${USE_PROFILE}","/spring-boot-application.jar"]

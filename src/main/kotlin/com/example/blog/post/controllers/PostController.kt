@@ -4,6 +4,7 @@ import com.example.blog.config.Base64ObjectMapper
 import com.example.blog.dto.*
 import com.example.blog.post.domains.CreatePost
 import com.example.blog.post.domains.UpdatePost
+import com.example.blog.post.services.CommentService
 import com.example.blog.post.services.PostService
 import com.example.blog.user.domains.UserDomain
 import jakarta.validation.Valid
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/posts")
 class PostController(
-    private val postService: PostService
+    private val postService: PostService,
+    private val commentService: CommentService
 ) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -101,7 +103,12 @@ class PostController(
     }
 
     @PostMapping("/{id}/comments")
-    fun addComment(@PathVariable id: String): CommentDto {
-        TODO("")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun addComment(
+        @PathVariable id: Long,
+        @RequestBody @Valid request: CreateCommentRequest,
+        @AuthenticationPrincipal userDomain: UserDomain,
+    ): CommentDto {
+        return commentService.addComment(userDomain.id, userDomain.username, request)
     }
 }

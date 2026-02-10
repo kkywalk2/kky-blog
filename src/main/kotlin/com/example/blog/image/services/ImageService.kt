@@ -29,14 +29,49 @@ class ImageService(
 ) {
 
     fun saveImage(imageFile: MultipartFile): ImageUploadResponse {
-        val uniqueName = "${UUID.randomUUID()}_${imageFile.originalFilename}"
+        // Validate file is not empty
+        if (imageFile.isEmpty) {
+            throw IllegalArgumentException("File is empty")
+        }
+
+        // Validate file size (max 5MB)
+        val maxFileSize = 5 * 1024 * 1024 // 5MB in bytes
+        if (imageFile.size > maxFileSize) {
+            throw IllegalArgumentException("File size exceeds maximum allowed size of 5MB")
+        }
+
+        // Validate content type - only allow image types
+        val allowedContentTypes = setOf("image/jpeg", "image/png", "image/gif", "image/webp")
+        val contentType = imageFile.contentType
+        if (contentType == null || contentType !in allowedContentTypes) {
+            throw IllegalArgumentException("Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed")
+        }
+
+        // Validate original filename
+        val originalFilename = imageFile.originalFilename ?: throw IllegalArgumentException("Filename is required")
+        validateFileName(originalFilename)
+
+        // Validate file extension matches content type
+        val extension = originalFilename.substringAfterLast('.', "").lowercase()
+        val expectedExtensions = when (contentType) {
+            "image/jpeg" -> setOf("jpg", "jpeg")
+            "image/png" -> setOf("png")
+            "image/gif" -> setOf("gif")
+            "image/webp" -> setOf("webp")
+            else -> emptySet()
+        }
+        if (extension !in expectedExtensions) {
+            throw IllegalArgumentException("File extension does not match content type")
+        }
+
+        val uniqueName = "${UUID.randomUUID()}_${originalFilename}"
         val combinedPath = Paths.get(path, uniqueName)
         val bytes = imageFile.bytes
 
         Files.write(combinedPath, bytes)
 
         imageRepository.save(
-            originalName = imageFile.originalFilename,
+            originalName = originalFilename,
             filePath = combinedPath.toString()
         )
 
@@ -44,6 +79,9 @@ class ImageService(
     }
 
     fun downloadImage(fileName: String): ResponseEntity<Resource> {
+        // Validate fileName to prevent path traversal attacks
+        validateFileName(fileName)
+
         val image = imageRepository.findByFilePath(Paths.get(path, fileName).toString())
         val path = image.getPath()
         val headers = path.toHeaders()
@@ -53,6 +91,19 @@ class ImageService(
         val resource: Resource = InputStreamResource(Files.newInputStream(path))
 
         return ResponseEntity(resource, headers, HttpStatus.OK)
+    }
+
+    private fun validateFileName(fileName: String) {
+        // Reject filenames containing path traversal characters
+        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
+            throw IllegalArgumentException("Invalid filename: path traversal characters not allowed")
+        }
+
+        // Only allow alphanumeric, dash, underscore, and dot characters
+        val validFileNamePattern = Regex("^[a-zA-Z0-9._-]+$")
+        if (!fileName.matches(validFileNamePattern)) {
+            throw IllegalArgumentException("Invalid filename: only alphanumeric, dash, underscore, and dot characters are allowed")
+        }
     }
 
     private fun Path.toHeaders(): HttpHeaders {

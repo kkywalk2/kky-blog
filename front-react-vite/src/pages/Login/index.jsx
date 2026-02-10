@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { login } from '@/services';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login: authLogin } = useAuth();
   const [formData, setFormData] = useState({
     accountName: '',
     password: '',
@@ -26,7 +29,7 @@ const Login = () => {
     try {
       const token = await login(formData.accountName, formData.password);
       if (token) {
-        sessionStorage.setItem('token', token);
+        authLogin(token);
         navigate(from, { replace: true });
       } else {
         setError('로그인에 실패했습니다. 계정명과 비밀번호를 확인해주세요.');

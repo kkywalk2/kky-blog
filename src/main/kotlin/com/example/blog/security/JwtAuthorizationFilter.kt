@@ -9,10 +9,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 import java.time.LocalDateTime
+import org.slf4j.LoggerFactory
 
 class JwtAuthorizationFilter(
     private val tokenProvider: TokenProvider,
 ) : OncePerRequestFilter() {
+
+    private val logger = LoggerFactory.getLogger(JwtAuthorizationFilter::class.java)
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         val header = request.getHeader("Authorization")
@@ -46,7 +49,10 @@ class JwtAuthorizationFilter(
                 userDomain.authorities
             )
         } catch (ex: RuntimeException) {
-            //TODO Something
+            logger.warn("JWT token validation failed: ${ex.message}", ex)
+            SecurityContextHolder.clearContext()
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token")
+            return
         }
 
         chain.doFilter(request, response)

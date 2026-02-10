@@ -2,10 +2,12 @@ import React, {useCallback, useEffect, useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { getPost, deletePost } from '@/services';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Post = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
+  const { token, isAuthenticated } = useAuth();
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,7 +32,6 @@ const Post = () => {
     }
 
     try {
-      const token = sessionStorage.getItem('token');
       if (!token) {
         navigate('/login');
         return;
@@ -48,7 +49,6 @@ const Post = () => {
   };
 
   const handleEdit = () => {
-    const token = sessionStorage.getItem('token');
     if (!token) {
       navigate('/login');
       return;
@@ -102,20 +102,22 @@ const Post = () => {
       <header className="border-b border-gray-200 p-6">
         <div className="flex justify-between items-start mb-4">
           <h1 className="text-3xl font-bold text-gray-900">{data.title}</h1>
-          <div className="flex space-x-2">
-            <button
-              onClick={handleEdit}
-              className="px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              수정
-            </button>
-            <button
-              onClick={handleDelete}
-              className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-            >
-              삭제
-            </button>
-          </div>
+          {isAuthenticated && (
+            <div className="flex space-x-2">
+              <button
+                onClick={handleEdit}
+                className="px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                수정
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              >
+                삭제
+              </button>
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">

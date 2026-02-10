@@ -1,24 +1,19 @@
-import axios from 'axios'
+import apiClient from '@/api/axios';
 
 // TODO: blob 타입 확인필요
 const uploadImage = (blob) => {
-    let headers = {
-        'Content-type': 'multipart/form-data'
-    }
+  const formData = new FormData();
+  formData.append('imageFile', blob);
 
-    let formData = new FormData()
-    formData.append("imageFile", blob)
-
-
-    return axios.post(`/image`, formData, { headers })
-}
+  return apiClient.post('/image', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
 
 const getImage = (path) => {
-    let headers = {
-        'Content-type': 'multipart/form-data'
-    }
+  return apiClient.get(`/image/${path}`);
+};
 
-    return axios.get(`/image/${path}`, { headers })
-}
-
-export default { uploadImage, getImage }
+export default { uploadImage, getImage };

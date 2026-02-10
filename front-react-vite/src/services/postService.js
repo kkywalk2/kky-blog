@@ -1,70 +1,43 @@
-import axios from 'axios';
+import apiClient from '@/api/axios';
 
 const createPost = (token, title, content, category) => {
-  let headers = {
-    'Content-type': 'application/json',
-    Authorization: `Bearer ${token}`,
+  const postInfo = {
+    title,
+    content,
+    category,
   };
 
-  let postInfo = {
-    title: title,
-    content: content,
-    category: category,
-  };
-
-  return axios.post(`/posts`, postInfo, { headers });
+  return apiClient.post('/posts', postInfo);
 };
 
 const getPosts = (limit, cursor = null) => {
-  let headers = {
-    'Content-type': 'application/json',
-  };
-
-  const url = cursor 
+  const url = cursor
     ? `/posts?cursor=${cursor}&limit=${limit}`
     : `/posts?limit=${limit}`;
 
-  return axios.get(url, { headers });
+  return apiClient.get(url);
 };
 
 const getPost = (id) => {
-  let headers = {
-    'Content-type': 'application/json',
-  };
-
-  return axios.get(`/posts/${id}`, { headers });
+  return apiClient.get(`/posts/${id}`);
 };
 
 const getCategories = () => {
-  let headers = {
-    'Content-type': 'application/json',
-  };
-
-  return axios.get(`/posts/category`, { headers });
+  return apiClient.get('/posts/category');
 };
 
 const updatePost = (token, postId, title, content, category) => {
-  let headers = {
-    'Content-type': 'application/json',
-    Authorization: `Bearer ${token}`,
+  const postInfo = {
+    title,
+    content,
+    category,
   };
 
-  let postInfo = {
-    title: title,
-    content: content,
-    category: category,
-  };
-
-  return axios.put(`/posts/${postId}`, postInfo, { headers });
+  return apiClient.put(`/posts/${postId}`, postInfo);
 };
 
 const deletePost = (token, postId) => {
-  let headers = {
-    'Content-type': 'application/json',
-    Authorization: `Bearer ${token}`,
-  };
-
-  return axios.delete(`/posts/${postId}`, { headers });
+  return apiClient.delete(`/posts/${postId}`);
 };
 
 export default { createPost, getPosts, getPost, getCategories, updatePost, deletePost };

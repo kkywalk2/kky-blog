@@ -1,0 +1,35 @@
+# Build artifacts (but keep libs for Docker)
+.gradle/
+build/classes/
+build/generated/
+build/tmp/
+build/test-results/
+build/reports/
+target/
+# Don't exclude build/libs/*.jar - needed for Docker!
+
+# Node
+node_modules/
+front-react-vite/node_modules/
+front-react-vite/dist/
+
+# Version control
+.git/
+.github/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Env files
+.env
+.env.local
+.env.*.local

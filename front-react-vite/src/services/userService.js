@@ -1,33 +1,26 @@
-import axios from 'axios';
+import apiClient from '@/api/axios';
 
 const login = (accountName, password) => {
-  let authInfo = {
+  const authInfo = {
     name: accountName,
-    password: password,
+    password,
   };
 
-  return axios.post(`/users/token`, authInfo);
+  return apiClient.post('/users/token', authInfo);
 };
 
 const signUp = (accountName, password, email) => {
-  let signUpInfo = {
+  const signUpInfo = {
     name: accountName,
-    password: password,
-    email: email,
+    password,
+    email,
   };
 
-  return axios.post(`/users`, signUpInfo);
+  return apiClient.post('/users', signUpInfo);
 };
 
 const checkAuthentication = (token) => {
-  let headers = {
-    'Content-type': 'application/json',
-    Authorization: `${token}`,
-  };
-
-  console.log(token);
-
-  return axios.get(`/users`, { headers });
+  return apiClient.get('/users');
 };
 
 export default {

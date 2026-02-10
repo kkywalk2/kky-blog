@@ -1,17 +1,12 @@
-import axios from 'axios'
+import apiClient from '@/api/axios';
 
 const addComment = (token, postId, content) => {
-    let headers = {
-        'Content-type': 'application/json',
-        'Authorization': `${token}`
-    }
+  const postInfo = {
+    postId,
+    content,
+  };
 
-    let postInfo = {
-        postId: postId,
-        content: content
-    };
+  return apiClient.post('/comment', postInfo);
+};
 
-    return axios.post(`/comment`, postInfo, { headers })
-}
-
-export default { addComment }
+export default { addComment };

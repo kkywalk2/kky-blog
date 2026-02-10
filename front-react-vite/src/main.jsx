@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from '@/layouts/App.jsx'
-import axios from 'axios';
 import '@/index.css'
 
 import {
@@ -14,9 +13,7 @@ import PostList from '@/pages/PostList';
 import Login from '@/pages/Login';
 import Editor from '@/components/Editor';
 import {requireAuth} from "@/components/RequireAuth.jsx";
-
-const mode = import.meta.env.MODE;
-axios.defaults.baseURL = mode === 'production' ? 'https://cnt2020.hopto.org/api' : 'http://localhost:9001/api';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const router = createBrowserRouter(
   [
@@ -41,6 +38,11 @@ const router = createBrowserRouter(
           element: <Editor />,
           loader: requireAuth,
         },
+        {
+          path: '/edit/:postId',
+          element: <Editor />,
+          loader: requireAuth,
+        },
       ],
     },
   ],
@@ -52,6 +54,8 @@ window.addEventListener('vite:preloadError', (event) => {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>,
 )

@@ -1,10 +1,18 @@
 import React from 'react'
-import { Outlet, Link, useLocation } from 'react-router-dom'
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import AuthorCard from '@/components/AuthorCard'
+import { useAuth } from '@/contexts/AuthContext'
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
   const isLoginPage = location.pathname === '/login';
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -19,13 +27,36 @@ function App() {
               <Link
                 to="/"
                 className={`px-3 py-2 rounded-md text-sm font-medium ${
-                  location.pathname === '/' 
-                    ? 'text-indigo-600 bg-indigo-50' 
+                  location.pathname === '/'
+                    ? 'text-indigo-600 bg-indigo-50'
                     : 'text-gray-600 hover:text-indigo-600 hover:bg-indigo-50'
                 }`}
               >
                 홈
               </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to="/write"
+                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
+                  >
+                    글쓰기
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
+                  >
+                    로그아웃
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"
+                >
+                  로그인
+                </Link>
+              )}
             </nav>
           </div>
         </div>
