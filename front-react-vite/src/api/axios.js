@@ -1,9 +1,12 @@
 import axios from 'axios';
 
 const mode = import.meta.env.MODE;
+const contextPath = import.meta.env.VITE_CONTEXT_PATH || '';
+const apiBasePath = contextPath ? `${contextPath}/api` : '/api';
+
 const baseURL = mode === 'production'
-  ? 'https://cnt2020.hopto.org/api'
-  : 'http://localhost:9001/api';
+  ? `https://cnt2020.hopto.org${apiBasePath}`
+  : `http://localhost:9001${apiBasePath}`;
 
 const apiClient = axios.create({
   baseURL,

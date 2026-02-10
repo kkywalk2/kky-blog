@@ -15,6 +15,8 @@ import Editor from '@/components/Editor';
 import {requireAuth} from "@/components/RequireAuth.jsx";
 import { AuthProvider } from '@/contexts/AuthContext';
 
+// contextPath는 axios.js에서 처리됨
+
 const router = createBrowserRouter(
   [
     {
@@ -46,6 +48,9 @@ const router = createBrowserRouter(
       ],
     },
   ],
+  {
+    basename: import.meta.env.VITE_BASE_PATH || '/'
+  }
 );
 
 window.addEventListener('vite:preloadError', (event) => {
