@@ -24,7 +24,7 @@ jobs:
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew clean build -PbasePath=/blog -PcontextPath=/blog
+        run: ./gradlew clean build -Pprofile=prod -PbasePath=/blog -PcontextPath=/blog
         shell: bash
 
       - name: Log in to Docker Hub
